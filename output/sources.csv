@@ -1,0 +1,19 @@
+id,title,publisher,url,source_type,credibility_tier,retrieved_at,notes,platforms_supported
+2,EASA Drones for EU Operations,https://www.easa.europa.eu/en/domains/drones-air-mobility/drones-evtol-designs/drones-eu-operations,https://www.easa.europa.eu/en/domains/drones-air-mobility/drones-evtol-designs/drones-eu-operations,seed dataset,1,2026-08-02,Official EASA list of drones processed for use under EU rules; technical data are voluntarily supplied by manufacturers and the list is not exhaustive. Limitations: Official regulatory list; scope limited to relevant EU processes.,149
+7,Drones for EU operations (class-marked UAS),,https://www.easa.europa.eu/en/domains/civil-drones/drones-eu-operations,crawled source,1,2026-08-02T15:46:45+00:00,,0
+8,FAA UAS Declaration of Compliance list,,https://uasdoc.faa.gov/listDocs,crawled source,1,2026-08-02T15:46:45+00:00,,0
+10,General Atomics Aeronautical Systems official product pages,,https://www.ga-asi.com/remotely-piloted-aircraft,crawled source,1,2026-08-02T15:46:46+00:00,,0
+11,Baykar official product pages,,https://baykartech.com/en/uav/,crawled source,1,2026-08-02T15:46:47+00:00,,0
+12,Israel Aerospace Industries official product pages,,https://www.iai.co.il/p/unmanned-aerial-systems,crawled source,1,2026-08-02T15:46:48+00:00,,0
+13,DJI official product pages,,https://enterprise.dji.com/products,crawled source,1,2026-08-02T15:46:48+00:00,,0
+14,AeroVironment official product pages,,https://www.avinc.com/uas,crawled source,1,2026-08-02T15:46:49+00:00,,0
+15,Elbit Systems official product pages,,https://elbitsystems.com/products/uas/,crawled source,1,2026-08-02T15:46:50+00:00,,0
+16,US Department of Defense unmanned systems programme pages,,https://www.defense.gov/,crawled source,1,2026-08-02T15:46:50+00:00,,0
+17,UK Ministry of Defence remotely piloted air systems,,https://www.gov.uk/government/collections/remotely-piloted-air-systems,crawled source,1,2026-08-02T15:46:51+00:00,,0
+18,DRDO unmanned aerial systems,,https://www.drdo.gov.in/drdo/aeronautical-systems,crawled source,1,2026-08-02T15:46:52+00:00,,0
+4,Bard Drone Databook 2019,https://dronecenter.bard.edu/files/2019/10/CSD-Drone-Databook-Web.pdf,https://dronecenter.bard.edu/files/2019/10/CSD-Drone-Databook-Web.pdf,seed dataset,2,2019-09-01,Historical military/government UAS specifications baseline extracted from the Drone Databook. Limitations: Historical research baseline; operational status and origin may require updating.,193
+5,Global UAV Database 2026 seed package,Uploaded seed package,local://data/seed/Global_UAV_Database_2026.sqlite,seed dataset,3,2026-08-02T15:46:44+00:00,"Consolidated research database supplied as the project seed. Compiled 2 August 2026; 591 canonical records over 647 source records. Aggregator: republishes the four datasets below, so it corroborates nothing on its own.",594
+6,OpenDroneList community drone registry,,https://github.com/dronetag/opendronelist,crawled source,3,2026-08-02T15:46:45+00:00,,290
+3,OpenDroneList,https://github.com/dronetag/opendronelist,https://github.com/dronetag/opendronelist,seed dataset,3,2026-08-02,Community-driven open-source catalogue of commercial drone models and common properties. Limitations: Community data; manufacturer verification recommended.,175
+1,Curated UAV Seed 2026,Internal curated seed,Internal curated seed,seed dataset,3,2026-08-02,Curated cross-domain starter registry used to prioritize current and widely documented systems. Limitations: High-to-medium; platform-specific review still recommended.,154
+9,Wikipedia list-of-UAV index pages,,https://en.wikipedia.org/w/api.php,crawled source,3,2026-08-02T15:46:46+00:00,,0

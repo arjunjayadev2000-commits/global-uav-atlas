@@ -1,0 +1,10 @@
+# Runtime dependencies for the Global UAV Visual Atlas pipeline.
+requests>=2.31,<3
+Pillow>=10.0
+ImageHash>=4.3
+reportlab>=4.0
+openpyxl>=3.1
+
+# Optional: vision verification. The pipeline runs without it and degrades to
+# metadata-based identity verification.
+anthropic>=0.40 ; python_version >= "3.10"

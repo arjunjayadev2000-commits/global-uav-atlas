@@ -1,0 +1,183 @@
+{
+  "schema_version": 1,
+  "description": "Declarative crawl targets. 'format' selects the extractor in crawlers/extract.py; 'field_map' projects source columns onto the atlas vocabulary. Add a source by adding an entry here - no code change required.",
+  "sources": [
+    {
+      "id": "opendronelist",
+      "title": "OpenDroneList community drone registry",
+      "publisher": "Dronetag",
+      "url": "https://raw.githubusercontent.com/dronetag/opendronelist/master/list.csv",
+      "landing_page": "https://github.com/dronetag/opendronelist",
+      "source_type": "open dataset",
+      "credibility_tier": 3,
+      "crawler": "public_sources",
+      "format": "csv",
+      "strategy": "civilian_manufacturers",
+      "enabled": true,
+      "field_map": {
+        "manufacturer": "manufacturer",
+        "model": "name",
+        "class_mark": "class",
+        "mtow_g": "max_takeoff",
+        "weight_g": "weight",
+        "endurance_min": "endurance",
+        "has_camera": "has_camera",
+        "is_toy": "is_toy"
+      },
+      "defaults": {
+        "domain": "Civilian / Commercial",
+        "category": "Consumer / commercial UAS"
+      },
+      "notes": "Community maintained; used for discovery and cross-checking only, never as sole verification of country of origin."
+    },
+    {
+      "id": "easa_drones_eu",
+      "title": "Drones for EU operations (class-marked UAS)",
+      "publisher": "EASA",
+      "url": "https://www.easa.europa.eu/en/domains/civil-drones/drones-eu-operations",
+      "source_type": "regulatory register",
+      "credibility_tier": 1,
+      "crawler": "regulatory",
+      "format": "html_table",
+      "strategy": "regulatory_lists",
+      "enabled": true,
+      "field_map": {
+        "manufacturer": ["manufacturer", "producer", "company"],
+        "model": ["model", "product", "uas", "name"],
+        "class_mark": ["class", "class label", "class mark"]
+      },
+      "defaults": {
+        "domain": "Civilian / Commercial",
+        "category": "Class-marked UAS"
+      },
+      "notes": "Authoritative for EU class marking. Country column describes the declaring manufacturer's registered seat, not necessarily the design origin - treated as a hint only."
+    },
+    {
+      "id": "faa_uas_doc",
+      "title": "FAA UAS Declaration of Compliance list",
+      "publisher": "Federal Aviation Administration",
+      "url": "https://uasdoc.faa.gov/api/v1/products?pageSize=500",
+      "landing_page": "https://uasdoc.faa.gov/listDocs",
+      "source_type": "regulatory register",
+      "credibility_tier": 1,
+      "crawler": "regulatory",
+      "format": "json",
+      "record_path": "items",
+      "strategy": "regulatory_lists",
+      "enabled": true,
+      "field_map": {
+        "manufacturer": ["manufacturer", "makeName", "company"],
+        "model": ["model", "modelName", "productName"],
+        "status": ["status"]
+      },
+      "defaults": {
+        "domain": "Civilian / Commercial",
+        "category": "Remote ID compliant UAS"
+      },
+      "notes": "US Remote ID declarations. Presence proves the product exists and is marketed in the US; origin still requires a separate source."
+    },
+    {
+      "id": "wikipedia_uav_lists",
+      "title": "Wikipedia list-of-UAV index pages",
+      "publisher": "Wikimedia Foundation",
+      "url": "https://en.wikipedia.org/w/api.php",
+      "source_type": "encyclopedia index",
+      "credibility_tier": 3,
+      "crawler": "public_sources",
+      "format": "mediawiki_list",
+      "strategy": "historical_and_experimental",
+      "enabled": true,
+      "pages": [
+        "List of unmanned aerial vehicles",
+        "List of unmanned aerial vehicles of the United States",
+        "List of loitering munitions",
+        "List of unmanned aerial vehicles of China",
+        "List of unmanned aerial vehicles of Russia"
+      ],
+      "notes": "Discovery only per the source policy: names found here must be corroborated by a tier 1-2 source before a record is promoted above 'Needs Verification'."
+    },
+    {
+      "id": "wikimedia_commons_images",
+      "title": "Wikimedia Commons media search",
+      "publisher": "Wikimedia Foundation",
+      "url": "https://commons.wikimedia.org/w/api.php",
+      "source_type": "image repository",
+      "credibility_tier": 3,
+      "crawler": "wikimedia",
+      "format": "mediawiki_api",
+      "strategy": "images",
+      "enabled": true,
+      "notes": "Primary image provider. Licence metadata is read from the extmetadata block and verified before any file is retained."
+    }
+  ],
+  "manufacturer_sites": [
+    {
+      "id": "ga_asi",
+      "manufacturer": "General Atomics Aeronautical Systems",
+      "country": "United States",
+      "url": "https://www.ga-asi.com/remotely-piloted-aircraft",
+      "credibility_tier": 1
+    },
+    {
+      "id": "baykar",
+      "manufacturer": "Baykar",
+      "country": "Türkiye",
+      "url": "https://baykartech.com/en/uav/",
+      "credibility_tier": 1
+    },
+    {
+      "id": "iai",
+      "manufacturer": "Israel Aerospace Industries",
+      "country": "Israel",
+      "url": "https://www.iai.co.il/p/unmanned-aerial-systems",
+      "credibility_tier": 1
+    },
+    {
+      "id": "dji",
+      "manufacturer": "DJI",
+      "country": "China",
+      "url": "https://enterprise.dji.com/products",
+      "credibility_tier": 1
+    },
+    {
+      "id": "aerovironment",
+      "manufacturer": "AeroVironment",
+      "country": "United States",
+      "url": "https://www.avinc.com/uas",
+      "credibility_tier": 1
+    },
+    {
+      "id": "elbit",
+      "manufacturer": "Elbit Systems",
+      "country": "Israel",
+      "url": "https://elbitsystems.com/products/uas/",
+      "credibility_tier": 1
+    }
+  ],
+  "government_sources": [
+    {
+      "id": "dod_uas_programs",
+      "title": "US Department of Defense unmanned systems programme pages",
+      "publisher": "US Department of Defense",
+      "url": "https://www.defense.gov/",
+      "country": "United States",
+      "credibility_tier": 1
+    },
+    {
+      "id": "mod_uk_drones",
+      "title": "UK Ministry of Defence remotely piloted air systems",
+      "publisher": "UK Ministry of Defence",
+      "url": "https://www.gov.uk/government/collections/remotely-piloted-air-systems",
+      "country": "United Kingdom",
+      "credibility_tier": 1
+    },
+    {
+      "id": "drdo_india",
+      "title": "DRDO unmanned aerial systems",
+      "publisher": "Defence Research and Development Organisation",
+      "url": "https://www.drdo.gov.in/drdo/aeronautical-systems",
+      "country": "India",
+      "credibility_tier": 1
+    }
+  ]
+}

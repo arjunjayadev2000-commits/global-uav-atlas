@@ -1,0 +1,43 @@
+# Secrets
+.env
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Working database and caches (regenerate with `python run.py --all`)
+data/uav_atlas.sqlite
+data/uav_atlas.sqlite-wal
+data/uav_atlas.sqlite-shm
+data/cache/
+data/imports/extracted/
+
+# Downloaded imagery: large, licence-bearing binaries. The provenance for every
+# file lives in output/photo_attribution.csv, so images are reproducible.
+images/**/*.jpg
+images/**/*.jpeg
+images/**/*.png
+images/**/*.webp
+!images/_no_verified_image.png
+!images/.gitkeep
+
+# Logs are run artefacts; the audit trail for the committed outputs is exported.
+logs/*.log
+logs/*.jsonl
+!logs/.gitkeep
+
+# Large regenerable exports
+output/uav_database.sqlite
+output/seed_snapshot.sqlite
+
+.DS_Store
