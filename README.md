@@ -58,9 +58,13 @@ python run.py --sideload-images                             # from files you lic
 ```
 
 Both paths apply identical licence, resolution, duplicate and identity rules —
-there is no route into the atlas that bypasses them. Every affected platform
-already carries an `image_missing` item with its Commons media-search URL in
-`output/unresolved_records.csv`.
+there is no route into the atlas that bypasses them.
+
+The image pass stops after three consecutive provider refusals rather than
+repeating the same failure 593 times, so `output/unresolved_records.csv` holds
+3 per-platform `image_missing` items (each with its Commons media-search URL)
+plus one `pipeline_blocker` item covering the rest. The full gap is the
+`platforms_without_image: 593` figure in `output/coverage_statistics.json`.
 
 ## Quick start
 

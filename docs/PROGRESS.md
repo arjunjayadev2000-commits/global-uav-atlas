@@ -135,10 +135,12 @@ after a test caught the original weighting). Vision verification runs when
 `ANTHROPIC_API_KEY` is present and degrades to metadata verification when it is
 not, flagging low-confidence images rather than stopping.
 
-**Run:** 3 platforms attempted, 3 refused by egress policy, then the pass stopped
-itself and filed one `pipeline_blocker` item rather than repeating the failure
-593 times. Every affected platform carries an `image_missing` item with its
-Commons media-search URL.
+**Run:** 3 platforms attempted, 3 refused by egress policy, then the circuit
+breaker stopped the pass and filed one `pipeline_blocker` item rather than
+repeating the same failure 593 times. The three platforms reached before the
+breaker tripped carry individual `image_missing` items with their Commons
+media-search URLs; the remaining 590 are represented by the blocker item and by
+`platforms_without_image: 593` in the coverage statistics.
 
 `--sideload-images` provides the offline path; it applies the same licence,
 validation, duplicate and identity rules.
