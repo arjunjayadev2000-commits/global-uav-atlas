@@ -101,3 +101,14 @@
 2026-08-02T16:08:48+0000 INFO    uav.export_agent             exports written: {'uav_database.csv': 593, 'uav_source_records.csv': 1394, 'photo_attribution.csv': 0, 'unresolved_records.csv': 27, 'sources.csv': 18, 'coverage_statistics.json': True, 'coverage_report.md': True, 'uav_database.xlsx': True, 'uav_database.sqlite': True}
 2026-08-02T16:08:48+0000 INFO    uav.orchestrator             stage export         done in 0.6s
 2026-08-02T16:08:55+0000 INFO    uav                          run_id=0259b33e0ea8 database=/home/user/global-uav-atlas/data/uav_atlas.sqlite
+2026-08-02T17:09:13+0000 INFO    uav                          run_id=2f1c94185f73 database=/home/user/global-uav-atlas/data/uav_atlas.sqlite
+2026-08-02T17:09:36+0000 WARNING uav.image_discovery_agent    image provider unreachable for 3 consecutive platforms - stopping the image pass and recording the blocker
+2026-08-02T17:09:36+0000 WARNING uav.image_discovery_agent    sideload rejected reaper.png: no licence metadata published with the file
+2026-08-02T17:09:37+0000 WARNING uav.image_discovery_agent    no sideload manifest at /tmp/pytest-of-root/pytest-19/test_missing_manifest_is_not_f0/data/imports/images/manifest.csv
+2026-08-02T17:09:37+0000 WARNING uav.crawler.wikimedia        commons search failed for 'MQ-9A Reaper UAV': blocked
+2026-08-02T17:09:37+0000 WARNING uav.crawler.http             retry 1 for https://example.invalid/flaky after 2.0s (HTTP 503 for https://example.invalid/flaky)
+2026-08-02T17:09:38+0000 WARNING uav.crawler.http             retry 2 for https://example.invalid/flaky after 4.0s (HTTP 503 for https://example.invalid/flaky)
+2026-08-02T17:09:39+0000 WARNING uav.crawler.http             retry 3 for https://example.invalid/flaky after 8.0s (HTTP 503 for https://example.invalid/flaky)
+2026-08-02T17:09:41+0000 WARNING uav.discovery_agent          no seed package found in /tmp/pytest-of-root/pytest-19/test_missing_seed_is_not_fatal0/nothing
+2026-08-02T17:09:43+0000 ERROR   uav.orchestrator             stage promote failed after 0.0s: simulated stage failure
+2026-08-02T17:09:43+0000 WARNING uav.discovery_agent          strategy Failing source failed: host blocked by egress policy

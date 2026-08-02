@@ -46,6 +46,8 @@ def build_parser() -> argparse.ArgumentParser:
     stages.add_argument("--update", action="store_true", help="incremental refresh (weekly job)")
     stages.add_argument("--sideload-images", action="store_true",
                         help="ingest locally supplied images from data/imports/images/manifest.csv")
+    stages.add_argument("--prepare-image-manifest", action="store_true",
+                        help="write a fill-in sideload manifest for every platform lacking an image")
 
     control = parser.add_argument_group("control")
     control.add_argument("--resume", action="store_true", help="skip stages already completed")
@@ -60,6 +62,8 @@ def build_parser() -> argparse.ArgumentParser:
     info.add_argument("--status", action="store_true", help="print pipeline status and exit")
     info.add_argument("--stop-conditions", action="store_true", help="evaluate the stop conditions and exit")
     info.add_argument("--stats", action="store_true", help="print coverage statistics and exit")
+    info.add_argument("--check-network", action="store_true",
+                      help="probe every configured source host and print the allowlist needed")
     info.add_argument("-v", "--verbose", action="store_true", help="debug logging")
     info.add_argument("--json", action="store_true", help="emit machine-readable JSON results")
     return parser
@@ -101,6 +105,21 @@ def main(argv: list[str] | None = None) -> int:
 
     result: Any
 
+    if args.check_network:
+        from scripts.check_network import main as check_network
+
+        return check_network()
+    if args.prepare_image_manifest:
+        from scripts.prepare_image_manifest import main as prepare_manifest
+
+        argv_extra: list[str] = []
+        if args.country:
+            argv_extra += ["--country", args.country]
+        if args.manufacturer:
+            argv_extra += ["--manufacturer", args.manufacturer]
+        if args.limit:
+            argv_extra += ["--limit", str(args.limit)]
+        return prepare_manifest(argv_extra)
     if args.status:
         migrate()
         result = orchestrator.status()

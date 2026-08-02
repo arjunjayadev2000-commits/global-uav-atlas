@@ -53,9 +53,23 @@ exercised end to end by the test suite against stubbed providers. Two ways to
 fill it in:
 
 ```bash
-python run.py --images --verify --build --export --resume   # from a permitted network
-python run.py --sideload-images                             # from files you licensed yourself
+# 1. See exactly which hosts your network refuses, and the allowlist to request
+python run.py --check-network
+
+# 2a. Once commons.wikimedia.org and upload.wikimedia.org are permitted:
+python run.py --images --verify --build --export --resume
+
+# 2b. Or, without changing the network, source the files yourself:
+python run.py --prepare-image-manifest   # fill-in CSV, one row per platform,
+                                         # pre-filled with Commons search URLs
+python run.py --sideload-images
+python run.py --build --export
 ```
+
+`data/imports/images/manifest.csv` is already generated and committed: 593 rows,
+each carrying the platform name, country, manufacturer and a Commons media-search
+URL, with the licence columns left blank for you to fill from each file's own
+source page.
 
 Both paths apply identical licence, resolution, duplicate and identity rules —
 there is no route into the atlas that bypasses them.

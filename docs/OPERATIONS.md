@@ -112,18 +112,39 @@ egress policy, air-gapped build), the image stage records the blocker and stops
 after three consecutive refusals rather than retrying 600 times. Two ways
 forward:
 
+**First, find out exactly what is blocked:**
+
+```bash
+python run.py --check-network
+```
+
+It probes every host in the source registry plus the two Wikimedia hosts the
+image pipeline needs, and prints a copy-pasteable allowlist. Exit code 0 means
+everything is reachable. `commons.wikimedia.org` and `upload.wikimedia.org` are
+the two that unblock photographs; the rest extend platform coverage.
+
 **Re-run where the hosts are reachable:**
 
 ```bash
 python run.py --images --verify --build --export --resume
 ```
 
-**Or sideload files you have licensed yourself.** Put the images and a manifest
-in `data/imports/images/`:
+**Or sideload files you have licensed yourself.** Generate a fill-in manifest:
+
+```bash
+python run.py --prepare-image-manifest                    # every platform lacking an image
+python run.py --prepare-image-manifest --country India    # or narrow it down
+python run.py --prepare-image-manifest --limit 50
+```
+
+That writes `data/imports/images/manifest.csv` pre-populated with the platform
+name, country, manufacturer and a Commons media-search URL per row. Put the image
+files in the same directory and fill in the remaining columns from each file's
+own source page:
 
 ```csv
-platform_name,file,source_url,source_page_url,photographer,license_name,license_url
-MQ-9A Reaper,mq9.jpg,https://…/mq9.jpg,https://commons.wikimedia.org/wiki/File:…,Jane Photographer,CC BY-SA 4.0,https://creativecommons.org/licenses/by-sa/4.0/
+platform_name,country_of_origin,manufacturer,commons_search_url,file,source_url,source_page_url,photographer,license_name,license_url
+MQ-9A Reaper,United States,General Atomics,https://commons.wikimedia.org/…,mq9.jpg,https://…/mq9.jpg,https://commons.wikimedia.org/wiki/File:…,Jane Photographer,CC BY-SA 4.0,https://creativecommons.org/licenses/by/4.0/
 ```
 
 ```bash
