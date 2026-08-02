@@ -42,3 +42,15 @@ logs/*.jsonl.*
 output/seed_snapshot.sqlite
 
 .DS_Store
+
+# Drone detection: model weights and training datasets are large, licensed
+# binaries fetched/produced separately (see detection/README.md), not committed.
+detection/models/*.weights
+detection/models/*.cfg
+detection/models/*.names
+!detection/models/.gitkeep
+detection/dataset/images/
+detection/dataset/labels/
+detection/dataset/*.txt
+detection/dataset/*.data
+detection/dataset/backup/

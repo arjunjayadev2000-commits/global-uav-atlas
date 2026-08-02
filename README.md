@@ -171,6 +171,13 @@ status.
 individually, so a partially blocked environment still gets an honest answer
 rather than a single pass/fail.
 
+## Drone detection (separate tool)
+
+`detection/` is a standalone real-time YOLOv3/v4 drone detector (webcam or
+video feed, bounding boxes, confidence scores). It's independent of the atlas
+pipeline above — it doesn't read from or write to the UAV database. See
+[`detection/README.md`](detection/README.md) for the non-coder quick start.
+
 ## Documentation
 
 | Document | Contents |

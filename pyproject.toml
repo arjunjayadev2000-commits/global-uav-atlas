@@ -19,13 +19,15 @@ dependencies = [
 
 [project.optional-dependencies]
 vision = ["anthropic>=0.40"]
+detection = ["opencv-python>=4.8,<5", "numpy>=1.24"]
+detection-edge = ["onnx>=1.15", "onnxruntime>=1.17"]
 dev = ["pytest>=8.0", "pytest-cov>=5.0", "ruff>=0.6", "mypy>=1.10", "types-requests", "pypdf>=4.0"]
 
 [project.scripts]
 uav-atlas = "run:main"
 
 [tool.setuptools]
-packages = ["app", "agents", "crawlers"]
+packages = ["app", "agents", "crawlers", "detection"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -68,5 +70,5 @@ check_untyped_defs = true
 exclude = ["tests/", "build/"]
 
 [[tool.mypy.overrides]]
-module = ["reportlab.*", "openpyxl.*", "PIL.*", "imagehash.*", "anthropic.*", "pypdf.*"]
+module = ["reportlab.*", "openpyxl.*", "PIL.*", "imagehash.*", "anthropic.*", "pypdf.*", "cv2.*", "onnx.*", "onnxruntime.*"]
 ignore_missing_imports = true

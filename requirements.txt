@@ -8,3 +8,14 @@ openpyxl>=3.1
 # Optional: vision verification. The pipeline runs without it and degrades to
 # metadata-based identity verification.
 anthropic>=0.40 ; python_version >= "3.10"
+
+# Real-time YOLOv3/v4 drone detector (detection/). Independent of the atlas
+# pipeline above. Pinned below 5.0: OpenCV 5.x removed cv2.dnn.readNetFromDarknet
+# (and the other legacy readNetFrom* loaders), which this Darknet-format
+# YOLOv3/v4 loader depends on.
+opencv-python>=4.8,<5
+numpy>=1.24
+
+# Optional: edge-deployment quantization/pruning (detection/optimize.py).
+onnx>=1.15
+onnxruntime>=1.17
