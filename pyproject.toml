@@ -49,10 +49,13 @@ ignore = [
     "RUF012",  # mutable class attrs are fine for these config-style modules
     "SIM108",  # ternaries are not always clearer here
     "N806",    # ReportLab/PIL locals keep their upstream capitalisation
+    "RUF001",  # en dashes and typographic quotes in atlas copy are deliberate
+    "RUF002",
+    "RUF003",
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = ["S101", "N802"]
+"tests/*" = ["S101", "N802", "N801", "C408", "RUF059", "B007"]
 "app/logging.py" = ["A005"]
 
 [tool.mypy]

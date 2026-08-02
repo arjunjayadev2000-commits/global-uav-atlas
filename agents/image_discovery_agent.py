@@ -24,6 +24,7 @@ import sqlite3
 from pathlib import Path
 from typing import Any
 
+from agents import image_license_agent, image_validation_agent
 from app.config import get_settings
 from app.db import (
     add_unresolved,
@@ -35,18 +36,15 @@ from app.db import (
     query,
     query_one,
     record_verification,
-    update_fields,
 )
 from app.logging import AgentLogger, utc_now
 from app.models import (
     IDENTITY_MATCH,
     IDENTITY_PROBABLE,
     IDENTITY_UNCERTAIN,
-    IDENTITY_UNVERIFIED,
     ImageCandidate,
 )
 from app.utils import clean_text, name_similarity, safe_join, slugify, tokenize
-from agents import image_license_agent, image_validation_agent
 from crawlers import wikimedia
 from crawlers.http import FetchError, get_client
 
@@ -385,7 +383,7 @@ def run(
         stats["attempted"] += 1
         try:
             outcome = acquire_for_platform(platform, conn=conn)
-        except Exception as exc:  # noqa: BLE001 - one platform must not stop the run
+        except Exception as exc:
             stats["errors"] += 1
             LOG.error("image acquisition failed for %s: %s", platform["canonical_name"], exc)
             LOG.event(

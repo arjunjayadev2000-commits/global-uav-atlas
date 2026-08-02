@@ -21,7 +21,7 @@ import html
 import json
 from collections import defaultdict
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -203,7 +203,7 @@ def ensure_placeholder() -> Path:
         )
         draw.text((width / 2 - tw / 2, height / 2 - th / 2), text, fill=(88, 96, 112))
         image.save(path, "PNG", optimize=True)
-    except Exception as exc:  # noqa: BLE001 - the atlas must still build
+    except Exception as exc:
         LOG.warning("could not generate placeholder image: %s", exc)
     return path
 
@@ -260,7 +260,7 @@ def build_html(data: AtlasData, destination: Path | None = None) -> Path:
             )
 
     stats = data.stats
-    generated = datetime.now(timezone.utc).strftime("%d %B %Y %H:%M UTC")
+    generated = datetime.now(UTC).strftime("%d %B %Y %H:%M UTC")
     document = _HTML_TEMPLATE.format(
         title=html.escape(TITLE),
         subtitle=html.escape(SUBTITLE),
@@ -473,13 +473,15 @@ def build_pdf(data: AtlasData, destination: Path | None = None) -> Path | None:
         from reportlab.platypus import (
             BaseDocTemplate,
             Frame,
-            Image as RLImage,
             PageBreak,
             PageTemplate,
             Paragraph,
             Spacer,
             Table,
             TableStyle,
+        )
+        from reportlab.platypus import (
+            Image as RLImage,
         )
         from reportlab.platypus.tableofcontents import TableOfContents
     except ImportError:
@@ -611,7 +613,7 @@ def build_pdf(data: AtlasData, destination: Path | None = None) -> Path | None:
             image_flowable.drawHeight = min(width * aspect, 30 * mm)
             if image_flowable.drawHeight == 30 * mm:
                 image_flowable.drawWidth = min(width, (30 * mm) / aspect)
-        except Exception as exc:  # noqa: BLE001 - never emit a broken image
+        except Exception as exc:
             LOG.warning("image unusable for %s (%s): %s", entry.name, path, exc)
             image_flowable = Paragraph("no verified image", style_meta)
 
@@ -655,7 +657,7 @@ def build_pdf(data: AtlasData, destination: Path | None = None) -> Path | None:
     story.append(Spacer(1, 10 * mm))
     story.append(
         Paragraph(
-            f"Generated {datetime.now(timezone.utc).strftime('%d %B %Y %H:%M UTC')}", style_sub
+            f"Generated {datetime.now(UTC).strftime('%d %B %Y %H:%M UTC')}", style_sub
         )
     )
     story.append(Spacer(1, 14 * mm))

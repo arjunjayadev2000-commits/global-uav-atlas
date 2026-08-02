@@ -1,8 +1,8 @@
 # Unresolved items
 
-Generated: 2026-08-02T15:47:03+00:00
+Generated: 2026-08-02T16:05:20+00:00
 
-Open items: **29**. The machine-readable copy is `output/unresolved_records.csv`; this file is the narrative version.
+Open items: **27**. The machine-readable copy is `output/unresolved_records.csv`; this file is the narrative version.
 
 ## source_unreachable (12)
 
@@ -13,37 +13,35 @@ Suggested action(s):
 
 <details><summary>Affected subjects (first 60)</summary>
 
-- **AeroVironment official product pages** — host www.avinc.com refused by network egress policy: HTTPSConnectionPool(host='www.avinc.com', port=443): Max retries exceeded with url: /uas (Caused by ProxyEr
-- **Baykar official product pages** — host baykartech.com refused by network egress policy: HTTPSConnectionPool(host='baykartech.com', port=443): Max retries exceeded with url: /en/uav/ (Caused by P
-- **DJI official product pages** — host enterprise.dji.com refused by network egress policy: HTTPSConnectionPool(host='enterprise.dji.com', port=443): Max retries exceeded with url: /products (Ca
-- **DRDO unmanned aerial systems** — host www.drdo.gov.in refused by network egress policy: HTTPSConnectionPool(host='www.drdo.gov.in', port=443): Max retries exceeded with url: /drdo/aeronautical-
-- **Drones for EU operations (class-marked UAS)** — host www.easa.europa.eu refused by network egress policy: HTTPSConnectionPool(host='www.easa.europa.eu', port=443): Max retries exceeded with url: /en/domains/c
-- **Elbit Systems official product pages** — host elbitsystems.com refused by network egress policy: HTTPSConnectionPool(host='elbitsystems.com', port=443): Max retries exceeded with url: /products/uas/ (C
-- **FAA UAS Declaration of Compliance list** — host uasdoc.faa.gov refused by network egress policy: HTTPSConnectionPool(host='uasdoc.faa.gov', port=443): Max retries exceeded with url: /api/v1/products?page
-- **General Atomics Aeronautical Systems official product pages** — host www.ga-asi.com refused by network egress policy: HTTPSConnectionPool(host='www.ga-asi.com', port=443): Max retries exceeded with url: /remotely-piloted-air
-- **Israel Aerospace Industries official product pages** — host www.iai.co.il refused by network egress policy: HTTPSConnectionPool(host='www.iai.co.il', port=443): Max retries exceeded with url: /p/unmanned-aerial-syst
-- **UK Ministry of Defence remotely piloted air systems** — host www.gov.uk refused by network egress policy: HTTPSConnectionPool(host='www.gov.uk', port=443): Max retries exceeded with url: /government/collections/remot
-- **US Department of Defense unmanned systems programme pages** — host www.defense.gov refused by network egress policy: HTTPSConnectionPool(host='www.defense.gov', port=443): Max retries exceeded with url: / (Caused by ProxyE
-- **Wikipedia list-of-UAV index pages** — host en.wikipedia.org refused by network egress policy: HTTPSConnectionPool(host='en.wikipedia.org', port=443): Max retries exceeded with url: /w/api.php?format
+- **AeroVironment official product pages** — host www.avinc.com refused by network egress policy (proxy refused CONNECT (403/407))
+- **Baykar official product pages** — host baykartech.com refused by network egress policy (proxy refused CONNECT (403/407))
+- **DJI official product pages** — host enterprise.dji.com refused by network egress policy (proxy refused CONNECT (403/407))
+- **DRDO unmanned aerial systems** — host www.drdo.gov.in refused by network egress policy (proxy refused CONNECT (403/407))
+- **Drones for EU operations (class-marked UAS)** — host www.easa.europa.eu refused by network egress policy (proxy refused CONNECT (403/407))
+- **Elbit Systems official product pages** — host elbitsystems.com refused by network egress policy (proxy refused CONNECT (403/407))
+- **FAA UAS Declaration of Compliance list** — host uasdoc.faa.gov refused by network egress policy (proxy refused CONNECT (403/407))
+- **General Atomics Aeronautical Systems official product pages** — host www.ga-asi.com refused by network egress policy (proxy refused CONNECT (403/407))
+- **Israel Aerospace Industries official product pages** — host www.iai.co.il refused by network egress policy (proxy refused CONNECT (403/407))
+- **UK Ministry of Defence remotely piloted air systems** — host www.gov.uk refused by network egress policy (proxy refused CONNECT (403/407))
+- **US Department of Defense unmanned systems programme pages** — host www.defense.gov refused by network egress policy (proxy refused CONNECT (403/407))
+- **Wikipedia list-of-UAV index pages** — host en.wikipedia.org refused by network egress policy (proxy refused CONNECT (403/407))
 
 </details>
 
-## possible_duplicate (9)
+## possible_duplicate (7)
 
 Suggested action(s):
 - Confirm with a manufacturer or programme-office source whether these are one platform or officially separate variants.
 
 <details><summary>Affected subjects (first 60)</summary>
 
-- **DJI Matrice 200 <-> DJI Matrice 200 V2** — one name adds a model designation ['v2'] - possibly the same aircraft (0.887, tokens 0.75)
-- **DJI Matrice 210 <-> DJI Matrice 210 V2** — one name adds a model designation ['v2'] - possibly the same aircraft (0.887, tokens 0.75)
-- **DJI Matrice 210 RTK <-> DJI Matrice 210 RTK V2** — one name adds a model designation ['v2'] - possibly the same aircraft (0.920, tokens 0.80)
-- **DJI Phantom 4 Pro <-> DJI Phantom 4 Pro V2.0** — one name adds a model designation ['0', 'v2'] - possibly the same aircraft (0.830, tokens 0.67)
+- **Evo 2 Dual 640T <-> Evo II** — one name adds a model designation ['640t', 'dual'] - possibly the same aircraft (0.550, tokens 0.50)
+- **Evo 2 Dual <-> Evo II** — one name adds a model designation ['dual'] - possibly the same aircraft (0.717, tokens 0.67)
 - **Matrice 200 <-> Matrice 200 V2** — one name adds a model designation ['v2'] - possibly the same aircraft (0.834, tokens 0.67)
 - **Matrice 210 <-> Matrice 210 V2** — one name adds a model designation ['v2'] - possibly the same aircraft (0.834, tokens 0.67)
-- **Matrice 210 RTK <-> DJI Matrice 210 RTK V2** — one name adds a model designation ['v2'] - possibly the same aircraft (0.766, tokens 0.60)
 - **Matrice 210 RTK <-> Matrice 210 RTK V2** — one name adds a model designation ['v2'] - possibly the same aircraft (0.887, tokens 0.75)
 - **Phantom 4 Pro <-> Phantom 4 Pro V2.0** — one name adds a model designation ['0', 'v2'] - possibly the same aircraft (0.781, tokens 0.60)
+- **RQ-20 Puma (AE) <-> Puma AE** — one name adds a model designation ['20', 'rq'] - possibly the same aircraft (0.610, tokens 0.50)
 
 </details>
 

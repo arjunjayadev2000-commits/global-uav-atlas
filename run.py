@@ -96,8 +96,8 @@ def main(argv: list[str] | None = None) -> int:
     settings = get_settings()
     logger.info("run_id=%s database=%s", run_id(), settings.database_path)
 
-    from app.db import migrate
     from agents import export_agent, image_discovery_agent, orchestrator, update_agent
+    from app.db import migrate
 
     result: Any
 

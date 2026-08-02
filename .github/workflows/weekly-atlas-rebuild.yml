@@ -1,0 +1,86 @@
+name: weekly-atlas-rebuild
+
+on:
+  schedule:
+    # Sundays 05:17 UTC - two hours after weekly-discovery so it rebuilds from
+    # the refreshed database.
+    - cron: "17 5 * * 0"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - run: pip install -r requirements.txt
+
+      - name: Restore database
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            data/uav_atlas.sqlite
+            data/cache
+          key: atlas-state-${{ github.ref_name }}-
+          restore-keys: |
+            atlas-state-${{ github.ref_name }}-
+
+      - name: Rebuild atlas and exports
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          python run.py --build --export --resume || python run.py --all --resume --skip-images
+
+      - name: Evaluate stop conditions
+        run: |
+          python run.py --stop-conditions --json > stop-conditions.json
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          result = json.load(open("stop-conditions.json"))
+          print("## Stop conditions\n")
+          print("| Condition | Met |")
+          print("| --- | --- |")
+          for name, met in result["conditions"].items():
+              print(f"| {name} | {'yes' if met else 'no'} |")
+          print(f"\nAll met: **{result['all_met']}**\n")
+          detail = result["detail"]
+          print(f"- Platforms: {detail['platforms']}")
+          print(f"- Images fully documented: {detail['images_fully_documented']} "
+                f"of {detail['images_selected']}")
+          print(f"- Open unresolved: {detail['open_unresolved']}")
+          PY
+
+      - name: Upload atlas artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: global-uav-visual-atlas-${{ github.run_id }}
+          path: |
+            output/Global_UAV_Visual_Atlas_2026.pdf
+            output/Global_UAV_Visual_Atlas_2026.html
+            output/uav_database.csv
+            output/uav_database.xlsx
+            output/uav_database.sqlite
+            output/photo_attribution.csv
+            output/unresolved_records.csv
+            output/coverage_statistics.json
+            output/coverage_report.md
+          retention-days: 90
+
+      - name: Save database
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            data/uav_atlas.sqlite
+            data/cache
+          key: atlas-state-${{ github.ref_name }}-${{ github.run_id }}

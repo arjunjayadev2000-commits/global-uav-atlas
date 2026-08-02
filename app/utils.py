@@ -22,6 +22,8 @@ T = TypeVar("T")
 # ---------------------------------------------------------------------------
 
 #: Words that carry no discriminating power when comparing platform names.
+#: "air" is deliberately absent: it is product-bearing in "DJI Air 3" and
+#: "Mavic Air 2", and dropping it collapses unrelated models onto each other.
 _NOISE_TOKENS = {
     "uav",
     "uas",
@@ -34,7 +36,6 @@ _NOISE_TOKENS = {
     "vehicle",
     "unmanned",
     "aerial",
-    "air",
     "the",
     "rpas",
     "rpa",
@@ -425,11 +426,9 @@ def normalize_country(value: Any) -> tuple[str, list[str]]:
 
     parts = [p for p in _MULTI_SPLIT_RE.split(raw) if p.strip()]
     resolved: list[str] = []
-    unresolved = False
     for part in parts:
         canon = _resolve_single_country(part)
         if canon in (UNKNOWN_COUNTRY, None):
-            unresolved = True
             continue
         if canon == MULTINATIONAL:
             return MULTINATIONAL, []
@@ -440,7 +439,7 @@ def normalize_country(value: Any) -> tuple[str, list[str]]:
         return resolved[0], []
     if len(resolved) > 1:
         return MULTINATIONAL, resolved
-    return UNKNOWN_COUNTRY, [] if unresolved else []
+    return UNKNOWN_COUNTRY, []
 
 
 def _resolve_single_country(value: str) -> str:

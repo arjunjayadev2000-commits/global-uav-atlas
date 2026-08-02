@@ -1,6 +1,6 @@
 # Global UAV Visual Atlas 2026 — Coverage Report
 
-Generated: **2026-08-02T15:47:03+00:00**
+Generated: **2026-08-02T16:05:20+00:00**
 
 > Largest defensible consolidated registry generated from the configured sources. This is not a claim that every drone ever built is included.
 
@@ -8,26 +8,26 @@ Generated: **2026-08-02T15:47:03+00:00**
 
 | Metric | Value |
 | --- | ---: |
-| Canonical platforms | 592 |
+| Canonical platforms | 593 |
 | Raw source records | 1394 |
-| Merged duplicates | 155 |
+| Merged duplicates | 156 |
 | Manufacturers / design organisations | 173 |
 | Countries of origin represented | 45 |
 | Platform families | 7 |
 | Recorded variants | 14 |
-| Aliases | 559 |
+| Aliases | 560 |
 | Sources | 18 |
-| Platform↔source links | 1555 |
+| Platform↔source links | 1557 |
 | Atlas images | 0 |
 | Image coverage | 0.0% |
-| Open unresolved items | 29 |
-| Duplicate review rate | 1.52% |
+| Open unresolved items | 27 |
+| Duplicate review rate | 1.18% |
 
 ## By domain
 
 | Domain | Platforms |
 | --- | ---: |
-| Civilian / Commercial | 309 |
+| Civilian / Commercial | 310 |
 | Military | 254 |
 | Dual-use | 29 |
 
@@ -36,14 +36,14 @@ Generated: **2026-08-02T15:47:03+00:00**
 | Status | Platforms |
 | --- | ---: |
 | Needs Verification | 116 |
-| Probable | 422 |
-| Verified | 54 |
+| Probable | 425 |
+| Verified | 52 |
 
 ## Country coverage
 
 | Country | ISO3 | Platforms |
 | --- | --- | ---: |
-| China | CHN | 233 |
+| China | CHN | 234 |
 | United States | USA | 64 |
 | France | FRA | 64 |
 | Israel | ISR | 22 |
@@ -97,6 +97,9 @@ Generated: **2026-08-02T15:47:03+00:00**
 | ---: | ---: | ---: | ---: | ---: |
 | 0 | 1 | 1238 | 1238 | 0 |
 | 1 | 13 | 159 | 156 | 12 |
+| 2 | 13 | 159 | 0 | 12 |
+| 3 | 13 | 159 | 0 | 12 |
+| 4 | 13 | 159 | 0 | 12 |
 
 ## Image provenance
 
@@ -106,14 +109,14 @@ Generated: **2026-08-02T15:47:03+00:00**
 | Selected for the atlas | 0 |
 | Licence verified | 0 |
 | Identity match or probable match | 0 |
-| Platforms without an image | 592 |
+| Platforms without an image | 593 |
 
 ## Open unresolved items
 
 | Type | Count |
 | --- | ---: |
 | source_unreachable | 12 |
-| possible_duplicate | 9 |
+| possible_duplicate | 7 |
 | country_of_origin | 4 |
 | image_missing | 3 |
 | pipeline_blocker | 1 |

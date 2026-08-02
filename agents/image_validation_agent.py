@@ -90,7 +90,7 @@ def validate_bytes(data: bytes, *, declared_mime: str = "") -> ValidationVerdict
         probe.verify()  # structural check, invalidates the object
         image = Image.open(io.BytesIO(data))
         image.load()  # full decode: catches truncated files
-    except Exception as exc:  # noqa: BLE001 - any decoder failure is a rejection
+    except Exception as exc:
         return ValidationVerdict(False, f"file does not decode as an image: {exc}")
 
     fmt = (image.format or "").lower()
@@ -192,7 +192,7 @@ def build_derivatives(
                 webp_path = destination_dir / f"{stem}.atlas.webp"
                 atlas.save(webp_path, "WEBP", quality=82, method=4)
                 outputs["webp_path"] = str(webp_path)
-            except Exception as exc:  # noqa: BLE001 - WebP support is optional
+            except Exception as exc:
                 LOG.debug("webp derivative skipped for %s: %s", stem, exc)
 
     return outputs

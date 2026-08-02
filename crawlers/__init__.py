@@ -8,10 +8,10 @@ uniformly.  All network traffic goes through :mod:`crawlers.http`.
 from __future__ import annotations
 
 __all__ = [
-    "http",
-    "wikimedia",
-    "manufacturer",
     "government",
-    "regulatory",
+    "http",
+    "manufacturer",
     "public_sources",
+    "regulatory",
+    "wikimedia",
 ]

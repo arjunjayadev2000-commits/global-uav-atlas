@@ -15,8 +15,6 @@ from __future__ import annotations
 
 from typing import Any
 
-from app.db import connect, get_state, query, set_state
-from app.logging import AgentLogger, run_id, utc_now
 from agents import (
     country_classifier_agent,
     deduplication_agent,
@@ -26,6 +24,8 @@ from agents import (
     metadata_agent,
     source_verification_agent,
 )
+from app.db import connect, get_state, query, set_state
+from app.logging import AgentLogger, run_id, utc_now
 
 LOG = AgentLogger("update_agent")
 AGENT = "update_agent"

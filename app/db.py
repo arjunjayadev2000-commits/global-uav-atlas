@@ -175,7 +175,7 @@ def insert_ignore(table: str, values: Mapping[str, Any], conn: sqlite3.Connectio
     placeholders = ",".join("?" for _ in cols)
     sql = f'INSERT OR IGNORE INTO "{table}" ({",".join(cols)}) VALUES ({placeholders})'
     cur = con.execute(sql, tuple(values[c] for c in cols))
-    return int(cur.lastrowid) if cur.rowcount else None
+    return int(cur.lastrowid or 0) if cur.rowcount else None
 
 
 def update_fields(
@@ -198,7 +198,7 @@ def update_fields(
     changed = {k: v for k, v in values.items() if current[k] != v}
     if not changed:
         return 0
-    if "updated_at" in current.keys():
+    if "updated_at" in set(current.keys()):  # sqlite3.Row has no __contains__
         changed.setdefault("updated_at", utc_now())
     assignments = ",".join(f"{k}=?" for k in changed)
     con.execute(
@@ -280,7 +280,7 @@ def get_or_create_country(
     iso3: str | None = None,
     conn: sqlite3.Connection | None = None,
 ) -> int:
-    from app.utils import UNKNOWN_COUNTRY, country_iso3, MULTINATIONAL
+    from app.utils import MULTINATIONAL, UNKNOWN_COUNTRY, country_iso3
 
     con = conn or connect()
     clean = name or UNKNOWN_COUNTRY

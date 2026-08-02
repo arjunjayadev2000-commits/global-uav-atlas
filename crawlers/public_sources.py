@@ -97,7 +97,7 @@ def crawl_dataset(
         name = extract.join_name(manufacturer, model)
         if not name or len(name) < 2:
             continue
-        payload = {k: v for k, v in mapped.items() if v}
+        payload: dict[str, Any] = {k: v for k, v in mapped.items() if v}
         payload["_raw"] = {k: v for k, v in record.items() if v not in ("", None)}
         discoveries.append(
             RawDiscovery(

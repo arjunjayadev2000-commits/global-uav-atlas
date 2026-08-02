@@ -13,9 +13,6 @@ import traceback
 from collections.abc import Callable
 from typing import Any
 
-from app.config import get_settings
-from app.db import add_unresolved, connect, get_state, is_done, mark_done, migrate, query, set_state
-from app.logging import AgentLogger, run_id, utc_now
 from agents import (
     atlas_builder_agent,
     country_classifier_agent,
@@ -28,6 +25,9 @@ from agents import (
     source_verification_agent,
     vision_verification_agent,
 )
+from app.config import get_settings
+from app.db import add_unresolved, connect, get_state, is_done, mark_done, migrate, query, set_state
+from app.logging import AgentLogger, run_id, utc_now
 
 LOG = AgentLogger("orchestrator")
 AGENT = "orchestrator"
@@ -64,7 +64,7 @@ def _run_stage(
     LOG.event("stage_start", stage=name)
     try:
         outcome = func()
-    except Exception as exc:  # noqa: BLE001 - stage isolation is a requirement
+    except Exception as exc:
         elapsed = time.monotonic() - started
         LOG.error("stage %s failed after %.1fs: %s", name, elapsed, exc)
         LOG.event(
@@ -221,7 +221,10 @@ def check_stop_conditions() -> dict[str, Any]:
         "database_and_outputs_generated": not missing_outputs,
         "discovery_converged": trailing_empty >= settings.discovery_stop_after_empty_passes,
         "unresolved_documented": (settings.paths.docs / "UNRESOLVED.md").is_file(),
+        # Vacuously true with zero images, so it is paired with the condition
+        # below rather than standing in for "the atlas has photographs".
         "every_atlas_image_fully_documented": images_selected == fully_documented,
+        "atlas_contains_real_images": images_selected > 0,
         "duplicates_below_threshold": duplicate_rate <= 0.02,
         "pdf_present": (out / "Global_UAV_Visual_Atlas_2026.pdf").is_file(),
         "html_present": (out / "Global_UAV_Visual_Atlas_2026.html").is_file(),

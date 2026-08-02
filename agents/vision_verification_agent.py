@@ -213,7 +213,7 @@ def run(*, limit: int | None = None) -> dict[str, Any]:
         stats["checked"] += 1
         try:
             verdict = verify_image(row, client=api)
-        except Exception as exc:  # noqa: BLE001 - never stop the pipeline
+        except Exception as exc:
             stats["errors"] += 1
             LOG.warning("vision verification failed for %s: %s", row["canonical_name"], exc)
             continue

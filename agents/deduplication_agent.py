@@ -178,13 +178,12 @@ def compare(a: Candidate, b: Candidate) -> PairVerdict:
         )
 
     # Veto 4: known but different manufacturers.
-    if a.manufacturer and b.manufacturer:
-        if name_similarity(a.manufacturer, b.manufacturer) < 0.6:
-            return PairVerdict(
-                "distinct",
-                0.0,
-                f"different manufacturers: {a.manufacturer} vs {b.manufacturer}",
-            )
+    if a.manufacturer and b.manufacturer and name_similarity(a.manufacturer, b.manufacturer) < 0.6:
+        return PairVerdict(
+            "distinct",
+            0.0,
+            f"different manufacturers: {a.manufacturer} vs {b.manufacturer}",
+        )
 
     score = name_similarity(a.name, b.name)
     token_overlap = jaccard(a.tokens, b.tokens)
@@ -243,9 +242,16 @@ def compare(a: Candidate, b: Candidate) -> PairVerdict:
         # without its designation ("Global Hawk" / "RQ-4 Global Hawk").
         # Containment is the right signal here, not blended similarity: "Global
         # Hawk" is wholly contained in "RQ-4 Global Hawk" even though the extra
-        # designation drags the character score down.
-        shorter = min(len(set_a), len(set_b))
-        if bool(set(a.codes)) != bool(set(b.codes)) and shorter >= 2:
+        # designation drags the character score down. The contained name must
+        # still make up at least half of the longer one, otherwise a two-token
+        # stub matches half the catalogue.
+        shorter, longer = min(len(set_a), len(set_b)), max(len(set_a), len(set_b))
+        containment = shorter / longer if longer else 0.0
+        if (
+            bool(set(a.codes)) != bool(set(b.codes))
+            and shorter >= 2
+            and containment >= 0.5
+        ):
             return PairVerdict(
                 "review",
                 score,
@@ -397,9 +403,32 @@ def merge_platforms(
 
 
 def run(*, dry_run: bool = False, limit: int | None = None) -> dict[str, Any]:
-    """Compare every blocked pair once and act on the verdict."""
+    """Merge first, then queue reviews against the records that survived.
+
+    The two sweeps matter. Comparing and queueing in one pass produces review
+    items that reference records merged away moments later, so the same
+    ambiguity is filed several times under different names ("Matrice 200 /
+    Matrice 200 V2" *and* "DJI Matrice 200 / DJI Matrice 200 V2"). Reviewing
+    only survivors gives a human one item per real question.
+    """
     conn = connect()
     load_manufacturer_heads(conn)
+    stats = _sweep(conn, phase="merge", dry_run=dry_run, limit=limit)
+
+    if not dry_run:
+        review_stats = _sweep(conn, phase="review", dry_run=dry_run, limit=limit)
+        stats["review"] = review_stats["review"]
+        stats["candidates_after_merge"] = review_stats["candidates"]
+
+    LOG.info("deduplication: %s", stats)
+    LOG.event("deduplication_complete", dry_run=dry_run, **stats)
+    return stats
+
+
+def _sweep(
+    conn: Any, *, phase: str, dry_run: bool, limit: int | None
+) -> dict[str, Any]:
+    """One comparison sweep. ``phase`` selects which verdicts are acted on."""
     candidates = _load_candidates(conn)
     if limit:
         candidates = candidates[:limit]
@@ -407,7 +436,7 @@ def run(*, dry_run: bool = False, limit: int | None = None) -> dict[str, Any]:
 
     compared: set[tuple[int, int]] = set()
     merged_ids: set[int] = set()
-    stats = {
+    stats: dict[str, Any] = {
         "candidates": len(candidates),
         "pairs_compared": 0,
         "merged": 0,
@@ -444,6 +473,8 @@ def run(*, dry_run: bool = False, limit: int | None = None) -> dict[str, Any]:
                     continue
 
                 if verdict.decision == "merge":
+                    if phase != "merge":
+                        continue
                     stats["merged"] += 1
                     if not dry_run:
                         merge_platforms(
@@ -451,6 +482,8 @@ def run(*, dry_run: bool = False, limit: int | None = None) -> dict[str, Any]:
                         )
                         merged_ids.add(drop.id)
                 else:
+                    if phase != "review":
+                        continue
                     stats["review"] += 1
                     if not dry_run:
                         insert(
@@ -482,8 +515,6 @@ def run(*, dry_run: bool = False, limit: int | None = None) -> dict[str, Any]:
                             conn=conn,
                         )
 
-    LOG.info("deduplication: %s", stats)
-    LOG.event("deduplication_complete", dry_run=dry_run, **stats)
     return stats
 
 

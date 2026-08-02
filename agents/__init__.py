@@ -8,17 +8,17 @@ run can always be resumed with ``python run.py --resume``.
 from __future__ import annotations
 
 __all__ = [
-    "discovery_agent",
+    "atlas_builder_agent",
+    "country_classifier_agent",
     "deduplication_agent",
-    "metadata_agent",
+    "discovery_agent",
+    "export_agent",
     "image_discovery_agent",
     "image_license_agent",
     "image_validation_agent",
-    "vision_verification_agent",
-    "country_classifier_agent",
-    "source_verification_agent",
-    "atlas_builder_agent",
-    "export_agent",
-    "update_agent",
+    "metadata_agent",
     "orchestrator",
+    "source_verification_agent",
+    "update_agent",
+    "vision_verification_agent",
 ]

@@ -19,7 +19,7 @@ import sys
 import threading
 import time
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
@@ -31,7 +31,7 @@ _RUN_ID = os.environ.get("UAV_RUN_ID") or uuid.uuid4().hex[:12]
 
 
 def utc_now() -> str:
-    return datetime.now(timezone.utc).isoformat(timespec="seconds")
+    return datetime.now(UTC).isoformat(timespec="seconds")
 
 
 def run_id() -> str:
@@ -57,7 +57,9 @@ def configure_logging(verbose: bool = False) -> logging.Logger:
         datefmt="%Y-%m-%dT%H:%M:%S%z",
     )
 
-    stream = logging.StreamHandler(sys.stdout)
+    # Diagnostics go to stderr so that stdout stays a clean result channel
+    # (`run.py --json` must emit parseable JSON and nothing else).
+    stream = logging.StreamHandler(sys.stderr)
     stream.setFormatter(fmt)
     logger.addHandler(stream)
 
@@ -78,15 +80,16 @@ def get_logger(name: str) -> logging.Logger:
     return logging.getLogger(f"uav.{name}")
 
 
-def audit(
-    event: str,
-    *,
-    agent: str = "system",
-    status: str = "ok",
-    **payload: Any,
-) -> dict[str, Any]:
-    """Append one event to ``logs/audit.jsonl`` and return the written record."""
+def audit(event: str, **payload: Any) -> dict[str, Any]:
+    """Append one event to ``logs/audit.jsonl`` and return the written record.
+
+    ``agent`` and ``status`` are read out of ``payload`` so that callers can
+    splat an arbitrary statistics dict in without colliding with keyword-only
+    parameters.
+    """
     settings = get_settings()
+    agent = str(payload.pop("agent", "system"))
+    status = str(payload.pop("status", "ok"))
     record: dict[str, Any] = {
         "ts": utc_now(),
         "monotonic": round(time.monotonic(), 4),
@@ -102,9 +105,8 @@ def audit(
 
     settings.paths.logs.mkdir(parents=True, exist_ok=True)
     line = json.dumps(record, ensure_ascii=False, default=str)
-    with _LOCK:
-        with (settings.paths.logs / "audit.jsonl").open("a", encoding="utf-8") as fh:
-            fh.write(line + "\n")
+    with _LOCK, (settings.paths.logs / "audit.jsonl").open("a", encoding="utf-8") as fh:
+        fh.write(line + "\n")
     return record
 
 
@@ -127,5 +129,7 @@ class AgentLogger:
     def error(self, message: str, *args: Any) -> None:
         self.log.error(message, *args)
 
-    def event(self, event: str, *, status: str = "ok", **payload: Any) -> None:
-        audit(event, agent=self.agent, status=status, **payload)
+    def event(self, event: str, **payload: Any) -> None:
+        payload.setdefault("status", "ok")
+        payload["agent"] = self.agent
+        audit(event, **payload)

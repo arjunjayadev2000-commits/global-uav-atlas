@@ -1,28 +1,28 @@
 {
-  "generated_at": "2026-08-02T15:47:03+00:00",
-  "canonical_platforms": 592,
-  "merged_duplicates": 155,
+  "generated_at": "2026-08-02T16:05:20+00:00",
+  "canonical_platforms": 593,
+  "merged_duplicates": 156,
   "raw_source_records": 1394,
   "manufacturers": 173,
   "countries_represented": 45,
   "countries_including_synthetic_buckets": 47,
   "platform_families": 7,
   "platform_variants": 14,
-  "aliases": 559,
+  "aliases": 560,
   "sources": 18,
-  "platform_source_links": 1555,
+  "platform_source_links": 1557,
   "by_domain": {
-    "Civilian / Commercial": 309,
+    "Civilian / Commercial": 310,
     "Military": 254,
     "Dual-use": 29
   },
   "by_verification_status": {
     "Needs Verification": 116,
-    "Probable": 422,
-    "Verified": 54
+    "Probable": 425,
+    "Verified": 52
   },
   "by_country": {
-    "China": 233,
+    "China": 234,
     "United States": 64,
     "France": 64,
     "Israel": 22,
@@ -71,7 +71,7 @@
     "Austria": 1
   },
   "by_category": {
-    "Commercial multirotor/fixed-wing": 134,
+    "Commercial multirotor/fixed-wing": 135,
     "Multirotor": 131,
     "Small / tactical; Fixed-wing": 74,
     "Medium tactical; Fixed-wing": 33,
@@ -118,7 +118,7 @@
     "licence_verified": 0,
     "identity_match_or_probable": 0,
     "platforms_with_image": 0,
-    "platforms_without_image": 592,
+    "platforms_without_image": 593,
     "coverage_pct": 0.0
   },
   "discovery_passes": [
@@ -135,18 +135,39 @@
       "seen": 159,
       "new_candidates": 156,
       "failed": 12
+    },
+    {
+      "pass_number": 2,
+      "strategies": 13,
+      "seen": 159,
+      "new_candidates": 0,
+      "failed": 12
+    },
+    {
+      "pass_number": 3,
+      "strategies": 13,
+      "seen": 159,
+      "new_candidates": 0,
+      "failed": 12
+    },
+    {
+      "pass_number": 4,
+      "strategies": 13,
+      "seen": 159,
+      "new_candidates": 0,
+      "failed": 12
     }
   ],
-  "unresolved_open": 29,
+  "unresolved_open": 27,
   "unresolved_by_type": {
     "source_unreachable": 12,
-    "possible_duplicate": 9,
+    "possible_duplicate": 7,
     "country_of_origin": 4,
     "image_missing": 3,
     "pipeline_blocker": 1
   },
-  "possible_duplicates_open": 9,
+  "possible_duplicates_open": 7,
   "verification_events": 0,
-  "update_history_entries": 468,
-  "duplicate_review_rate_pct": 1.52
+  "update_history_entries": 471,
+  "duplicate_review_rate_pct": 1.18
 }

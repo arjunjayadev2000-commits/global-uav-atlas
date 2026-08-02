@@ -594,7 +594,7 @@ def run() -> dict[str, Any]:
     # Keep the human-facing unresolved doc in sync with the database.
     _write_unresolved_doc(data["unresolved"], stats)
 
-    LOG.info("exports written: %s", {k: v for k, v in written.items()})
+    LOG.info("exports written: %s", dict(written))
     LOG.event("exports_complete", **{k: str(v) for k, v in written.items()})
     return {"written": written, "stats": stats}
 

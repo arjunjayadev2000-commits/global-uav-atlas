@@ -22,6 +22,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from typing import Any
 
+from agents import country_classifier_agent as cca
 from app.db import (
     add_alias,
     connect,
@@ -53,7 +54,6 @@ from app.utils import (
     ratio,
     stable_id,
 )
-from agents import country_classifier_agent as cca
 
 LOG = AgentLogger("metadata_agent")
 AGENT = "metadata_agent"
@@ -331,7 +331,7 @@ def promote(*, limit: int | None = None) -> dict[str, Any]:
     for evidence in groups.values():
         try:
             created, updated, variants, aliases = _promote_group(conn, evidence)
-        except Exception as exc:  # noqa: BLE001 - one bad group must not stop the run
+        except Exception as exc:
             LOG.error("promotion failed for %r: %s", evidence[0].raw_name if evidence else "?", exc)
             LOG.event(
                 "promotion_failed",
@@ -404,7 +404,7 @@ def _promote_group(
             airframe_type=specs.get("airframe_type", ""),
             status=status,
             family=split.family,
-            aliases=[a for a in split.aliases],
+            aliases=list(split.aliases),
             description_short=clean_text(specs.get("notes", ""))[:240],
             verification_status=verification,
             confidence_score=confidence,

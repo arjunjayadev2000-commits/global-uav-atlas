@@ -221,14 +221,18 @@ def score_candidate(candidate: ImageCandidate, platform_name: str, country: str 
 
     country_bonus = 0.05 if country and country.lower() in haystack.lower() else 0.0
 
-    total = (
+    quality = (
         0.45 * identity
         + 0.30 * licence_score
         + 0.15 * size_score
         + 0.10 * aspect_score
         + country_bonus
     )
-    return round(min(1.0, total), 4)
+    # Identity gates the whole score. A perfectly licensed, high-resolution
+    # photograph of the wrong aircraft is worthless here, so weak name evidence
+    # must not be able to ride on licence and resolution alone.
+    identity_gate = 0.3 + 0.7 * min(1.0, identity / 0.4)
+    return round(min(1.0, quality * identity_gate), 4)
 
 
 def fetch_file_metadata(

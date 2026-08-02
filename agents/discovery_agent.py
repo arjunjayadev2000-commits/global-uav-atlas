@@ -14,9 +14,10 @@ from __future__ import annotations
 
 import json
 import sqlite3
+from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any
 
 from app.config import get_settings
 from app.db import (
@@ -186,7 +187,6 @@ def import_seed(*, seed_dir: Path | None = None, force: bool = False) -> dict[st
         for row in rows:
             seen += 1
             datasets = _split_seed_datasets(row.get("source_datasets", ""))
-            primary = datasets[0] if datasets else "Global UAV Database 2026 seed package"
             tier = min(
                 (SEED_DATASET_TIERS.get(d, 3) for d in datasets), default=3
             )
@@ -340,7 +340,7 @@ def run_pass(
     strategies = build_strategies(
         country=country, manufacturer_filter=manufacturer_filter, limit=limit
     )
-    totals = {
+    totals: dict[str, Any] = {
         "pass": pass_number,
         "strategies": len(strategies),
         "seen": 0,
@@ -402,7 +402,7 @@ def run_pass(
                 host=host,
             )
             continue
-        except Exception as exc:  # noqa: BLE001 - failure isolation is required
+        except Exception as exc:
             totals["failed"] += 1
             conn.execute(
                 "UPDATE discovery_runs SET finished_at=?, status='failed', error=? WHERE id=?",
@@ -477,7 +477,8 @@ def run(
 
     max_passes = passes if passes is not None else settings.discovery_max_passes
     empty_streak = 0
-    start_pass = int(query_one("SELECT COALESCE(MAX(pass_number),0) AS p FROM discovery_runs", conn=conn)["p"]) + 1
+    last_pass = query_one("SELECT COALESCE(MAX(pass_number),0) AS p FROM discovery_runs", conn=conn)
+    start_pass = int(last_pass["p"] if last_pass else 0) + 1
 
     for offset in range(max_passes):
         pass_number = start_pass + offset
@@ -508,11 +509,14 @@ def run(
 
 def stats() -> dict[str, Any]:
     conn = connect()
+
+    def count(sql: str) -> int:
+        row = query_one(sql, conn=conn)
+        return int(row["n"]) if row else 0
+
     return {
-        "raw_discoveries": query_one("SELECT COUNT(*) AS n FROM raw_discoveries", conn=conn)["n"],
-        "unprocessed": query_one(
-            "SELECT COUNT(*) AS n FROM raw_discoveries WHERE processed=0", conn=conn
-        )["n"],
+        "raw_discoveries": count("SELECT COUNT(*) AS n FROM raw_discoveries"),
+        "unprocessed": count("SELECT COUNT(*) AS n FROM raw_discoveries WHERE processed=0"),
         "by_dataset": {
             r["source_dataset"]: r["n"]
             for r in query(

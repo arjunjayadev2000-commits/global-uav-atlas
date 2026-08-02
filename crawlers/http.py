@@ -44,7 +44,7 @@ class FetchError(RuntimeError):
         self.retryable = retryable
 
 
-class RobotsDisallowed(FetchError):
+class RobotsDisallowedError(FetchError):
     def __init__(self, url: str) -> None:
         super().__init__(f"robots.txt disallows {url}", status=None, retryable=False)
 
@@ -248,7 +248,7 @@ class HttpClient:
 
         if not allow_robots_bypass and not self.robots_allows(full_url):
             self.stats["blocked"] += 1
-            raise RobotsDisallowed(full_url)
+            raise RobotsDisallowedError(full_url)
 
         host = urllib.parse.urlparse(full_url).netloc
         limit = max_bytes if max_bytes is not None else self.settings.image_max_bytes

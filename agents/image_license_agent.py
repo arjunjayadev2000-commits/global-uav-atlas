@@ -34,7 +34,16 @@ PD_RE = re.compile(
     r"no known copyright|copyright[- ]free|works of the (us|u\.s\.) federal government)",
     re.IGNORECASE,
 )
-CC_BY_RE = re.compile(r"cc[ -]?by(?![ -]?nc)(?:[ -]?sa)?(?:[ -]?\d(?:\.\d)?)?", re.IGNORECASE)
+#: Commons publishes plain "Attribution" / "Attribution-ShareAlike" as well as
+#: the "CC BY..." short names, so both spellings must be recognised.
+CC_BY_RE = re.compile(
+    r"(cc[ -]?by(?![ -]?nc)(?:[ -]?sa)?(?:[ -]?\d(?:\.\d)?)?"
+    r"|^attribution(?![ -]?non)([ -]?share ?alike)?)",
+    re.IGNORECASE,
+)
+#: Any Creative Commons licence, including the NonCommercial family. Only used
+#: when NonCommercial reuse has been explicitly enabled in configuration.
+CC_ANY_RE = re.compile(r"(cc[ -]?by|creative ?commons|^attribution)", re.IGNORECASE)
 NC_RE = re.compile(r"(non[- ]?commercial|cc[ -]?by[ -]?nc|\bnc\b)", re.IGNORECASE)
 ND_RE = re.compile(r"(no[ -]?deriv\w*|cc[ -]?by[ -]?nd|\bnd\b)", re.IGNORECASE)
 UNFREE_RE = re.compile(
@@ -114,7 +123,9 @@ def evaluate(candidate: ImageCandidate) -> LicenseVerdict:
         )
 
     public_domain = bool(PD_RE.search(haystack)) or is_gov_pd
-    creative_commons = bool(CC_BY_RE.search(haystack))
+    creative_commons = bool(CC_BY_RE.search(haystack)) or (
+        settings.allow_noncommercial_licenses and bool(CC_ANY_RE.search(haystack))
+    )
 
     if not (public_domain or creative_commons):
         return LicenseVerdict(
