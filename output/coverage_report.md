@@ -1,6 +1,6 @@
 # Global UAV Visual Atlas 2026 — Coverage Report
 
-Generated: **2026-08-02T16:05:20+00:00**
+Generated: **2026-08-02T16:08:48+00:00**
 
 > Largest defensible consolidated registry generated from the configured sources. This is not a claim that every drone ever built is included.
 

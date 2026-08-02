@@ -1,6 +1,6 @@
 # Unresolved items
 
-Generated: 2026-08-02T16:05:20+00:00
+Generated: 2026-08-02T16:08:48+00:00
 
 Open items: **27**. The machine-readable copy is `output/unresolved_records.csv`; this file is the narrative version.
 

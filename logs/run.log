@@ -1,0 +1,103 @@
+2026-08-02T16:08:29+0000 INFO    uav                          run_id=1ee4ad162cba database=/home/user/global-uav-atlas/data/uav_atlas.sqlite
+2026-08-02T16:08:30+0000 INFO    uav.orchestrator             stage migrate        starting
+2026-08-02T16:08:30+0000 INFO    uav.db                       applying migration 001 core_schema
+2026-08-02T16:08:30+0000 INFO    uav.db                       applying migration 002 atlas_view
+2026-08-02T16:08:30+0000 INFO    uav.db                       applying migration 003 source_aggregator_flag
+2026-08-02T16:08:30+0000 INFO    uav.orchestrator             stage migrate        done in 0.0s
+2026-08-02T16:08:30+0000 INFO    uav.orchestrator             stage discover       starting
+2026-08-02T16:08:30+0000 INFO    uav.discovery_agent          seed import: {'seen': 1238, 'new': 1238, 'directory': '/home/user/global-uav-atlas/data/seed'}
+2026-08-02T16:08:30+0000 INFO    uav.crawler.public_sources   OpenDroneList community drone registry -> 159 candidate records
+2026-08-02T16:08:30+0000 INFO    uav.discovery_agent          pass 1 | OpenDroneList community drone registry         seen=159   new=156
+2026-08-02T16:08:30+0000 WARNING uav.discovery_agent          strategy Drones for EU operations (class-marked UAS) failed: host www.easa.europa.eu refused by network egress policy: HTTPSConnectionPool(host='www.easa.europa.eu', port=443): Max retries exceeded with url: /en/domains/civil-drones/drones-eu-operations (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))
+2026-08-02T16:08:31+0000 WARNING uav.discovery_agent          strategy FAA UAS Declaration of Compliance list failed: host uasdoc.faa.gov refused by network egress policy: HTTPSConnectionPool(host='uasdoc.faa.gov', port=443): Max retries exceeded with url: /api/v1/products?pageSize=500 (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))
+2026-08-02T16:08:32+0000 WARNING uav.crawler.public_sources   mediawiki list List of unmanned aerial vehicles unavailable: host en.wikipedia.org refused by network egress policy: HTTPSConnectionPool(host='en.wikipedia.org', port=443): Max retries exceeded with url: /w/api.php?format=json&formatversion=2&action=parse&page=List+of+unmanned+aerial+vehicles&prop=links&redirects=1 (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))
+2026-08-02T16:08:32+0000 WARNING uav.discovery_agent          strategy Wikipedia list-of-UAV index pages failed: host en.wikipedia.org refused by network egress policy: HTTPSConnectionPool(host='en.wikipedia.org', port=443): Max retries exceeded with url: /w/api.php?format=json&formatversion=2&action=parse&page=List+of+unmanned+aerial+vehicles&prop=links&redirects=1 (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))
+2026-08-02T16:08:32+0000 WARNING uav.discovery_agent          strategy General Atomics Aeronautical Systems official product pages failed: host www.ga-asi.com refused by network egress policy: HTTPSConnectionPool(host='www.ga-asi.com', port=443): Max retries exceeded with url: /remotely-piloted-aircraft (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))
+2026-08-02T16:08:33+0000 WARNING uav.discovery_agent          strategy Baykar official product pages failed: host baykartech.com refused by network egress policy: HTTPSConnectionPool(host='baykartech.com', port=443): Max retries exceeded with url: /en/uav/ (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))
+2026-08-02T16:08:34+0000 WARNING uav.discovery_agent          strategy Israel Aerospace Industries official product pages failed: host www.iai.co.il refused by network egress policy: HTTPSConnectionPool(host='www.iai.co.il', port=443): Max retries exceeded with url: /p/unmanned-aerial-systems (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))
+2026-08-02T16:08:34+0000 WARNING uav.discovery_agent          strategy DJI official product pages failed: host enterprise.dji.com refused by network egress policy: HTTPSConnectionPool(host='enterprise.dji.com', port=443): Max retries exceeded with url: /products (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))
+2026-08-02T16:08:35+0000 WARNING uav.discovery_agent          strategy AeroVironment official product pages failed: host www.avinc.com refused by network egress policy: HTTPSConnectionPool(host='www.avinc.com', port=443): Max retries exceeded with url: /uas (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))
+2026-08-02T16:08:36+0000 WARNING uav.discovery_agent          strategy Elbit Systems official product pages failed: host elbitsystems.com refused by network egress policy: HTTPSConnectionPool(host='elbitsystems.com', port=443): Max retries exceeded with url: /products/uas/ (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))
+2026-08-02T16:08:36+0000 WARNING uav.discovery_agent          strategy US Department of Defense unmanned systems programme pages failed: host www.defense.gov refused by network egress policy: HTTPSConnectionPool(host='www.defense.gov', port=443): Max retries exceeded with url: / (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))
+2026-08-02T16:08:37+0000 WARNING uav.discovery_agent          strategy UK Ministry of Defence remotely piloted air systems failed: host www.gov.uk refused by network egress policy: HTTPSConnectionPool(host='www.gov.uk', port=443): Max retries exceeded with url: /government/collections/remotely-piloted-air-systems (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))
+2026-08-02T16:08:37+0000 WARNING uav.discovery_agent          strategy DRDO unmanned aerial systems failed: host www.drdo.gov.in refused by network egress policy: HTTPSConnectionPool(host='www.drdo.gov.in', port=443): Max retries exceeded with url: /drdo/aeronautical-systems (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))
+2026-08-02T16:08:37+0000 INFO    uav.crawler.public_sources   OpenDroneList community drone registry -> 159 candidate records
+2026-08-02T16:08:37+0000 INFO    uav.discovery_agent          pass 2 | OpenDroneList community drone registry         seen=159   new=0
+2026-08-02T16:08:37+0000 WARNING uav.discovery_agent          strategy Drones for EU operations (class-marked UAS) failed: host www.easa.europa.eu refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:37+0000 WARNING uav.discovery_agent          strategy FAA UAS Declaration of Compliance list failed: host uasdoc.faa.gov refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:37+0000 WARNING uav.crawler.public_sources   mediawiki list List of unmanned aerial vehicles unavailable: host en.wikipedia.org refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:37+0000 WARNING uav.discovery_agent          strategy Wikipedia list-of-UAV index pages failed: host en.wikipedia.org refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:37+0000 WARNING uav.discovery_agent          strategy General Atomics Aeronautical Systems official product pages failed: host www.ga-asi.com refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:37+0000 WARNING uav.discovery_agent          strategy Baykar official product pages failed: host baykartech.com refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:37+0000 WARNING uav.discovery_agent          strategy Israel Aerospace Industries official product pages failed: host www.iai.co.il refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:37+0000 WARNING uav.discovery_agent          strategy DJI official product pages failed: host enterprise.dji.com refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:37+0000 WARNING uav.discovery_agent          strategy AeroVironment official product pages failed: host www.avinc.com refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:37+0000 WARNING uav.discovery_agent          strategy Elbit Systems official product pages failed: host elbitsystems.com refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:37+0000 WARNING uav.discovery_agent          strategy US Department of Defense unmanned systems programme pages failed: host www.defense.gov refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:37+0000 WARNING uav.discovery_agent          strategy UK Ministry of Defence remotely piloted air systems failed: host www.gov.uk refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:37+0000 WARNING uav.discovery_agent          strategy DRDO unmanned aerial systems failed: host www.drdo.gov.in refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 INFO    uav.crawler.public_sources   OpenDroneList community drone registry -> 159 candidate records
+2026-08-02T16:08:38+0000 INFO    uav.discovery_agent          pass 3 | OpenDroneList community drone registry         seen=159   new=0
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy Drones for EU operations (class-marked UAS) failed: host www.easa.europa.eu refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy FAA UAS Declaration of Compliance list failed: host uasdoc.faa.gov refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.crawler.public_sources   mediawiki list List of unmanned aerial vehicles unavailable: host en.wikipedia.org refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy Wikipedia list-of-UAV index pages failed: host en.wikipedia.org refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy General Atomics Aeronautical Systems official product pages failed: host www.ga-asi.com refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy Baykar official product pages failed: host baykartech.com refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy Israel Aerospace Industries official product pages failed: host www.iai.co.il refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy DJI official product pages failed: host enterprise.dji.com refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy AeroVironment official product pages failed: host www.avinc.com refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy Elbit Systems official product pages failed: host elbitsystems.com refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy US Department of Defense unmanned systems programme pages failed: host www.defense.gov refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy UK Ministry of Defence remotely piloted air systems failed: host www.gov.uk refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy DRDO unmanned aerial systems failed: host www.drdo.gov.in refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 INFO    uav.crawler.public_sources   OpenDroneList community drone registry -> 159 candidate records
+2026-08-02T16:08:38+0000 INFO    uav.discovery_agent          pass 4 | OpenDroneList community drone registry         seen=159   new=0
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy Drones for EU operations (class-marked UAS) failed: host www.easa.europa.eu refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy FAA UAS Declaration of Compliance list failed: host uasdoc.faa.gov refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.crawler.public_sources   mediawiki list List of unmanned aerial vehicles unavailable: host en.wikipedia.org refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy Wikipedia list-of-UAV index pages failed: host en.wikipedia.org refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy General Atomics Aeronautical Systems official product pages failed: host www.ga-asi.com refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy Baykar official product pages failed: host baykartech.com refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy Israel Aerospace Industries official product pages failed: host www.iai.co.il refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy DJI official product pages failed: host enterprise.dji.com refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy AeroVironment official product pages failed: host www.avinc.com refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy Elbit Systems official product pages failed: host elbitsystems.com refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy US Department of Defense unmanned systems programme pages failed: host www.defense.gov refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy UK Ministry of Defence remotely piloted air systems failed: host www.gov.uk refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 WARNING uav.discovery_agent          strategy DRDO unmanned aerial systems failed: host www.drdo.gov.in refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:38+0000 INFO    uav.discovery_agent          stopping discovery: 3 consecutive passes with no new candidates
+2026-08-02T16:08:38+0000 INFO    uav.orchestrator             stage discover       done in 8.1s
+2026-08-02T16:08:38+0000 INFO    uav.orchestrator             stage promote        starting
+2026-08-02T16:08:38+0000 INFO    uav.metadata_agent           promotion: {'groups': 744, 'created': 749, 'updated': 2, 'variants_created': 7, 'aliases_added': 81, 'raw_processed': 1394}
+2026-08-02T16:08:38+0000 INFO    uav.orchestrator             stage promote        done in 0.7s
+2026-08-02T16:08:38+0000 INFO    uav.orchestrator             stage dedupe         starting
+2026-08-02T16:08:40+0000 INFO    uav.deduplication_agent      deduplication: {'candidates': 749, 'pairs_compared': 24128, 'merged': 156, 'review': 7, 'distinct': 23943, 'vetoed': 14824, 'candidates_after_merge': 593}
+2026-08-02T16:08:40+0000 INFO    uav.orchestrator             stage dedupe         done in 1.3s
+2026-08-02T16:08:40+0000 INFO    uav.orchestrator             stage classify       starting
+2026-08-02T16:08:40+0000 INFO    uav.country_classifier_agent country classification: {'examined': 593, 'changed': 8, 'unknown': 4, 'multinational': 11}
+2026-08-02T16:08:40+0000 INFO    uav.country_classifier_agent manufacturer-based origin inference: {'candidates': 4, 'inferred': 0, 'still_unknown': 4}
+2026-08-02T16:08:40+0000 INFO    uav.orchestrator             stage classify       done in 0.1s
+2026-08-02T16:08:40+0000 INFO    uav.orchestrator             stage verify_sources starting
+2026-08-02T16:08:40+0000 INFO    uav.source_verification_agent source verification: {'examined': 593, 'verified': 52, 'probable': 425, 'needs_verification': 116, 'no_source': 0, 'changed': 158}
+2026-08-02T16:08:40+0000 INFO    uav.orchestrator             stage verify_sources done in 0.0s
+2026-08-02T16:08:40+0000 INFO    uav.orchestrator             stage images         starting
+2026-08-02T16:08:40+0000 WARNING uav.crawler.wikimedia        commons search failed for 'DJI Matrice 400 UAV': host commons.wikimedia.org refused by network egress policy: HTTPSConnectionPool(host='commons.wikimedia.org', port=443): Max retries exceeded with url: /w/api.php?action=query&format=json&formatversion=2&generator=search&gsrsearch=DJI+Matrice+400+UAV+filetype%3Abitmap&gsrnamespace=6&gsrlimit=8&prop=imageinfo&iiprop=url%7Csize%7Cmime%7Cextmetadata%7Cuser&iiurlwidth=1024 (Caused by ProxyError('Unable to connect to proxy', OSError('Tunnel connection failed: 403 Forbidden')))
+2026-08-02T16:08:40+0000 WARNING uav.crawler.wikimedia        commons search failed for 'DJI Mini 5 Pro UAV': host commons.wikimedia.org refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:40+0000 WARNING uav.crawler.wikimedia        commons search failed for 'DJI Matrice 4E UAV': host commons.wikimedia.org refused by network egress policy (proxy refused CONNECT (403/407))
+2026-08-02T16:08:40+0000 WARNING uav.image_discovery_agent    image provider unreachable for 3 consecutive platforms - stopping the image pass and recording the blocker
+2026-08-02T16:08:40+0000 INFO    uav.image_discovery_agent    image discovery: {'attempted': 3, 'acquired': 0, 'none': 0, 'blocked': 3, 'errors': 0}
+2026-08-02T16:08:40+0000 INFO    uav.orchestrator             stage images         done in 0.6s
+2026-08-02T16:08:40+0000 INFO    uav.orchestrator             stage verify_images  starting
+2026-08-02T16:08:40+0000 INFO    uav.image_validation_agent   revalidation: {'checked': 0, 'ok': 0, 'missing': 0, 'corrupt': 0}
+2026-08-02T16:08:40+0000 INFO    uav.vision_verification_agent vision verification unavailable (no API key or SDK); continuing with metadata-based verification for 0 images
+2026-08-02T16:08:40+0000 INFO    uav.orchestrator             stage verify_images  done in 0.0s
+2026-08-02T16:08:40+0000 INFO    uav.orchestrator             stage build          starting
+2026-08-02T16:08:40+0000 INFO    uav.atlas_builder_agent      HTML atlas written: /home/user/global-uav-atlas/output/Global_UAV_Visual_Atlas_2026.html (593 entries)
+2026-08-02T16:08:47+0000 INFO    uav.atlas_builder_agent      PDF atlas written: /home/user/global-uav-atlas/output/Global_UAV_Visual_Atlas_2026.pdf (593 entries)
+2026-08-02T16:08:48+0000 INFO    uav.atlas_builder_agent      atlas build complete: {'entries': 593, 'html': '/home/user/global-uav-atlas/output/Global_UAV_Visual_Atlas_2026.html', 'pdf': '/home/user/global-uav-atlas/output/Global_UAV_Visual_Atlas_2026.pdf', 'with_images': 0, 'generated_at': '2026-08-02T16:08:48+00:00'}
+2026-08-02T16:08:48+0000 INFO    uav.orchestrator             stage build          done in 7.2s
+2026-08-02T16:08:48+0000 INFO    uav.orchestrator             stage export         starting
+2026-08-02T16:08:48+0000 INFO    uav.export_agent             exports written: {'uav_database.csv': 593, 'uav_source_records.csv': 1394, 'photo_attribution.csv': 0, 'unresolved_records.csv': 27, 'sources.csv': 18, 'coverage_statistics.json': True, 'coverage_report.md': True, 'uav_database.xlsx': True, 'uav_database.sqlite': True}
+2026-08-02T16:08:48+0000 INFO    uav.orchestrator             stage export         done in 0.6s
+2026-08-02T16:08:55+0000 INFO    uav                          run_id=0259b33e0ea8 database=/home/user/global-uav-atlas/data/uav_atlas.sqlite

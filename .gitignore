@@ -31,13 +31,14 @@ images/**/*.webp
 !images/_no_verified_image.png
 !images/.gitkeep
 
-# Logs are run artefacts; the audit trail for the committed outputs is exported.
-logs/*.log
-logs/*.jsonl
-!logs/.gitkeep
+# Logs: the audit trail and run log are required deliverables and are the
+# provenance record for the committed outputs, so they are tracked. Rotated or
+# per-run copies are not.
+logs/*.log.*
+logs/*.jsonl.*
 
-# Large regenerable exports
-output/uav_database.sqlite
+# Working copies of the exported database (output/uav_database.sqlite is a
+# required deliverable and is tracked).
 output/seed_snapshot.sqlite
 
 .DS_Store
