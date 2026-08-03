@@ -171,12 +171,22 @@ status.
 individually, so a partially blocked environment still gets an honest answer
 rather than a single pass/fail.
 
-## Drone detection (separate tool)
+## Drone detection console (separate tool)
 
-`detection/` is a standalone real-time YOLOv3/v4 drone detector (webcam or
-video feed, bounding boxes, confidence scores). It's independent of the atlas
-pipeline above — it doesn't read from or write to the UAV database. See
-[`detection/README.md`](detection/README.md) for the non-coder quick start.
+`detection/` is a standalone real-time YOLOv3/v4 drone detector with a
+military-style web console — live annotated feed, contact table, threat
+posture and event log. It is independent of the atlas pipeline above and does
+not read from or write to the UAV database.
+
+Try it with no camera and no model weights:
+
+```bash
+pip install -r requirements.txt
+python detection/console.py --simulate   # then open http://127.0.0.1:8000
+```
+
+See [`detection/README.md`](detection/README.md) for camera setup, model
+files, and troubleshooting.
 
 ## Documentation
 

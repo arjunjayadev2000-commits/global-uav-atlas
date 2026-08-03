@@ -1,91 +1,248 @@
-# Drone Detection (YOLOv3/YOLOv4)
+# UAV-DET — Drone Detection & Tactical Console
 
-Real-time drone detection from a webcam or video feed, drawing bounding boxes
-and confidence scores. This is a standalone computer-vision module — it does
-not depend on, or feed into, the UAV Atlas database in the rest of this repo.
+Real-time drone detection (YOLOv3/YOLOv4 + OpenCV) with a military-style web
+console: live annotated feed, contact table, threat posture, and an event log.
 
-## Quick start (no coding experience needed)
+Standalone — it does not read from or write to the UAV Atlas database in the
+rest of this repo.
 
-You need **three files** before this will run. They are not included in this
-repository because they are large binary model files, not source code:
+---
 
-| File | What it is | Where to put it |
-| --- | --- | --- |
-| `yolov4.cfg` | The network architecture definition | `detection/models/yolov4.cfg` |
-| `yolov4.weights` | The trained weights (~245 MB) | `detection/models/yolov4.weights` |
-| `obj.names` | One class name per line (e.g. `drone`, `bird`) | `detection/models/obj.names` |
+## 1. See it working in 2 minutes (no camera, no weights)
 
-If you don't have a drone-specific trained model yet, you can start with the
-stock YOLOv4 files trained on the general-purpose COCO dataset (from the
-official [AlexeyAB/darknet](https://github.com/AlexeyAB/darknet) releases) —
-it won't have a "drone" class, but it's the fastest way to confirm the camera
-pipeline itself works before swapping in a drone-trained model produced with
-`detection/dataset.py` (see below).
-
-Once the three files are in `detection/models/`:
-
-1. Install dependencies once: `pip install -r requirements.txt`
-   (this installs `opencv-python<5` deliberately — OpenCV 5.0 removed Darknet
-   `.cfg`/`.weights` loading, which this detector needs. Don't
-   `pip install --upgrade opencv-python` past 5.0 or loading the model will
-   fail with an `AttributeError` on `readNetFromDarknet`.)
-2. Plug in your webcam (or have a video file ready).
-3. Run:
-   ```bash
-   python detection/live_detect.py
-   ```
-4. A window opens showing the live feed. Anything detected gets a colored box
-   and a confidence percentage. **Red boxes** are drones (or whatever classes
-   you listed in `DetectorConfig.target_classes`); **green boxes** are
-   everything else the model recognizes (e.g. birds).
-5. Press **`q`** or **`Esc`** in that window to stop.
-
-To use a video file instead of a webcam: `python detection/live_detect.py --source path/to/video.mp4`
-
-## What's in this folder
-
-- `config.py` — all the tunables (model paths, input resolution, thresholds,
-  which classes count as "drone" alerts, CPU/GPU backend selection).
-- `detector.py` — loads the YOLO model via OpenCV and runs inference on a
-  single frame, returning boxes + confidence scores.
-- `fusion.py` — stabilizes detections across frames (a single noisy frame
-  won't trigger an alert) and has a hook for corroborating with a second
-  sensor (RF/acoustic/radar) if one is available.
-- `dataset.py` — given a folder of labelled training images, does the 80/20
-  train/test split and writes the manifest files a YOLO training run expects.
-- `optimize.py` — optional quantization/pruning helpers for shrinking a
-  trained model down for edge hardware (a Jetson-class board, a handheld
-  unit) rather than the workstation this was developed against.
-- `live_detect.py` — the script you actually run; wires the camera, detector
-  and fusion tracker together.
-
-## Training your own drone/bird model
-
-This module doesn't train a model — training YOLOv3/v4 from scratch is done
-with the [Darknet](https://github.com/AlexeyAB/darknet) framework (or an
-equivalent PyTorch reimplementation), not pure OpenCV. What `dataset.py`
-gives you is the repeatable data-prep step:
+Do this first. It proves the install is good before you touch hardware.
 
 ```bash
-# Expects detection/dataset/images/*.jpg and detection/dataset/labels/*.txt
-# (YOLO-format labels: "<class_id> <cx> <cy> <w> <h>", normalized 0-1)
+pip install -r requirements.txt
+python detection/console.py --simulate
+```
+
+Open **http://127.0.0.1:8000** in a browser. You'll see a synthetic sky with
+drones and a bird crossing it, fully tracked and classified. `Ctrl+C` to stop.
+
+If that works, the software is fine and anything that goes wrong next is the
+camera or the model files.
+
+---
+
+## 2. Set up the camera
+
+### Pick your camera
+
+Any camera OpenCV can open works:
+
+| Camera type | What to pass |
+| --- | --- |
+| Built-in laptop webcam | `--source 0` |
+| Second/USB webcam | `--source 1`, `--source 2`, … |
+| IP / CCTV camera | `--source "rtsp://user:pass@192.168.1.50:554/stream1"` |
+| Test on a video file | `--source path/to/clip.mp4` |
+
+### Find the right index
+
+If `--source 0` grabs the wrong camera, list what's attached:
+
+```bash
+# Linux
+ls /dev/video*
+
+# macOS / Windows / anywhere — probe indices 0-5
+python -c "import cv2; [print(i, cv2.VideoCapture(i).isOpened()) for i in range(6)]"
+```
+
+Whichever index prints `True` is a camera you can use.
+
+### Platform notes
+
+- **Linux** — you may need camera group access: `sudo usermod -aG video $USER`,
+  then log out and back in.
+- **macOS** — the first run triggers a camera permission prompt. If you never
+  saw one, enable it under *System Settings → Privacy & Security → Camera* for
+  your terminal app.
+- **Windows** — *Settings → Privacy → Camera → Allow desktop apps to access
+  your camera*.
+- **Any OS** — close Zoom/Teams/OBS first. Most cameras allow only one
+  application at a time, and OpenCV will simply fail to open a busy device.
+
+### Verify the camera alone
+
+Before involving the detector, confirm OpenCV can actually read frames:
+
+```bash
+python -c "
+import cv2
+cap = cv2.VideoCapture(0)
+ok, frame = cap.read()
+print('opened:', cap.isOpened(), '| frame:', None if frame is None else frame.shape)
+cap.release()"
+```
+
+You want `opened: True` and a shape like `(480, 640, 3)`. If you get
+`False`/`None`, it's a permission, index or in-use problem — fix that before
+going further.
+
+---
+
+## 3. Get the model files
+
+Detection needs **three** files in `detection/models/`. They are not in this
+repo: weights are hundreds of megabytes and licensed separately.
+
+| File | What it is |
+| --- | --- |
+| `yolov4.cfg` | Network architecture |
+| `yolov4.weights` | Trained weights (~245 MB) |
+| `obj.names` | One class name per line |
+
+**Starting point:** grab the stock YOLOv4 files from
+[AlexeyAB/darknet](https://github.com/AlexeyAB/darknet) (`yolov4.cfg`,
+`yolov4.weights`, and `coco.names` renamed to `obj.names`). These are trained
+on COCO, so they have **no "drone" class** — every contact will show as a
+regular COCO object. That's expected. Use it to confirm the camera → detector
+→ console chain runs on your machine, then swap in a drone-trained model.
+
+To make a drone model the alerting class, either name it `drone` in
+`obj.names`, or point the config at whatever you called it:
+
+```python
+DetectorConfig(target_classes=("drone", "uav"))
+```
+
+Anything not in `target_classes` is still detected and tracked — it just
+renders green (benign) instead of red (hostile).
+
+---
+
+## 4. Run it for real
+
+```bash
+# Tactical web console (recommended)
+python detection/console.py --source 0
+
+# Plain OpenCV window, no browser
+python detection/live_detect.py --source 0
+```
+
+Useful flags for `console.py`:
+
+| Flag | Purpose |
+| --- | --- |
+| `--simulate` | Synthetic feed; ignores camera and weights entirely |
+| `--source 0` | Camera index, file path or RTSP URL |
+| `--port 8000` | Change the web port |
+| `--host 0.0.0.0` | Serve to other machines on the network (see warning below) |
+| `--input-size 608` | Better distant-drone recall, lower FPS (default 416) |
+| `--confidence 0.6` | Raise to cut false positives, lower to catch more |
+| `--backend cuda` | Force GPU; `cpu` to force CPU; `auto` (default) prefers GPU |
+
+### Watching from a phone or tablet
+
+```bash
+python detection/console.py --source 0 --host 0.0.0.0
+```
+
+Then browse to `http://<the-machine's-LAN-IP>:8000` from the other device.
+
+> **Security:** `--host 0.0.0.0` exposes the feed to everyone on the network
+> with no authentication, and this runs on Flask's development server. Use it
+> on a trusted LAN only. For anything beyond that, put it behind a real WSGI
+> server and a reverse proxy with auth.
+
+---
+
+## 5. Reading the console
+
+- **Threat banner** — CLEAR → GUARDED → ELEVATED → CRITICAL, driven by how
+  many hostile contacts are up and how confident the detector is. Two
+  hostiles, or one above 80 %, is CRITICAL.
+- **Red brackets / rows** = a class in `target_classes` (a drone).
+  **Green** = detected but benign (e.g. a bird).
+- **BRG** — approximate bearing in degrees off the camera's centre line.
+  Estimated from pixel position and an assumed 62° field of view; it is for
+  situational awareness, not targeting. A single uncalibrated camera cannot
+  give true bearing.
+- **Contacts** are confirmed *tracks*, not raw detections. A contact must
+  persist several frames before it appears, which is what keeps a one-frame
+  glint off the board.
+
+---
+
+## 6. Troubleshooting
+
+| Symptom | Cause / fix |
+| --- | --- |
+| `Missing model file(s)` | The three files aren't in `detection/models/`. Or just use `--simulate`. |
+| `Could not open video source '0'` | Wrong index, no permission, or another app owns the camera. See §2. |
+| `AttributeError: readNetFromDarknet` | OpenCV 5.x removed Darknet loading. `pip install "opencv-python>=4.8,<5"`. |
+| Console loads, feed is black | Detector still warming up, or the camera opened but returns no frames. Check `/healthz`. |
+| Very low FPS | Use `--input-size 416`, add `--backend cuda`, or lower the camera resolution. |
+| Everything is a "hostile" | Your `obj.names` classes don't match `target_classes`. See §3. |
+| Log floods with acquire/lose | Raise `FusionTracker(min_hits=…)` or lower `iou_threshold`. |
+
+---
+
+## 7. What's in this folder
+
+| File | Role |
+| --- | --- |
+| `console.py` | **Main entry point** — serves the web console |
+| `live_detect.py` | Alternative plain OpenCV window |
+| `server.py` | Flask app, MJPEG stream, `/api/state` |
+| `templates/console.html` | The tactical UI (self-contained; no CDN) |
+| `hud.py` | On-frame overlay: reticles, crosshair, status strips |
+| `sources.py` | `LiveSource` (camera+YOLO) and `SimulatedSource` (demo) |
+| `console_state.py` | Threat posture, contact records, event log |
+| `detector.py` | YOLO loading, inference, NMS |
+| `fusion.py` | Multi-frame tracking with velocity prediction |
+| `config.py` | All tunables |
+| `dataset.py` | 80/20 train/test split + Darknet manifests |
+| `optimize.py` | ONNX quantization / pruning for edge hardware |
+
+### HTTP endpoints
+
+| Endpoint | Returns |
+| --- | --- |
+| `/` | The console page |
+| `/stream.mjpg` | Annotated MJPEG video stream |
+| `/api/state` | JSON: contacts, threat level, events, telemetry |
+| `/healthz` | Liveness probe |
+
+`/api/state` is plain JSON, so you can drive alarms, logging or a second
+display off it without touching this code.
+
+---
+
+## 8. Training your own drone model
+
+This module doesn't train — that's [Darknet](https://github.com/AlexeyAB/darknet)'s
+job. What's here is the reproducible data prep:
+
+```bash
+# Expects detection/dataset/images/*.jpg
+#     and detection/dataset/labels/*.txt   ("<class_id> <cx> <cy> <w> <h>", normalized 0-1)
 python detection/dataset.py
 ```
 
-This splits your labelled images 80/20 (matching the ~2,395-image drone/bird
-dataset size this detector was designed around) and writes `train.txt`,
-`test.txt`, `obj.names` and `obj.data` into `detection/dataset/`, ready to
-hand to `darknet detector train`. Once training finishes, point
-`detection/models/` at the resulting `.cfg`/`.weights` files.
+Splits your labelled images 80/20 with a fixed seed (so re-running never leaks
+test images into training) and writes `train.txt`, `test.txt`, `obj.names` and
+`obj.data` for `darknet detector train`. Point `detection/models/` at the
+resulting `.cfg`/`.weights` when it finishes.
 
-## Hardware notes
+Accuracy is a property of *your trained model and dataset* — not of this code.
+Nothing here can produce a given accuracy figure on its own.
 
-Developed and tuned against an Intel i7-9750H CPU / 16 GB RAM / NVIDIA GTX
-1660 Ti laptop. At 416×416 input, that GPU comfortably clears real-time
-(20+ FPS) via OpenCV's CUDA backend (`--backend cuda`); the CPU-only path
-(`--backend cpu`) still holds a usable frame rate if no GPU is present, just
-slower. Use `--input-size 608` only if small/distant drones are being missed
-— it costs meaningful FPS for better recall on small objects.
+---
 
-For deployment on smaller edge hardware, see `optimize.py` for quantization
-and pruning of an ONNX export of the trained model.
+## 9. Hardware
+
+Tuned against an Intel i7-9750H / 16 GB RAM / NVIDIA GTX 1660 Ti. At 416×416
+that GPU clears real-time comfortably via OpenCV's CUDA backend; CPU-only
+still runs, just slower. The HUD overlay itself costs ~6 ms/frame at 720p with
+8 contacts.
+
+For smaller edge hardware, see `optimize.py` for INT8 quantization and
+magnitude pruning of an ONNX export.
+
+> **Note on OpenCV:** `requirements.txt` pins `opencv-python<5` on purpose.
+> OpenCV 5.0 removed `cv2.dnn.readNetFromDarknet`, which the `.cfg`/`.weights`
+> loader depends on. Don't upgrade past 5.0 unless you switch to ONNX.

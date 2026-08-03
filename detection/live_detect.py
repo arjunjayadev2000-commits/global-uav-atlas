@@ -14,9 +14,16 @@ around anything detected; press ``q`` or ``Esc`` to quit.
 from __future__ import annotations
 
 import argparse
+import sys
 import time
+from pathlib import Path
 
 import cv2
+
+# Allow `python detection/live_detect.py` to work from a clean checkout
+# without `pip install -e .` or PYTHONPATH fiddling.
+if __package__ in (None, ""):
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from detection.config import DetectorConfig
 from detection.detector import Detection, DroneDetector, draw_detections

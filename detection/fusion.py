@@ -58,6 +58,21 @@ class Track:
     misses: int = 0
     confirmed: bool = False
     externally_confirmed: bool | None = None  # None = no external sensor consulted
+    velocity: tuple[float, float] = (0.0, 0.0)  # px/frame, estimated from matches
+
+    def predicted_box(self) -> BoxF:
+        """Where this track is expected to be on the next frame.
+
+        Matching against the prediction rather than the last observed box is
+        what keeps fast, small contacts attached to their track: a smoothed
+        box always trails a moving target by roughly one frame of motion, and
+        for a distant drone only a few tens of pixels wide that lag alone is
+        enough to push IoU under the match threshold and split one real
+        object into a stream of one-frame tracks.
+        """
+        x, y, w, h = self.box
+        vx, vy = self.velocity
+        return (x + vx, y + vy, w, h)
 
 
 @dataclass
@@ -90,6 +105,7 @@ class FusionTracker:
     min_hits: int = 3
     max_misses: int = 5
     smoothing: float = 0.5
+    velocity_smoothing: float = 0.5
     external_confirm: Callable[[Track], bool | None] | None = None
 
     _tracks: list[Track] = field(default_factory=list)
@@ -98,25 +114,28 @@ class FusionTracker:
     def update(self, detections: list[Detection]) -> list[Track]:
         """Advance the tracker by one frame and return currently confirmed tracks."""
         unmatched_detections = list(range(len(detections)))
-        matched_track_ids: set[int] = set()
 
         for track in self._tracks:
+            predicted = track.predicted_box()
             best_index, best_iou = None, 0.0
             for i in unmatched_detections:
                 det = detections[i]
                 if det.label != track.label:
                     continue
-                overlap = _iou(track.box, _as_box_f(det.box))
+                overlap = _iou(predicted, _as_box_f(det.box))
                 if overlap > best_iou:
                     best_index, best_iou = i, overlap
 
             if best_index is not None and best_iou >= self.iou_threshold:
                 self._apply_match(track, detections[best_index])
                 unmatched_detections.remove(best_index)
-                matched_track_ids.add(id(track))
             else:
                 track.misses += 1
                 track.hits = 0
+                # Coast along the last known velocity so a briefly occluded
+                # contact is re-acquired at the right place rather than
+                # dropped and renumbered.
+                track.box = predicted
 
         for i in unmatched_detections:
             det = detections[i]
@@ -141,12 +160,23 @@ class FusionTracker:
         alpha = self.smoothing
         tx, ty, tw, th = track.box
         dx, dy, dw, dh = det.box
-        track.box = (
+        new_box = (
             tx + alpha * (dx - tx),
             ty + alpha * (dy - ty),
             tw + alpha * (dw - tw),
             th + alpha * (dh - th),
         )
+
+        # Velocity is the smoothed frame-to-frame displacement of the track's
+        # own (smoothed) position, so it stays stable under detector jitter.
+        beta = self.velocity_smoothing
+        vx, vy = track.velocity
+        track.velocity = (
+            vx + beta * ((new_box[0] - tx) - vx),
+            vy + beta * ((new_box[1] - ty) - vy),
+        )
+
+        track.box = new_box
         track.confidence = track.confidence + alpha * (det.confidence - track.confidence)
         track.hits += 1
         track.misses = 0

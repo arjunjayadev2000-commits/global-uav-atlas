@@ -19,7 +19,7 @@ dependencies = [
 
 [project.optional-dependencies]
 vision = ["anthropic>=0.40"]
-detection = ["opencv-python>=4.8,<5", "numpy>=1.24"]
+detection = ["opencv-python>=4.8,<5", "numpy>=1.24", "Flask>=3.0"]
 detection-edge = ["onnx>=1.15", "onnxruntime>=1.17"]
 dev = ["pytest>=8.0", "pytest-cov>=5.0", "ruff>=0.6", "mypy>=1.10", "types-requests", "pypdf>=4.0"]
 
@@ -28,6 +28,11 @@ uav-atlas = "run:main"
 
 [tool.setuptools]
 packages = ["app", "agents", "crawlers", "detection"]
+
+[tool.setuptools.package-data]
+# The console template is loaded at runtime by Flask, so it must ship with
+# the package rather than being treated as a stray non-Python file.
+detection = ["templates/*.html"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
