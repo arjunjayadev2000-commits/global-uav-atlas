@@ -49,6 +49,16 @@ class TrackerWorker(QtCore.QThread):
 
     # -- control -------------------------------------------------------
 
+    def start(self, *args, **kwargs) -> None:  # type: ignore[override]
+        """Arm the run flag before the thread body can begin.
+
+        Setting it inside run() would race a stop() issued immediately
+        after start(): the thread body would clobber the request back to
+        True and loop forever, hanging the window on a quick arm/disarm.
+        """
+        self._running = True
+        super().start(*args, **kwargs)
+
     def stop(self) -> None:
         self._running = False
 
@@ -72,7 +82,6 @@ class TrackerWorker(QtCore.QThread):
     # -- main loop -----------------------------------------------------
 
     def run(self) -> None:
-        self._running = True
         pending: list[Detection] = []
         spectrum: np.ndarray | None = None
         frequencies: np.ndarray | None = None

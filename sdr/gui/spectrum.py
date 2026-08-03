@@ -24,7 +24,7 @@ class SpectrumWidget(QtWidgets.QWidget):
 
     def __init__(self, parent: QtWidgets.QWidget | None = None):
         super().__init__(parent)
-        pg.setConfigOptions(antialias=True, background=(10, 16, 20), foreground=(150, 180, 190))
+        pg.setConfigOptions(antialias=True, background=(11, 14, 18), foreground=(120, 136, 154))
 
         layout = QtWidgets.QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)

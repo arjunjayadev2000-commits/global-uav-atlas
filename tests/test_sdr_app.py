@@ -137,59 +137,106 @@ def qapp():
     app.processEvents()
 
 
-class TestPPIWidget:
-    def test_renders_with_no_tracks(self, qapp):
-        from sdr.gui.ppi import PPIWidget
+class TestMapView:
+    def test_renders_without_tiles(self, qapp):
+        from sdr.gui.map_view import MapView
 
-        widget = PPIWidget()
-        widget.resize(400, 400)
-        assert not widget.grab().isNull()
+        view = MapView()
+        view.loader.enabled = False
+        view.resize(500, 400)
+        assert not view.grab().isNull()
 
-    def test_renders_resolved_and_unresolved_tracks(self, qapp):
-        from sdr.gui.ppi import PPIWidget
+    def test_renders_resolved_and_unresolved_contacts(self, qapp):
+        from sdr.gui.map_view import MapView
         from sdr.multi_drone_tracker import Detection
 
-        widget = PPIWidget()
-        widget.resize(400, 400)
-        widget.set_detections(
+        view = MapView()
+        view.loader.enabled = False
+        view.resize(500, 400)
+        view.set_detections(
             [
-                Detection(1, 2.44, 60.0, False, 30.0, 80.0, -60.0, 5, [60.0]),
+                Detection(1, 2.44, 60.0, False, 30.0, 800.0, -60.0, 5, [60.0]),
                 Detection(2, 2.43, 90.0, True, 1.0, 0.0, -70.0, 1, [30.0, 90.0, 150.0]),
             ]
         )
-        assert not widget.grab().isNull()
-        assert len(widget._tracks) == 2
+        assert not view.grab().isNull()
+        assert len(view._tracks) == 2
 
-    def test_prune_drops_dead_tracks(self, qapp):
-        from sdr.gui.ppi import PPIWidget
+    def test_prune_drops_dead_contacts(self, qapp):
+        from sdr.gui.map_view import MapView
         from sdr.multi_drone_tracker import Detection
 
-        widget = PPIWidget()
-        widget.set_detections([Detection(1, 2.44, 60.0, False, 30.0, 80.0, -60.0, 5, [60.0])])
-        widget.prune(set())
-        assert widget._tracks == {}
+        view = MapView()
+        view.loader.enabled = False
+        view.set_detections([Detection(1, 2.44, 60.0, False, 30.0, 800.0, -60.0, 5, [60.0])])
+        view.prune(set())
+        assert view._tracks == {}
+
+    def test_projection_round_trips(self, qapp):
+        from sdr.gui.tiles import lonlat_to_world, world_to_lonlat
+
+        for lon, lat, zoom in ((76.7794, 30.7333, 13), (-0.1276, 51.5072, 10), (139.69, 35.69, 16)):
+            x, y = lonlat_to_world(lon, lat, zoom)
+            back_lon, back_lat = world_to_lonlat(x, y, zoom)
+            assert abs(back_lon - lon) < 1e-6
+            assert abs(back_lat - lat) < 1e-6
+
+    def test_offset_lonlat_moves_the_expected_distance(self, qapp):
+        import math
+
+        from sdr.gui.tiles import offset_lonlat
+
+        lon, lat = 76.7794, 30.7333
+        north_lon, north_lat = offset_lonlat(lon, lat, 0.0, 1000.0)
+        assert north_lat > lat
+        assert abs(north_lon - lon) < 1e-6
+        east_lon, east_lat = offset_lonlat(lon, lat, 90.0, 1000.0)
+        assert east_lon > lon
+        assert math.isclose(east_lat, lat, abs_tol=1e-3)
 
 
-class TestTrackTable:
-    def test_shows_one_row_per_track_and_exports(self, qapp, tmp_path):
-        from sdr.gui.tracks import TrackTable
+class TestThreatLog:
+    def test_shows_one_row_per_contact_and_exports(self, qapp, tmp_path):
+        from sdr.gui.tracks import ThreatLogTable
         from sdr.multi_drone_tracker import Detection
 
-        table = TrackTable()
+        table = ThreatLogTable()
         table.update_detections(
             [
-                Detection(1, 2.44, 60.0, False, 30.0, 80.0, -60.0, 5, [60.0]),
-                Detection(2, 2.43, 90.0, True, 1.0, 0.0, -70.0, 1, [30.0, 90.0]),
+                Detection(1, 2.44, 60.0, False, 30.0, 800.0, -60.0, 5, [60.0]),
+                Detection(2, 5.80, 90.0, True, 1.0, 0.0, -70.0, 1, [30.0, 90.0]),
             ]
         )
-        # a second hop on track 1 replaces its row rather than adding one
-        table.update_detections([Detection(1, 2.45, 61.0, False, 33.0, 81.0, -60.0, 6, [61.0])])
+        table.update_detections([Detection(1, 2.45, 61.0, False, 33.0, 810.0, -60.0, 6, [61.0])])
         assert table.rowCount() == 2
 
-        out = tmp_path / "detections.csv"
-        assert table.export_csv(str(out)) == 3  # every detection logged, not just live rows
+        out = tmp_path / "threat_log.csv"
+        assert table.export_csv(str(out)) == 3
         text = out.read_text(encoding="utf-8")
         assert "track_id" in text and "candidate_bearings_deg" in text
+
+    def test_band_classification_does_not_invent_a_device(self):
+        from sdr.gui.tracks import classify_band
+
+        assert classify_band(2.44) == "2.4G"
+        assert classify_band(5.80) == "5.8G"
+        assert classify_band(0.915) == "900M"
+        assert classify_band(1.575) == "unknown"
+
+    def test_priority_contact_prefers_resolved_then_strongest(self, qapp):
+        from sdr.gui.tracks import ThreatLogTable
+        from sdr.multi_drone_tracker import Detection
+
+        table = ThreatLogTable()
+        table.update_detections(
+            [
+                Detection(1, 2.44, 10.0, True, 1.0, 0.0, -40.0, 1, []),   # loudest, unresolved
+                Detection(2, 2.44, 20.0, False, 30.0, 500.0, -80.0, 6, []),
+                Detection(3, 2.44, 30.0, False, 30.0, 500.0, -60.0, 6, []),
+            ]
+        )
+        # a resolved contact wins over a louder unresolved one
+        assert table.priority_contact().track_id == 3
 
 
 class TestSpectrumWidget:
@@ -205,25 +252,26 @@ class TestSpectrumWidget:
 
 
 class TestMainWindow:
-    def test_starts_tracks_and_stops_cleanly(self, qapp):
+    def test_arms_tracks_and_disarms_cleanly(self, qapp):
+        import time
+
         from sdr.gui.mainwindow import MainWindow
 
         window = MainWindow()
-        window.controls.drones_spin.setValue(2)
-        window.controls.snr_spin.setValue(30.0)
+        window.map_view.loader.enabled = False
+        window.settings["drones"] = 2
+        window.settings["snr_db"] = 30.0
         window.start()
         assert window._worker is not None
 
-        deadline = __import__("time").time() + 6
-        while __import__("time").time() < deadline:
+        deadline = time.time() + 8
+        while time.time() < deadline:
             qapp.processEvents()
-            if len(window.ppi._tracks) >= 2 and all(
-                not d.bearing_ambiguous for d in window.ppi._tracks.values()
-            ):
+            if len(window.map_view._tracks) >= 2:
                 break
 
-        assert len(window.ppi._tracks) == 2
-        assert window.tracks.rowCount() == 2
+        assert len(window.map_view._tracks) == 2
+        assert window.threat_log.rowCount() == 2
         assert not window.grab().isNull()
 
         window.stop()
@@ -234,7 +282,117 @@ class TestMainWindow:
         from sdr.gui.mainwindow import MainWindow
 
         window = MainWindow()
-        window.controls.source_combo.setCurrentIndex(2)  # recorded file
-        window.controls.file_edit.setText("")
+        window.settings["source"] = "file"
+        window.settings["file"] = ""
         with pytest.raises(ValueError, match="recorded"):
             window._build_source()
+
+    def test_band_selection_drives_the_centre_frequency(self, qapp):
+        from sdr.gui.mainwindow import BANDS, MainWindow
+
+        window = MainWindow()
+        window.band_buttons["BAND 5.8G"].setChecked(True)
+        window._apply_band()
+        assert window._current_center_freq() == BANDS["5.8G"]
+        assert window.wifi_glyph._active and not window.bt_glyph._active
+
+        window.band_buttons["BAND 2.4G"].setChecked(True)
+        window._apply_band()
+        assert window._current_center_freq() == BANDS["2.4G"]
+
+    def test_mode_button_cycles(self, qapp):
+        from sdr.gui.mainwindow import SCAN_MODES, MainWindow
+
+        window = MainWindow()
+        assert window.scan_mode == SCAN_MODES[0]
+        window._cycle_mode()
+        assert window.scan_mode == SCAN_MODES[1]
+        assert SCAN_MODES[1] in window.mode_button.text()
+
+    def test_track_mode_hides_unresolved_contacts(self, qapp):
+        from sdr.gui.mainwindow import MainWindow
+        from sdr.multi_drone_tracker import Detection
+
+        window = MainWindow()
+        contacts = [
+            Detection(1, 2.44, 60.0, False, 30.0, 800.0, -60.0, 5, [60.0]),
+            Detection(2, 2.43, 90.0, True, 1.0, 0.0, -70.0, 1, [90.0]),
+        ]
+        while window.scan_mode != "TRACK":
+            window._cycle_mode()
+        assert [d.track_id for d in window._filter_for_mode(contacts)] == [1]
+
+    def test_urban_toggle_switches_the_path_loss_model(self, qapp):
+        from sdr.gui.mainwindow import PATH_LOSS_OPEN, PATH_LOSS_URBAN, MainWindow
+
+        window = MainWindow()
+        window.map_view.loader.enabled = False
+        window.urban_toggle.setChecked(True)
+        window.start()
+        try:
+            assert window._tracker.path_loss_exponent == PATH_LOSS_URBAN
+        finally:
+            window.stop()
+            qapp.processEvents()
+
+        window.urban_toggle.setChecked(False)
+        window.start()
+        try:
+            assert window._tracker.path_loss_exponent == PATH_LOSS_OPEN
+        finally:
+            window.stop()
+            qapp.processEvents()
+
+    def test_reset_cache_clears_everything(self, qapp):
+        from sdr.gui.mainwindow import MainWindow
+        from sdr.multi_drone_tracker import Detection
+
+        window = MainWindow()
+        window.map_view.loader.enabled = False
+        window.threat_log.update_detections(
+            [Detection(1, 2.44, 60.0, False, 30.0, 800.0, -60.0, 5, [60.0])]
+        )
+        window.map_view.set_detections(
+            [Detection(1, 2.44, 60.0, False, 30.0, 800.0, -60.0, 5, [60.0])]
+        )
+        window._reset_cache()
+        assert window.threat_log.rowCount() == 0
+        assert window.threat_log.logged_rows == 0
+        assert window.map_view._tracks == {}
+        assert "—" in window.jam_angle_label.text()
+
+    def test_jam_angle_tracks_the_priority_contact(self, qapp):
+        from sdr.gui.mainwindow import MainWindow
+        from sdr.multi_drone_tracker import Detection
+
+        window = MainWindow()
+        window.threat_log.update_detections(
+            [Detection(1, 2.44, 137.0, False, 30.0, 800.0, -60.0, 5, [137.0])]
+        )
+        window._sync_jam_angle()
+        assert "137" in window.jam_angle_label.text()
+
+
+class TestTileLoader:
+    def test_offline_loader_returns_nothing_and_does_not_raise(self, qapp, tmp_path):
+        from sdr.gui.tiles import TileLoader
+
+        loader = TileLoader(cache_dir=tmp_path)
+        loader.enabled = False
+        assert loader.tile(13, 100, 200) is None
+
+    def test_reads_a_tile_back_from_the_disk_cache(self, qapp, tmp_path):
+        from PyQt6 import QtGui
+
+        from sdr.gui.tiles import TileLoader
+
+        loader = TileLoader(cache_dir=tmp_path)
+        loader.enabled = False
+        path = loader._cache_path(13, 100, 200)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        image = QtGui.QImage(256, 256, QtGui.QImage.Format.Format_RGB32)
+        image.fill(QtGui.QColor("#123456"))
+        image.save(str(path))
+
+        tile = loader.tile(13, 100, 200)
+        assert tile is not None and tile.width() == 256

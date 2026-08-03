@@ -182,12 +182,12 @@ rather than a single pass/fail.
 | [`docs/PROGRESS.md`](docs/PROGRESS.md) | Phase-by-phase record of what was built, run and measured. |
 | [`docs/UNRESOLVED.md`](docs/UNRESOLVED.md) | Open items grouped by type, with blockers and suggested actions (regenerated on every export). |
 
-## Also in this repository: the multi-drone SDR tracker
+## Also in this repository: the Kharga Kalateer drone detector
 
-`sdr/` holds an unrelated project that shares only the repository: direction
-finding for frequency-hopping drones from four coherent SDR channels
-(2× AD9361 / FMCOMMS5), with a PyQt6 desktop application. It processes live
-IQ rather than crawled records and touches none of the atlas pipeline.
+`sdr/` holds an unrelated project that shares only the repository: passive
+direction finding for frequency-hopping drones from four coherent SDR
+channels (2× AD9361 / FMCOMMS5), with a PyQt6 operator console. It processes
+live IQ rather than crawled records and touches none of the atlas pipeline.
 
 ```bash
 pip install -e '.[gui]'

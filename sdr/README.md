@@ -1,9 +1,10 @@
-# Multi-Drone SDR Tracker
+# Kharga Kalateer Drone Detector
 
-Direction finding for frequency-hopping drones from four coherent receive
-channels (2× AD9361, e.g. an FMCOMMS5), with a PyQt6 desktop application.
+Passive direction finding for frequency-hopping drones from four coherent
+receive channels (2× AD9361, e.g. an FMCOMMS5), with a PyQt6 operator
+console. Receive only — the application never transmits.
 
-![Tracker application](../docs/sdr_tracker.png)
+![Detector console](../docs/sdr_tracker.png)
 
 This is independent of the UAV atlas pipeline in `app/`, `agents/` and
 `crawlers/` — it processes live IQ, not crawled records, and shares nothing
@@ -56,23 +57,57 @@ threshold of 6 keeps about 98 % of confirmations correct.
 ```bash
 pip install -e '.[gui]'
 
-python -m sdr.gui.app                          # simulated drones, starts immediately
+python -m sdr.gui.app                          # simulated drones, arms immediately
 python -m sdr.gui.app --drones 4 --no-autostart
 python -m sdr.gui.app --source fmcomms5 --uri ip:192.168.2.1
 python -m sdr.gui.app --file capture.npy       # replay a recording
+python -m sdr.gui.app --lat 30.7333 --lon 76.7794   # site position
+python -m sdr.gui.app --no-tiles               # skip the basemap
 ```
 
 Installed as a package it is also on the path as `uav-sdr-tracker`.
 
+| Control | Does |
+| --- | --- |
+| **RESET SYSTEM CACHE** | Drops all tracks, history and the logged detections. |
+| **MODE** | `OMNI` reports every contact · `SECTOR` reserved for a watch sector · `TRACK` shows only resolved bearings. |
+| **BAND 2.4G / 5.8G / DUAL** | Sets the receiver's centre frequency. One AD9361 pair has a single LO, so `DUAL` is time-multiplexed — it retunes between dwells rather than watching both bands at once. |
+| **URBAN** | Switches the range model's path-loss exponent between open ground (n=2.2) and urban clutter (n=3.0). Range is exponential in this, so it matters. |
+| **JAM ANGLE** | Bearing of the strongest resolved contact. A passive readout for aiming a directional effector; nothing here transmits. |
+| **NL Sources** | Shows every candidate bearing for unresolved contacts. |
+| **ARM / DISARM** | Starts and stops acquisition. |
+
 | View | Shows |
 | --- | --- |
-| **PPI scope** | Bearing and range per track. Resolved tracks are solid with a trail; unresolved ones are drawn with *every* candidate bearing their phase permits, so the display never implies certainty it does not have. |
-| **Spectrum** | Combined 4-channel power with the adaptive detection threshold. |
-| **Waterfall** | Rolling history — a hopping emitter reads as scattered dashes, not a line. |
-| **Track table** | Frequency, bearing, state, margin, range, RSSI and hop count per track. `File ▸ Export detections to CSV` writes the full log. |
+| **Map overview** | Range rings and a bearing wedge per contact over an OSM basemap. Pan by dragging, zoom with the wheel; the two buttons fit the rings and recentre on the sensor. |
+| **Threat log** | Frequency, power, bearing, ambiguity margin and band per contact. `File ▸ Export threat log to CSV` writes the full history. |
+| **Spectrum analyzer** | Combined 4-channel power with the live detection threshold, over a rolling waterfall in which hopping reads as scattered dashes. |
 
-Detection SNR, antenna spacing and confirm margin apply live while
-acquiring; source settings are locked during capture.
+Detection SNR, antenna spacing, confirm margin, site position and ring radii
+live behind the gear icon.
+
+### Why contacts are wedges, not dots
+
+Bearing is measured precisely; range is inferred from signal strength and is
+by far the weakest number the tracker produces. Plotting a drone as a point
+at a computed distance would assert something the measurement cannot
+support, so each contact is drawn as a wedge — narrow in bearing, extended
+in range. Unresolved contacts additionally show one faint wedge per
+candidate bearing.
+
+### The basemap
+
+Tiles come from OpenStreetMap by default, fetched asynchronously and cached
+on disk. With no tile server reachable the map falls back to an offline grid
+and says so; every overlay keeps working, which is what a fielded sensor
+without connectivity needs. Respect your provider's usage policy — anything
+beyond light interactive use wants your own tile server.
+
+### Device column
+
+It reports the frequency band (`2.4G`, `5.8G`, `900M`, `unknown`), not an
+airframe or protocol. Nothing in the tracker fingerprints devices, so naming
+a model there would be invention.
 
 ## Using it as a library
 
@@ -136,6 +171,6 @@ survivors to 0.99 relative height, which noise swallows.
 pytest tests/test_sdr_tracker.py tests/test_sdr_app.py -q
 ```
 
-26 tests. GUI tests run on Qt's offscreen platform and need no display;
+38 tests. GUI tests run on Qt's offscreen platform and need no display;
 they skip automatically when PyQt6 is absent. The live-hardware path is
 the one thing not covered.

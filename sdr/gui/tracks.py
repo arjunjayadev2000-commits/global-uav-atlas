@@ -1,10 +1,10 @@
-"""Track table.
+"""Threat log: one row per live contact.
 
-One row per live track. The margin column is the important one and is
-shown rather than hidden behind the confirmed/unresolved flag: it is the
-ratio by which the winning direction out-fits the best distinct
-alternative, so an operator can see a track firming up hop by hop instead
-of only seeing the moment it crosses the threshold.
+Columns mirror the operator console -- frequency, power, bearing, device --
+with the ambiguity margin appended, because the margin is what says whether
+the bearing can be acted on. It is the ratio by which the winning direction
+out-fits the best distinct alternative, so a contact can be watched firming
+up hop by hop rather than only at the moment it crosses the threshold.
 """
 
 from __future__ import annotations
@@ -14,38 +14,54 @@ from datetime import UTC, datetime
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 
+from sdr.gui import theme
 from sdr.multi_drone_tracker import Detection
 
 COLUMNS = [
-    ("Track", 58),
-    ("Freq (GHz)", 92),
+    ("Freq MHz", 82),
+    ("Power dbm", 84),
     ("Bearing", 78),
-    ("State", 96),
-    ("Margin", 72),
-    ("Range (m)", 86),
-    ("RSSI (dBm)", 88),
-    ("Hops", 54),
+    ("Margin", 64),
+    ("Device", 90),
 ]
 
-CONFIRMED_BG = QtGui.QColor(20, 60, 48)
-AMBIGUOUS_BG = QtGui.QColor(66, 50, 16)
+RESOLVED_BG = QtGui.QColor(16, 46, 34)
+UNRESOLVED_BG = QtGui.QColor(52, 40, 12)
 
 
-class TrackTable(QtWidgets.QTableWidget):
-    """Live view of every track, newest state per track."""
+def classify_band(frequency_ghz: float) -> str:
+    """Coarse band label.
+
+    This is a band label, not a device identification: nothing in the
+    tracker fingerprints airframes or protocols, so claiming a model here
+    would be invention. Anything outside the common control bands is
+    reported as unknown rather than guessed at.
+    """
+    if 2.35 <= frequency_ghz <= 2.55:
+        return "2.4G"
+    if 5.10 <= frequency_ghz <= 5.95:
+        return "5.8G"
+    if 0.90 <= frequency_ghz <= 0.94:
+        return "900M"
+    return "unknown"
+
+
+class ThreatLogTable(QtWidgets.QTableWidget):
+    """Live contact list, newest state per track."""
 
     def __init__(self, parent: QtWidgets.QWidget | None = None):
         super().__init__(0, len(COLUMNS), parent)
         self.setHorizontalHeaderLabels([name for name, _ in COLUMNS])
         for index, (_, width) in enumerate(COLUMNS):
             self.setColumnWidth(index, width)
+        header = self.horizontalHeader()
+        header.setSectionResizeMode(QtWidgets.QHeaderView.ResizeMode.Stretch)
+        header.setHighlightSections(False)
         self.verticalHeader().setVisible(False)
+        self.setShowGrid(True)
         self.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectionBehavior.SelectRows)
         self.setEditTriggers(QtWidgets.QAbstractItemView.EditTrigger.NoEditTriggers)
-        self.setAlternatingRowColors(True)
-        self.setSortingEnabled(False)
 
-        self._rows: dict[int, int] = {}
         self._latest: dict[int, Detection] = {}
         self._log: list[tuple[str, Detection]] = []
 
@@ -59,38 +75,65 @@ class TrackTable(QtWidgets.QTableWidget):
         self._rebuild()
 
     def prune(self, live_track_ids: set[int]) -> None:
-        for tid in list(self._latest):
-            if tid not in live_track_ids:
-                del self._latest[tid]
-        self._rebuild()
+        removed = [tid for tid in self._latest if tid not in live_track_ids]
+        for tid in removed:
+            del self._latest[tid]
+        if removed:
+            self._rebuild()
 
     def clear_tracks(self) -> None:
         self._latest.clear()
-        self._rows.clear()
         self.setRowCount(0)
 
+    def reset(self) -> None:
+        self.clear_tracks()
+        self._log.clear()
+
+    @property
+    def contacts(self) -> list[Detection]:
+        return sorted(self._latest.values(), key=lambda d: d.track_id)
+
+    def priority_contact(self) -> Detection | None:
+        """Strongest resolved contact, else the strongest of any state."""
+        if not self._latest:
+            return None
+        resolved = [d for d in self._latest.values() if not d.bearing_ambiguous]
+        pool = resolved or list(self._latest.values())
+        return max(pool, key=lambda d: d.signal_strength_dbm)
+
     def _rebuild(self) -> None:
-        ordered = sorted(self._latest.values(), key=lambda d: d.track_id)
+        ordered = self.contacts
         self.setRowCount(len(ordered))
         for row, det in enumerate(ordered):
-            confirmed = not det.bearing_ambiguous
-            margin = "inf" if det.ambiguity_margin == float("inf") else f"{det.ambiguity_margin:.1f}"
+            resolved = not det.bearing_ambiguous
+            margin = (
+                "inf" if det.ambiguity_margin == float("inf") else f"{det.ambiguity_margin:.1f}"
+            )
             values = [
-                f"T{det.track_id}",
-                f"{det.frequency_ghz:.4f}",
-                f"{det.bearing_degrees:.2f}°",
-                "resolved" if confirmed else "unresolved",
-                margin,
-                f"{det.distance_meters:.1f}",
+                f"{det.frequency_ghz * 1000:.1f}",
                 f"{det.signal_strength_dbm:.1f}",
-                str(det.hops_observed),
+                f"{det.bearing_degrees:.1f}°" + ("" if resolved else " ?"),
+                margin,
+                classify_band(det.frequency_ghz),
             ]
             for column, value in enumerate(values):
                 item = QtWidgets.QTableWidgetItem(value)
-                item.setBackground(CONFIRMED_BG if confirmed else AMBIGUOUS_BG)
-                if column in (1, 2, 4, 5, 6, 7):
+                item.setBackground(RESOLVED_BG if resolved else UNRESOLVED_BG)
+                item.setForeground(theme.TEXT if resolved else theme.GOLD)
+                if column != 4:
                     item.setTextAlignment(
-                        QtCore.Qt.AlignmentFlag.AlignRight | QtCore.Qt.AlignmentFlag.AlignVCenter
+                        int(
+                            QtCore.Qt.AlignmentFlag.AlignRight
+                            | QtCore.Qt.AlignmentFlag.AlignVCenter
+                        )
+                    )
+                if column == 0:
+                    item.setToolTip(
+                        f"Track T{det.track_id}\n"
+                        f"{'resolved' if resolved else 'bearing unresolved'}\n"
+                        f"hops observed: {det.hops_observed}\n"
+                        f"candidate bearings: "
+                        f"{', '.join(f'{b:.0f}°' for b in det.candidate_bearings) or 'n/a'}"
                     )
                 self.setItem(row, column, item)
 
@@ -101,19 +144,19 @@ class TrackTable(QtWidgets.QTableWidget):
         return len(self._log)
 
     def export_csv(self, path: str) -> int:
-        """Write every detection seen so far. Returns the row count."""
         with open(path, "w", newline="", encoding="utf-8") as handle:
             writer = csv.writer(handle)
             writer.writerow(
                 [
                     "timestamp_utc",
                     "track_id",
-                    "frequency_ghz",
+                    "frequency_mhz",
+                    "power_dbm",
                     "bearing_deg",
                     "bearing_resolved",
                     "ambiguity_margin",
+                    "band",
                     "range_m",
-                    "rssi_dbm",
                     "hops_observed",
                     "candidate_bearings_deg",
                 ]
@@ -123,12 +166,13 @@ class TrackTable(QtWidgets.QTableWidget):
                     [
                         stamp,
                         det.track_id,
-                        f"{det.frequency_ghz:.6f}",
+                        f"{det.frequency_ghz * 1000:.3f}",
+                        f"{det.signal_strength_dbm:.2f}",
                         f"{det.bearing_degrees:.3f}",
                         int(not det.bearing_ambiguous),
                         det.ambiguity_margin,
+                        classify_band(det.frequency_ghz),
                         f"{det.distance_meters:.3f}",
-                        f"{det.signal_strength_dbm:.2f}",
                         det.hops_observed,
                         " ".join(f"{b:.2f}" for b in det.candidate_bearings),
                     ]
