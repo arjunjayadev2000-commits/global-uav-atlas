@@ -182,6 +182,21 @@ rather than a single pass/fail.
 | [`docs/PROGRESS.md`](docs/PROGRESS.md) | Phase-by-phase record of what was built, run and measured. |
 | [`docs/UNRESOLVED.md`](docs/UNRESOLVED.md) | Open items grouped by type, with blockers and suggested actions (regenerated on every export). |
 
+## Also in this repository: the multi-drone SDR tracker
+
+`sdr/` holds an unrelated project that shares only the repository: direction
+finding for frequency-hopping drones from four coherent SDR channels
+(2× AD9361 / FMCOMMS5), with a PyQt6 desktop application. It processes live
+IQ rather than crawled records and touches none of the atlas pipeline.
+
+```bash
+pip install -e '.[gui]'
+python -m sdr.gui.app          # runs against simulated drones, no radio needed
+```
+
+See [`sdr/README.md`](sdr/README.md) for the physics, the measured accuracy,
+and what to calibrate before trusting it on real hardware.
+
 ## Licensing and attribution
 
 Code is MIT. Data records carry the licence terms of their sources, recorded per

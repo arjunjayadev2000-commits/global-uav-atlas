@@ -20,13 +20,18 @@ dependencies = [
 
 [project.optional-dependencies]
 vision = ["anthropic>=0.40"]
+# Desktop tracker application. The processing core runs without these.
+gui = ["PyQt6>=6.5", "pyqtgraph>=0.13"]
+# Live capture from an FMCOMMS5 / AD9361. Needs libiio on the host too.
+sdr-hardware = ["pyadi-iio>=0.0.16"]
 dev = ["pytest>=8.0", "pytest-cov>=5.0", "ruff>=0.6", "mypy>=1.10", "types-requests", "pypdf>=4.0"]
 
 [project.scripts]
 uav-atlas = "run:main"
+uav-sdr-tracker = "sdr.gui.app:main"
 
 [tool.setuptools]
-packages = ["app", "agents", "crawlers", "sdr"]
+packages = ["app", "agents", "crawlers", "sdr", "sdr.gui"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -56,8 +61,14 @@ ignore = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/*" = ["S101", "N802", "N801", "C408", "RUF059", "B007"]
+"tests/*" = ["S101", "N802", "N801", "C408", "RUF059", "B007", "E402"]
 "app/logging.py" = ["A005"]
+# Qt signals are camelCase by convention and Qt overrides are PascalCase;
+# renaming them to satisfy pep8 would break the framework contract.
+"sdr/gui/*" = ["N802", "N815"]
+# IQSource.close() is an intentionally optional hook, not an unimplemented
+# abstract method: most sources have nothing to release.
+"sdr/sources.py" = ["B027"]
 
 [tool.mypy]
 python_version = "3.11"

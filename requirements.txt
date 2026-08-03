@@ -9,6 +9,15 @@ openpyxl>=3.1
 # pipeline above.
 numpy>=1.26
 
+# Optional: the desktop tracker application (sdr/gui). The tracker core and
+# its tests run without these -- install with `pip install -e '.[gui]'`.
+# PyQt6>=6.5
+# pyqtgraph>=0.13
+
+# Optional: live capture from an FMCOMMS5 / AD9361, which also needs libiio
+# installed on the host -- `pip install -e '.[sdr-hardware]'`.
+# pyadi-iio>=0.0.16
+
 # Optional: vision verification. The pipeline runs without it and degrades to
 # metadata-based identity verification.
 anthropic>=0.40 ; python_version >= "3.10"

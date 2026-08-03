@@ -77,6 +77,22 @@ class Detection:
     distance_meters: float
     signal_strength_dbm: float
     hops_observed: int
+    #: Every bearing this hop's phase is consistent with, in degrees. While
+    #: the track is unresolved the true emitter is somewhere in this set and
+    #: ``bearing_degrees`` is only the current best guess, so a display
+    #: should show the alternatives rather than imply a single answer.
+    candidate_bearings: list[float] = field(default_factory=list)
+
+
+@dataclass
+class FrameResult:
+    """Everything one capture frame produced: tracks plus the spectrum."""
+
+    detections: list[Detection]
+    spectrum_db: np.ndarray
+    frequencies_hz: np.ndarray
+    noise_floor_db: float
+    threshold_db: float
 
 
 @dataclass
@@ -447,6 +463,10 @@ class MultiDroneSDRTracker:
         distance_m: float,
     ) -> Detection:
         observation = _Observation(delta_phi_ns, delta_phi_ew, wavelength_m)
+        candidate_bearings = sorted(
+            self._bearing_from_u(*u)
+            for u in self._direction_cosine_pairs(delta_phi_ns, delta_phi_ew, wavelength_m)
+        )
         track = self._find_track(observation, rssi_dbm)
 
         if track is None:
@@ -478,6 +498,7 @@ class MultiDroneSDRTracker:
             distance_meters=round(float(track.distance_m), 1),
             signal_strength_dbm=round(float(track.rssi_dbm), 1),
             hops_observed=len(track.observations),
+            candidate_bearings=[round(b, 2) for b in candidate_bearings],
         )
 
     def _prune_stale_tracks(self, updated_ids: set[int]) -> None:
@@ -492,9 +513,19 @@ class MultiDroneSDRTracker:
     # ------------------------------------------------------------------
 
     def process_sdr_buffer(self, iq_matrix: np.ndarray) -> list[Detection]:
+        """Process one capture frame and return its detections.
+
+        Thin wrapper over :meth:`process_frame` for callers that only want
+        the tracks. Row 0 = North, 1 = East, 2 = South, 3 = West.
+        """
+        return self.process_frame(iq_matrix).detections
+
+    def process_frame(self, iq_matrix: np.ndarray) -> FrameResult:
         """Process one coherent capture frame from the four synchronized channels.
 
-        Row 0 = North, 1 = East, 2 = South, 3 = West.
+        Returns the detections together with the spectrum they were drawn
+        from, so a display can show what the tracker actually saw without
+        recomputing the FFT.
         """
         n_channels, n_samples = iq_matrix.shape
         if n_channels != 4:
@@ -507,12 +538,27 @@ class MultiDroneSDRTracker:
         # Combined power across all 4 channels: a target sitting in one
         # antenna's null still shows up through the other three.
         power_all = np.mean(np.abs(fft_output) ** 2, axis=0)
-        noise_threshold = np.median(power_all) * (10 ** (self.threshold_db / 10))
+        median_noise = float(np.median(power_all))
+        noise_threshold = median_noise * (10 ** (self.threshold_db / 10))
+
+        scale = self._coherent_gain**2
+        spectrum_db = 10 * np.log10(power_all / scale + 1e-30) + self.adc_full_scale_dbm
+        frequencies_hz = self.center_freq_hz + self._freqs
+        noise_floor_db = 10 * np.log10(median_noise / scale + 1e-30) + self.adc_full_scale_dbm
+
+        def _frame(dets: list[Detection]) -> FrameResult:
+            return FrameResult(
+                detections=dets,
+                spectrum_db=spectrum_db,
+                frequencies_hz=frequencies_hz,
+                noise_floor_db=float(noise_floor_db),
+                threshold_db=float(noise_floor_db + self.threshold_db),
+            )
 
         active_bins = np.where(power_all > noise_threshold)[0]
         if len(active_bins) == 0:
             self._prune_stale_tracks(set())
-            return []
+            return _frame([])
 
         detections: list[Detection] = []
         updated_track_ids: set[int] = set()
@@ -554,7 +600,7 @@ class MultiDroneSDRTracker:
             updated_track_ids.add(detection.track_id)
 
         self._prune_stale_tracks(updated_track_ids)
-        return detections
+        return _frame(detections)
 
 
 # --- Demonstration: two drones hopping simultaneously across the band at
