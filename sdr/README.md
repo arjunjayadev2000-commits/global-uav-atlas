@@ -165,12 +165,55 @@ Merely perturbing the existing array off its square lattice was tested and
 is *not* sufficient: it cuts seven aliases to two, but only suppresses the
 survivors to 0.99 relative height, which noise swallows.
 
+## Scanner logs (`sdr/scanner_log.py`)
+
+For sensors that emit a per-detection CSV rather than raw IQ — one row per
+detection with a frequency, a bandwidth and a received power for each of the
+four antennas — there is a separate path that does amplitude-comparison DF:
+
+```bash
+python -m sdr.scanner_log capture.csv        # drone-like emitters
+python -m sdr.scanner_log capture.csv --all  # everything, including BLE clutter
+```
+
+The estimator is the standard quadrature form,
+`bearing = atan2(P_E − P_W, P_N − P_S)` with powers in dB. It is far coarser
+than the phase method — tens of degrees, not fractions — but it needs no
+coherence.
+
+**Every log is screened before a bearing is reported.** That formula is only
+meaningful if all four powers were measured at the same instant, and real
+scanner logs often violate it: they sample antennas in pairs, hold the last
+value between updates, or emit a fixed-step ramp instead of a fresh
+measurement. Subtracting a held S value from a live N value produces a
+number that looks like a bearing and means nothing. Three failure modes are
+detected:
+
+| Screen | Trips when |
+| --- | --- |
+| Simultaneity | fewer than 30% of rows carry all four antennas |
+| Sample-and-hold | over 45% of consecutive samples move only one channel, usually by a fixed step |
+| Dead receive chain | an antenna reports on under 5% of detections |
+
+A log that fails produces emitters with `bearing_deg = None` and the reason
+attached, rather than a plausible-looking guess. Frequency, bandwidth, hop
+channels, timing and range are still reported — none of them compare
+channels against each other, so none are affected.
+
+This was built against real captures that fail all three screens. Bearings
+derived from them scored 1–2 correct out of 7 known truths, which is chance
+for a four-antenna array; suppressing them is the correct output, not a
+limitation of the estimator. `tests/test_scanner_log.py` proves the point
+from both directions: on a synthetic clean log the estimator recovers eight
+known bearings to within 10°, and on a synthetic held/ramped log it detects
+the artifact and suppresses.
+
 ## Tests
 
 ```bash
-pytest tests/test_sdr_tracker.py tests/test_sdr_app.py -q
+pytest tests/test_sdr_tracker.py tests/test_sdr_app.py tests/test_scanner_log.py -q
 ```
 
-38 tests. GUI tests run on Qt's offscreen platform and need no display;
+66 tests. GUI tests run on Qt's offscreen platform and need no display;
 they skip automatically when PyQt6 is absent. The live-hardware path is
 the one thing not covered.
