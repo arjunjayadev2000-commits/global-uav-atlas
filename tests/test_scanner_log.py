@@ -19,6 +19,7 @@ from datetime import datetime, timedelta
 import pytest
 
 from sdr.scanner_log import (
+    ANTENNA_GAIN_CORRECTION_DB,
     BORESIGHTS,
     Detection,
     analyse,
@@ -40,9 +41,18 @@ def _antenna_power(bearing_deg: float, boresight_deg: float, peak_dbm: float,
     return peak_dbm - 12.04 * (off / beamwidth_deg) ** 2
 
 
+NO_CORRECTION = (0.0, 0.0, 0.0, 0.0)
+
+
 def write_clean_log(path, bearing_deg: float, rows: int = 200, peak_dbm: float = -60.0,
-                    noise_db: float = 0.8, seed: int = 0) -> None:
-    """A well-formed log: all four antennas per row, independent noise."""
+                    noise_db: float = 0.8, seed: int = 0,
+                    chain_loss_db: tuple = (0.0, 0.0, 0.0, -20.0)) -> None:
+    """A well-formed log: all four antennas per row, independent noise.
+
+    ``chain_loss_db`` models the receive chains, defaulting to the real
+    array's 20 dB West loss so the loader's gain correction is exercised
+    rather than bypassed.
+    """
     rng = random.Random(seed)
     start = datetime(2026, 8, 3, 12, 0, 0)
     with open(path, "w", newline="", encoding="utf-8") as handle:
@@ -52,8 +62,8 @@ def write_clean_log(path, bearing_deg: float, rows: int = 200, peak_dbm: float =
         for i in range(rows):
             freq = 2406.0 + rng.uniform(-0.4, 0.4)
             powers = [
-                _antenna_power(bearing_deg, b, peak_dbm) + rng.gauss(0, noise_db)
-                for b in BORESIGHTS
+                _antenna_power(bearing_deg, b, peak_dbm) + rng.gauss(0, noise_db) + loss
+                for b, loss in zip(BORESIGHTS, chain_loss_db, strict=True)
             ]
             writer.writerow(
                 [(start + timedelta(milliseconds=100 * i)).isoformat(timespec="milliseconds"),
@@ -251,9 +261,64 @@ class TestEndToEnd:
                 w.writerow([(start + timedelta(milliseconds=100 * i)).isoformat(
                     timespec="milliseconds"), 1, "2406.100", "8.90", "FHSS DRONE"]
                     + [f"{p:.2f}" for p in powers])
-        _, emitters = analyse(path)
+        _, emitters = analyse(path, NO_CORRECTION)
         assert emitters[0].bearing_deg is None
         assert "inconsistent" in emitters[0].bearing_note
+
+
+class TestGainCorrection:
+    def test_west_correction_is_applied_on_load(self, tmp_path):
+        path = tmp_path / "log.csv"
+        write_clean_log(path, 0.0, rows=10, chain_loss_db=(0.0, 0.0, 0.0, 0.0))
+        raw = load_detections(path, NO_CORRECTION)
+        corrected = load_detections(path)
+        assert corrected[0].powers[3] - raw[0].powers[3] == pytest.approx(20.0)
+        for i in range(3):
+            assert corrected[0].powers[i] == pytest.approx(raw[0].powers[i])
+
+    def test_correction_restores_a_bearing_the_loss_would_skew(self, tmp_path):
+        """A 20 dB West loss drags the bearing away; the correction undoes it.
+
+        315 deg is used rather than due West: at 270 the north-south
+        difference is zero, so the bearing comes out right regardless of how
+        badly West is attenuated and the test would prove nothing.
+        """
+        truth = 315.0
+        path = tmp_path / "log.csv"
+        write_clean_log(path, truth, rows=150, seed=3)
+        _, corrected = analyse(path)
+        _, uncorrected = analyse(path, NO_CORRECTION)
+        assert corrected[0].bearing_deg is not None
+        assert abs((corrected[0].bearing_deg - truth + 180) % 360 - 180) < 10.0
+        # without it the same log points somewhere else entirely
+        assert abs((uncorrected[0].bearing_deg - truth + 180) % 360 - 180) > 25.0
+
+    def test_intermittent_antenna_is_kept_out_of_the_range_peak(self, tmp_path):
+        """Boosting a rarely-reporting antenna must not shorten the range.
+
+        West only fires on the loudest moments, so once +20 dB is added its
+        few samples top the log. Letting them set the peak would report a
+        drone far closer than it is.
+        """
+        path = tmp_path / "log.csv"
+        write_clean_log(path, 0.0, rows=100, chain_loss_db=(0.0, 0.0, 0.0, 0.0))
+        with open(path, newline="", encoding="utf-8") as handle:
+            rows = list(csv.reader(handle))
+        for row in rows[1:]:
+            row[8] = ""
+        rows[1][8] = "-30.00"          # one loud West outlier, becomes -10 after +20 dB
+        with open(path, "w", newline="", encoding="utf-8") as handle:
+            csv.writer(handle).writerows(rows)
+
+        integrity, emitters = analyse(path)
+        assert 3 in integrity.faulty_antennas
+        # the -10 dBm outlier must not drive the peak
+        assert emitters[0].peak_dbm < -40.0
+        assert emitters[0].range_m() > 5.0
+
+    def test_correction_constant_targets_west_only(self):
+        assert ANTENNA_GAIN_CORRECTION_DB[3] == 20.0
+        assert ANTENNA_GAIN_CORRECTION_DB[:3] == (0.0, 0.0, 0.0)
 
 
 def test_boresights_match_antenna_names():

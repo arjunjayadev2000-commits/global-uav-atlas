@@ -195,6 +195,20 @@ detected:
 | Sample-and-hold | over 45% of consecutive samples move only one channel, usually by a fixed step |
 | Dead receive chain | an antenna reports on under 5% of detections |
 
+### Per-antenna gain correction
+
+`ANTENNA_GAIN_CORRECTION_DB` adds a fixed dB offset to each channel on load,
+defaulting to **W +20 dB** for the current array's measured West-chain loss.
+Override it with `--gain-correction N,E,S,W`.
+
+Correcting a loss is not the same as fixing it. A 20 dB pad also costs 20 dB
+of sensitivity, so West still misses signals the other three detect, and the
+detections it does produce are a biased sample of the loudest moments.
+Adding 20 dB back makes those few samples the largest in the log — which is
+why an antenna that rarely reports is still flagged, and why the peak used
+for range **excludes flagged antennas**. Without that guard a single boosted
+West outlier reports a drone at 9 m when it is at 150 m.
+
 A log that fails produces emitters with `bearing_deg = None` and the reason
 attached, rather than a plausible-looking guess. Frequency, bandwidth, hop
 channels, timing and range are still reported — none of them compare
@@ -214,6 +228,6 @@ the artifact and suppresses.
 pytest tests/test_sdr_tracker.py tests/test_sdr_app.py tests/test_scanner_log.py -q
 ```
 
-66 tests. GUI tests run on Qt's offscreen platform and need no display;
+70 tests. GUI tests run on Qt's offscreen platform and need no display;
 they skip automatically when PyQt6 is absent. The live-hardware path is
 the one thing not covered.

@@ -41,6 +41,18 @@ from pathlib import Path
 BORESIGHTS = (0.0, 90.0, 180.0, 270.0)
 ANTENNA_NAMES = ("N", "E", "S", "W")
 
+#: Per-antenna gain correction in dB, added to the logged power to recover
+#: the level actually present at the antenna. The West chain on the current
+#: array has a measured 20 dB loss, so its logged values read 20 dB low.
+#:
+#: Correcting a loss is not the same as fixing it. A 20 dB pad also costs
+#: 20 dB of sensitivity, so West still fails to detect signals the other
+#: three see, and the detections it does produce are a biased sample of the
+#: loudest moments. Adding 20 dB back makes those few samples the largest in
+#: the log, which is why :func:`check_integrity` still flags an antenna that
+#: rarely reports and why the range calculation ignores flagged antennas.
+ANTENNA_GAIN_CORRECTION_DB = (0.0, 0.0, 0.0, 20.0)
+
 #: Free-space path loss at 1 m for 2.44 GHz is ~40.2 dB, so a 20 dBm EIRP
 #: emitter presents about -20 dBm at one metre. Both are assumptions: a real
 #: deployment should re-derive them from a reference emitter at a known range.
@@ -79,6 +91,10 @@ class LogIntegrity:
     quantised_step_db: float | None
     antenna_detections: list[int]
     problems: list[str] = field(default_factory=list)
+    #: Indices of antennas reporting too rarely to be trusted. Their levels
+    #: are a biased sample of the loudest moments, so they are excluded from
+    #: the peak used for range even when the log otherwise passes.
+    faulty_antennas: list[int] = field(default_factory=list)
 
     @property
     def bearings_trustworthy(self) -> bool:
@@ -95,6 +111,18 @@ class LogIntegrity:
                 for n, c in zip(ANTENNA_NAMES, self.antenna_detections, strict=True)
             ),
         ]
+        corrections = [
+            f"{n}{v:+.0f}dB"
+            for n, v in zip(ANTENNA_NAMES, ANTENNA_GAIN_CORRECTION_DB, strict=True)
+            if v
+        ]
+        if corrections:
+            lines.append("gain correction applied   " + "  ".join(corrections))
+        if self.faulty_antennas:
+            lines.append(
+                "excluded from range       "
+                + "  ".join(ANTENNA_NAMES[i] for i in self.faulty_antennas)
+            )
         if self.quantised_step_db:
             lines.append(f"dominant step size        {self.quantised_step_db:.1f} dB")
         if self.problems:
@@ -153,13 +181,18 @@ class Emitter:
 # ----------------------------------------------------------------------
 
 
-def load_detections(path: str | Path) -> list[Detection]:
-    """Read a scanner CSV into detections."""
+def load_detections(
+    path: str | Path,
+    gain_correction_db: tuple[float, float, float, float] = ANTENNA_GAIN_CORRECTION_DB,
+) -> list[Detection]:
+    """Read a scanner CSV into detections, applying per-antenna gain correction."""
     out: list[Detection] = []
     with open(path, newline="", encoding="utf-8") as handle:
         for row in csv.DictReader(handle):
             powers = [
-                float(row[f"ch{i}_pwr_dbm"]) if row.get(f"ch{i}_pwr_dbm") else None
+                float(row[f"ch{i}_pwr_dbm"]) + gain_correction_db[i]
+                if row.get(f"ch{i}_pwr_dbm")
+                else None
                 for i in range(4)
             ]
             if all(p is None for p in powers):
@@ -245,14 +278,18 @@ def check_integrity(
             + (f", mostly by {dominant_step:.1f} dB" if dominant_step else "")
             + " - values are held and ramped, not independently measured"
         )
-    for name, count in zip(ANTENNA_NAMES, counts, strict=True):
+    faulty: list[int] = []
+    for index, (name, count) in enumerate(zip(ANTENNA_NAMES, counts, strict=True)):
         if count < rows * min_antenna_share:
+            faulty.append(index)
             problems.append(
                 f"antenna {name} reported on only {count} of {rows} detections "
                 f"({count * 100 / rows:.1f}%) - receive chain looks dead or intermittent"
             )
 
-    return LogIntegrity(rows, simultaneous, single_fraction, dominant_step, counts, problems)
+    return LogIntegrity(
+        rows, simultaneous, single_fraction, dominant_step, counts, problems, faulty
+    )
 
 
 # ----------------------------------------------------------------------
@@ -322,6 +359,24 @@ def group_emitters(
     return emitters
 
 
+def _peak_excluding(cluster: list[Detection], faulty: list[int]) -> float:
+    """Strongest level across the antennas worth believing.
+
+    An intermittent antenna only fires on the loudest moments, so once its
+    gain correction is applied it dominates the peak and drives the range
+    estimate far too short. Trust the antennas that report consistently.
+    """
+    usable = [
+        v
+        for det in cluster
+        for i, v in enumerate(det.powers)
+        if v is not None and i not in faulty
+    ]
+    if usable:
+        return max(usable)
+    return max(det.peak_dbm for det in cluster)
+
+
 def _build_emitter(cluster: list[Detection], integrity: LogIntegrity) -> Emitter:
     medians: list[float | None] = []
     for i in range(4):
@@ -355,7 +410,7 @@ def _build_emitter(cluster: list[Detection], integrity: LogIntegrity) -> Emitter
         freq_max_mhz=max(d.freq_mhz for d in cluster),
         bandwidth_mhz=statistics.median([d.bandwidth_mhz for d in cluster]),
         detections=len(cluster),
-        peak_dbm=max(d.peak_dbm for d in cluster),
+        peak_dbm=_peak_excluding(cluster, integrity.faulty_antennas),
         signal_types=sorted({d.signal_type for d in cluster}),
         hop_channels=sorted({round(d.freq_mhz) for d in cluster}),
         antenna_medians=medians,
@@ -366,9 +421,12 @@ def _build_emitter(cluster: list[Detection], integrity: LogIntegrity) -> Emitter
     )
 
 
-def analyse(path: str | Path) -> tuple[LogIntegrity, list[Emitter]]:
+def analyse(
+    path: str | Path,
+    gain_correction_db: tuple[float, float, float, float] = ANTENNA_GAIN_CORRECTION_DB,
+) -> tuple[LogIntegrity, list[Emitter]]:
     """Load a scanner log, screen it, and return its emitters."""
-    detections = load_detections(path)
+    detections = load_detections(path, gain_correction_db)
     integrity = check_integrity(detections)
     return integrity, group_emitters(detections, integrity)
 
@@ -406,9 +464,17 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--all", action="store_true", help="show every emitter, not just drone-like ones"
     )
+    parser.add_argument(
+        "--gain-correction",
+        default=",".join(str(v) for v in ANTENNA_GAIN_CORRECTION_DB),
+        help="per-antenna dB correction as N,E,S,W (default: %(default)s)",
+    )
     args = parser.parse_args(argv)
 
-    integrity, emitters = analyse(args.path)
+    parts = [float(v) for v in args.gain_correction.split(",")]
+    if len(parts) != 4:
+        parser.error("--gain-correction needs four comma-separated values (N,E,S,W)")
+    integrity, emitters = analyse(args.path, (parts[0], parts[1], parts[2], parts[3]))
     print(_format(integrity, emitters, drones_only=not args.all))
     return 0
 
