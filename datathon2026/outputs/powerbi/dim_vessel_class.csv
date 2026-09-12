@@ -1,0 +1,7 @@
+length_class,min_length_m,max_length_m,solas_class
+<25 m (small craft),10.0498753,24.9999752,False
+25-50 m (coastal),25.0000782,49.9996033,False
+50-100 m (feeder),50.0007362,99.9979324,False
+100-160 m (handy),100.000175,159.993576,True
+160-250 m (panamax),160.01207,249.976257,True
+>250 m (capesize/VLCC),250.000504,422.057159,True

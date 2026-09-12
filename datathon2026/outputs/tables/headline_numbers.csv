@@ -1,0 +1,14 @@
+metric,value,definition
+Conflict records analysed,149825.0,weekly admin-unit x event-type rows
+Conflict weeks covered,601.0,2014-12-27 to 2026-06-27
+Conflict events,614134.0,sum of EVENTS
+Fatalities,552727.0,sum of FATALITIES
+Countries / water bodies,17.0,ACLED country field
+Maritime-domain events,1257.0,events ACLED places at sea
+SAR detections analysed,104840.0,after quality gates
+Sentinel-1 scenes,2830.0,distinct radar scenes
+Detection window,14.0,2026-03-01 to 2026-03-14
+Overall dark rate,0.3906,share unattributed to AIS
+SOLAS-class detections,39876.0,">= 100 m, AIS carriage mandatory"
+SOLAS-class dark rate,0.1516,the headline anomaly measure
+Distinct MMSIs matched,52862.0,identified vessels

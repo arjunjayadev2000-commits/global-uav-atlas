@@ -1,0 +1,54 @@
+{
+  "_comment": [
+    "Weights for the Maritime Supply-Chain Risk Index (MSRI).",
+    "The five components are each scaled to 0-1 inside the pipeline; these weights",
+    "decide how they trade off against each other. They are a DECLARED JUDGEMENT,",
+    "not a measurement: they are kept in this file precisely so that an assessor can",
+    "change them and re-run, and so that no weight is hidden inside analysis code.",
+    "Weights sum to 1.0.",
+    "",
+    "india_dependency is likewise an analyst-set 0-1 score for how exposed Indian",
+    "trade is to each corridor. Rationale for each value is given inline. It is used",
+    "only for the India-specific ranking, never for the global MSRI."
+  ],
+  "weights": {
+    "conflict_intensity": 0.25,
+    "escalation_trend": 0.15,
+    "identification_risk": 0.25,
+    "throughput_disruption": 0.20,
+    "strategic_criticality": 0.15
+  },
+  "tiers": {
+    "red_min": 0.60,
+    "amber_min": 0.35
+  },
+  "india_dependency": {
+    "hormuz": {"score": 1.0, "why": "Bulk of India's crude and LPG imports originate inside the Gulf and must transit Hormuz."},
+    "persian_gulf": {"score": 0.95, "why": "Loading ports for the same crude and LPG flows."},
+    "gulf_of_oman": {"score": 0.9, "why": "Immediate approach to Hormuz; Indian-flag and Indian-crewed tankers transit daily."},
+    "india_west_coast": {"score": 1.0, "why": "Kandla, Mumbai, JNPT, Cochin approaches - India's own gateway waters."},
+    "sri_lanka_corridor": {"score": 0.9, "why": "Main east-west lane south of Sri Lanka; India's container transhipment axis."},
+    "bab_el_mandeb": {"score": 0.8, "why": "Suez routing for India-Europe and India-US East Coast trade."},
+    "southern_red_sea": {"score": 0.8, "why": "Same corridor, northbound leg."},
+    "northern_red_sea": {"score": 0.75, "why": "Same corridor, approach to Suez."},
+    "suez_canal": {"score": 0.8, "why": "India-Europe container and refined-product flows."},
+    "gulf_of_aden": {"score": 0.75, "why": "Convoy and escort water for Indian-flag shipping; anti-piracy patrol area."},
+    "malacca": {"score": 0.7, "why": "India-East Asia trade and naval deployment route."},
+    "singapore_strait": {"score": 0.7, "why": "Transhipment hub for Indian containerised exports."},
+    "bay_of_bengal": {"score": 0.7, "why": "East-coast ports, coastal shipping and Andaman approaches."},
+    "arabian_sea": {"score": 0.65, "why": "Indian EEZ approaches and fleet operating area."},
+    "somali_basin": {"score": 0.5, "why": "Piracy risk water on the India-Africa route."},
+    "mozambique_channel": {"score": 0.45, "why": "India-Africa and LNG routes."},
+    "cape_of_good_hope": {"score": 0.5, "why": "Diversion route that Indian trade falls back on when Suez is unusable."},
+    "black_sea": {"score": 0.45, "why": "Sunflower oil and fertiliser imports; a supply concentration rather than a route India sails."},
+    "eastern_med": {"score": 0.4, "why": "Onward leg of the Suez route to European markets."},
+    "south_china_sea": {"score": 0.5, "why": "India-East Asia trade and ONGC Videsh interests off Vietnam."},
+    "taiwan_strait": {"score": 0.45, "why": "Electronics and semiconductor supply into Indian manufacturing."},
+    "gibraltar": {"score": 0.3, "why": "Atlantic leg of India-Europe and India-Americas routes."},
+    "dover": {"score": 0.25, "why": "North European destination leg."},
+    "panama": {"score": 0.2, "why": "Limited direct Indian dependence."},
+    "sunda": {"score": 0.3, "why": "Alternative to Malacca if it closes."},
+    "lombok": {"score": 0.3, "why": "Deep-draught alternative to Malacca."},
+    "gulf_of_guinea": {"score": 0.35, "why": "Crude imports from Nigeria and Angola; Indian seafarers frequently kidnapped here."}
+  }
+}

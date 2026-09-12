@@ -1,0 +1,190 @@
+country,year,events,fatalities
+Bahrain,2015,12,0
+Bahrain,2016,3212,5
+Bahrain,2017,3744,17
+Bahrain,2018,1602,0
+Bahrain,2019,715,1
+Bahrain,2020,299,0
+Bahrain,2021,1170,0
+Bahrain,2022,727,0
+Bahrain,2023,823,0
+Bahrain,2024,825,0
+Bahrain,2025,729,0
+Bahrain,2026,650,3
+Indian Ocean,2015,1,0
+Indian Ocean,2016,13,0
+Indian Ocean,2017,5,46
+Indian Ocean,2018,10,3
+Indian Ocean,2019,10,0
+Indian Ocean,2020,31,22
+Indian Ocean,2021,18,0
+Indian Ocean,2022,23,0
+Indian Ocean,2023,67,11
+Indian Ocean,2024,357,7
+Indian Ocean,2025,182,5
+Indian Ocean,2026,128,7
+Iran,2015,2,0
+Iran,2016,1778,257
+Iran,2017,2655,190
+Iran,2018,3061,202
+Iran,2019,2563,477
+Iran,2020,2261,366
+Iran,2021,4267,204
+Iran,2022,4608,735
+Iran,2023,4162,292
+Iran,2024,3758,250
+Iran,2025,4495,1305
+Iran,2026,8188,29361
+Iraq,2015,23,123
+Iraq,2016,10588,57735
+Iraq,2017,5238,30546
+Iraq,2018,3667,5159
+Iraq,2019,3721,3514
+Iraq,2020,6282,2662
+Iraq,2021,7600,2598
+Iraq,2022,7855,2136
+Iraq,2023,6553,1390
+Iraq,2024,9524,1023
+Iraq,2025,5377,597
+Iraq,2026,2390,325
+Israel,2015,3,2
+Israel,2016,211,15
+Israel,2017,431,10
+Israel,2018,800,7
+Israel,2019,833,11
+Israel,2020,1663,1
+Israel,2021,1655,25
+Israel,2022,1082,31
+Israel,2023,4304,1833
+Israel,2024,5621,99
+Israel,2025,2127,50
+Israel,2026,2342,34
+Jordan,2016,113,66
+Jordan,2017,134,34
+Jordan,2018,795,20
+Jordan,2019,842,25
+Jordan,2020,377,16
+Jordan,2021,404,9
+Jordan,2022,466,14
+Jordan,2023,463,7
+Jordan,2024,323,3
+Jordan,2025,92,9
+Jordan,2026,139,1
+Kuwait,2016,12,0
+Kuwait,2017,4,0
+Kuwait,2018,5,0
+Kuwait,2019,22,0
+Kuwait,2020,21,1
+Kuwait,2021,13,0
+Kuwait,2022,22,0
+Kuwait,2023,18,0
+Kuwait,2024,10,0
+Kuwait,2026,243,14
+Lebanon,2015,2,0
+Lebanon,2016,929,221
+Lebanon,2017,754,389
+Lebanon,2018,577,36
+Lebanon,2019,3658,25
+Lebanon,2020,2931,48
+Lebanon,2021,3210,74
+Lebanon,2022,1310,54
+Lebanon,2023,3294,291
+Lebanon,2024,14566,4036
+Lebanon,2025,3705,411
+Lebanon,2026,9169,2956
+Mediterranean Sea,2018,6,0
+Mediterranean Sea,2019,15,0
+Mediterranean Sea,2020,11,0
+Mediterranean Sea,2021,5,0
+Mediterranean Sea,2022,21,0
+Mediterranean Sea,2023,41,28
+Mediterranean Sea,2024,51,4
+Mediterranean Sea,2025,132,0
+Mediterranean Sea,2026,130,177
+Oman,2016,1,0
+Oman,2018,6,0
+Oman,2020,5,0
+Oman,2021,21,2
+Oman,2022,2,0
+Oman,2023,7,0
+Oman,2024,6,10
+Oman,2025,2,0
+Oman,2026,24,8
+Palestine,2015,2,0
+Palestine,2016,1220,178
+Palestine,2017,1704,125
+Palestine,2018,5870,411
+Palestine,2019,5190,183
+Palestine,2020,5548,58
+Palestine,2021,7225,395
+Palestine,2022,9147,230
+Palestine,2023,14327,23642
+Palestine,2024,21020,29945
+Palestine,2025,18420,16689
+Palestine,2026,6900,1002
+Qatar,2017,1,0
+Qatar,2019,4,0
+Qatar,2020,6,0
+Qatar,2021,19,0
+Qatar,2022,10,0
+Qatar,2023,20,0
+Qatar,2025,7,6
+Qatar,2026,88,8
+Saudi Arabia,2015,446,878
+Saudi Arabia,2016,723,1284
+Saudi Arabia,2017,769,1425
+Saudi Arabia,2018,847,1499
+Saudi Arabia,2019,296,1043
+Saudi Arabia,2020,120,54
+Saudi Arabia,2021,240,20
+Saudi Arabia,2022,63,89
+Saudi Arabia,2023,22,193
+Saudi Arabia,2024,5,12
+Saudi Arabia,2025,19,1
+Saudi Arabia,2026,154,5
+Syria,2016,465,568
+Syria,2017,31408,54334
+Syria,2018,20645,30244
+Syria,2019,19954,15122
+Syria,2020,12367,8390
+Syria,2021,10801,6093
+Syria,2022,12621,6178
+Syria,2023,12811,6327
+Syria,2024,15907,7111
+Syria,2025,10554,7877
+Syria,2026,4753,1278
+Turkey,2015,8,14
+Turkey,2016,4265,4526
+Turkey,2017,1764,2612
+Turkey,2018,3080,990
+Turkey,2019,4746,557
+Turkey,2020,4268,359
+Turkey,2021,4741,213
+Turkey,2022,5641,219
+Turkey,2023,6073,149
+Turkey,2024,7235,55
+Turkey,2025,5894,15
+Turkey,2026,2947,2
+United Arab Emirates,2017,1,0
+United Arab Emirates,2018,2,0
+United Arab Emirates,2019,2,0
+United Arab Emirates,2020,4,2
+United Arab Emirates,2021,4,0
+United Arab Emirates,2022,25,3
+United Arab Emirates,2023,4,0
+United Arab Emirates,2024,2,1
+United Arab Emirates,2025,4,0
+United Arab Emirates,2026,221,13
+Yemen,2014,15,27
+Yemen,2015,8077,17577
+Yemen,2016,9270,16034
+Yemen,2017,8461,17514
+Yemen,2018,11466,34199
+Yemen,2019,11819,27812
+Yemen,2020,11802,19704
+Yemen,2021,8823,18378
+Yemen,2022,8235,6679
+Yemen,2023,7593,2642
+Yemen,2024,12625,3055
+Yemen,2025,12750,2895
+Yemen,2026,3399,903

@@ -1,0 +1,244 @@
+admin_id,country,admin1,lat,lon,events,fatalities,weeks_active,is_maritime
+285,Bahrain,Capital,26.1927,50.5508,6914,9,513,False
+286,Bahrain,Muharraq,26.2547,50.6428,533,4,246,False
+287,Bahrain,Northern,26.1468,50.4809,6265,9,510,False
+288,Bahrain,Southern,25.9954,50.5421,796,4,308,False
+1329,Iran,Alborz,35.9457,50.906,909,1984,281,False
+1330,Iran,Ardabil,38.4066,47.9857,491,497,248,False
+1331,Iran,Bushehr,28.7846,51.5038,1162,28,346,False
+1332,Iran,Chaharmahal and Bakhtiari,31.979,50.8101,520,34,257,False
+1333,Iran,East Azerbaijan,38.0858,46.6924,1330,803,402,False
+1334,Iran,Fars,29.3576,53.3176,1505,2199,387,False
+1335,Iran,Gilan,37.5092,49.0189,1307,1085,424,False
+1336,Iran,Golestan,37.2982,54.8804,395,417,197,False
+1337,Iran,Hamadan,34.8698,48.559,621,370,255,False
+1338,Iran,Hormozgan,27.1422,55.0325,1252,301,352,False
+1339,Iran,Ilam,33.0433,46.8724,749,105,314,False
+1340,Iran,Isfahan,32.6094,52.0477,2332,2229,470,False
+1341,Iran,Kerman,29.2326,57.3392,1001,546,359,False
+1342,Iran,Kermanshah,34.4871,46.8086,1442,1070,415,False
+1343,Iran,Khuzestan,31.4636,48.9916,5203,1838,533,False
+1344,Iran,Kohgiluyeh and Boyer-Ahmad,30.7032,51.0949,791,24,351,False
+1345,Iran,Kurdistan,35.6014,47.0057,1600,405,417,False
+1346,Iran,Lorestan,33.5164,48.3219,1106,151,353,False
+1347,Iran,Markazi,34.4772,49.5818,927,921,330,False
+1348,Iran,Mazandaran,36.3633,52.3677,1170,408,331,False
+1349,Iran,North Khorasan,37.4249,57.178,342,72,174,False
+1350,Iran,Qazvin,36.1089,50.0386,811,26,340,False
+1351,Iran,Qom,34.6674,51.002,390,1935,192,False
+1352,Iran,Razavi Khorasan,35.7792,59.0295,1513,1891,424,False
+1353,Iran,Semnan,35.7868,54.9676,528,17,214,False
+1354,Iran,Sistan and Baluchestan,28.2728,60.8613,1680,1710,419,False
+1355,Iran,South Khorasan,32.8019,58.24,236,7,127,False
+1356,Iran,Tehran,35.5022,51.3269,8020,11118,541,False
+1357,Iran,West Azerbaijan,37.8742,44.7003,1275,852,400,False
+1358,Iran,Yazd,31.4825,54.4162,685,348,315,False
+1359,Iran,Zanjan,36.4014,48.422,505,248,264,False
+1360,Iraq,Al Anbar,33.1774,41.3987,6694,26224,541,False
+1361,Iraq,Al Basrah,30.2047,47.5084,3401,501,467,False
+1362,Iraq,Al Muthanna,30.4107,45.3606,1519,168,387,False
+1363,Iraq,Al Najaf,31.0697,43.38,538,148,276,False
+1364,Iraq,Al Qadissiya,31.8451,45.1666,938,201,302,False
+1365,Iraq,Al Sulaymaniyah,35.5263,45.379,1820,480,399,False
+1366,Iraq,Babil,32.5765,44.6371,822,509,388,False
+1367,Iraq,Baghdad,33.278,44.3783,6573,6742,546,False
+1368,Iraq,Diyala,34.0711,44.8903,3966,3801,537,False
+1369,Iraq,Duhok,37.0446,43.1386,16041,2792,517,False
+1370,Iraq,Erbil,36.3791,44.2104,5626,2794,524,False
+1371,Iraq,Kerbala,32.49,43.8069,389,176,227,False
+1372,Iraq,Kirkuk,35.2858,44.0603,3890,8174,542,False
+1373,Iraq,Maysan,31.999,47.135,1544,448,369,False
+1374,Iraq,Ninewa,35.9879,42.3496,8471,43787,544,False
+1375,Iraq,Salah Al Din,34.6687,43.6316,3516,10195,522,False
+1376,Iraq,Thi Qar,31.2876,46.2732,2389,581,405,False
+1377,Iraq,Wassit,32.7059,45.704,681,87,275,False
+1405,Israel,HaDarom,30.6783,34.8831,3938,1855,481,False
+1406,Israel,Haifa,32.6278,34.9819,2171,32,414,False
+1407,Israel,HaMerkaz,32.085,34.9167,3058,51,450,False
+1408,Israel,HaZafon,32.839,35.3807,7031,82,451,False
+1409,Israel,Jerusalem,31.7281,34.9945,2047,30,476,False
+1410,Israel,Tel Aviv,32.0984,34.8103,2827,68,471,False
+1506,Jordan,Ajlun,32.2912,35.7319,51,1,38,False
+1507,Jordan,Al Aqabah,29.9747,35.2057,147,2,109,False
+1508,Jordan,Al Balqa,31.9393,35.6476,235,18,106,False
+1509,Jordan,Al Karak,31.1106,35.8385,311,27,167,False
+1510,Jordan,Al Mafraq,32.5408,38.1525,197,76,129,False
+1511,Jordan,Amman,31.6696,36.3151,1703,17,426,False
+1512,Jordan,At Tafilah,30.8097,35.6612,115,0,84,False
+1513,Jordan,Az Zarqa,31.8608,36.8739,312,3,176,False
+1514,Jordan,Irbid,32.4735,35.8353,620,35,285,False
+1515,Jordan,Jerash,32.2431,35.9005,73,3,58,False
+1516,Jordan,Maan,30.2431,36.501,208,14,127,False
+1517,Jordan,Madaba,31.6029,35.6669,176,8,109,False
+1589,Kuwait,Al Ahmadi,28.8688,47.9227,49,6,10,False
+1590,Kuwait,Al Asimah,29.3474,47.9688,229,5,97,False
+1591,Kuwait,Al Farwaniyah,29.2476,47.9119,15,1,12,False
+1592,Kuwait,Al Jahra,29.4988,47.3671,69,3,20,False
+1593,Kuwait,Hawalli,29.3117,48.0552,6,0,4,False
+1594,Kuwait,Mubarak al Kabir,29.2228,48.0509,2,0,2,False
+1736,Lebanon,Akkar,34.5499,36.1901,1242,117,342,False
+1737,Lebanon,Baalbek-Hermel,34.1673,36.2993,2589,1642,460,False
+1738,Lebanon,Beirut,33.8886,35.5016,3112,157,498,False
+1739,Lebanon,Bekaa,33.6407,35.8097,2020,369,364,False
+1740,Lebanon,Mount Lebanon,33.8513,35.6478,3373,553,475,False
+1741,Lebanon,Al Nabatieh,33.2832,35.4971,17929,2862,428,False
+1742,Lebanon,North,34.3195,35.9369,2846,115,466,False
+1743,Lebanon,South,33.3416,35.3035,10994,2726,519,False
+2271,Oman,Ad Dakhiliyah,22.3885,57.2237,4,0,2,False
+2272,Oman,Ad Dhahirah,23.0064,55.9877,4,0,2,False
+2273,Oman,Al Batinah North,24.2357,56.5739,7,2,4,False
+2274,Oman,Al Batinah South,23.4831,57.6494,3,0,1,False
+2275,Oman,Al Buraymi,24.3297,56.0538,1,0,1,False
+2276,Oman,Al Wusta,20.4761,56.9042,3,0,2,False
+2277,Oman,Ash Sharqiyah North,21.7224,58.5473,1,0,1,False
+2278,Oman,Ash Sharqiyah South,22.1156,59.5208,4,2,2,False
+2279,Oman,Dhofar,18.8597,54.5566,13,1,9,False
+2280,Oman,Musandam,25.9953,56.303,13,6,10,False
+2281,Oman,Muscat,23.2501,58.7601,21,9,18,False
+2289,Palestine,Gaza Strip,31.407,34.3577,37943,70628,548,False
+2290,Palestine,West Bank,31.9475,35.267,58630,2230,549,False
+2501,Qatar,Ad Dawnah,25.2934,51.5014,106,7,40,False
+2503,Qatar,Al Wakrah,24.8527,51.2992,2,0,2,False
+2504,Qatar,Ar Rayyan,24.931,50.9784,26,0,13,False
+2505,Qatar,Ash Shamal,26.0015,51.2173,2,0,2,False
+2506,Qatar,Ash Sheehaniya,25.4451,51.0111,6,0,5,False
+2507,Qatar,Umm Salal,25.4782,51.3371,3,0,1,False
+2716,Saudi Arabia,Al Jawf,30.1511,39.7423,5,1,4,False
+2717,Saudi Arabia,Al Madinah,25.0041,39.9162,15,6,14,False
+2718,Saudi Arabia,Al Qassim,26.2766,43.325,3,4,3,False
+2719,Saudi Arabia,Ar Riyadh,23.4556,45.232,180,192,82,False
+2720,Saudi Arabia,Asir,19.2036,42.9532,433,343,200,False
+2721,Saudi Arabia,Eastern,23.1567,50.3153,163,130,77,False
+2722,Saudi Arabia,Hail,27.0911,41.45,2,6,2,False
+2723,Saudi Arabia,Jizan,17.353,42.7999,1948,4182,293,False
+2724,Saudi Arabia,Mecca,21.0317,41.4478,55,25,42,False
+2725,Saudi Arabia,Najran,18.2376,45.6117,893,1606,261,False
+2726,Saudi Arabia,Northern Borders,29.8425,42.6838,2,7,2,False
+2727,Saudi Arabia,Tabuk,27.2704,38.9507,5,1,5,False
+3180,Syria,Al Hasakeh,36.4131,40.5519,11806,7125,496,False
+3181,Syria,Aleppo,36.1445,37.3978,27835,19132,496,False
+3182,Syria,Ar Raqqa,36.0265,38.922,10133,14099,494,False
+3183,Syria,As Sweida,32.7624,36.8919,3082,2316,429,False
+3184,Syria,Damascus,33.5153,36.2738,2318,3408,356,False
+3185,Syria,Dara,32.831,36.1112,10068,9226,495,False
+3186,Syria,Deir ez Zor,35.2318,40.2761,17990,26425,496,False
+3187,Syria,Hama,35.3165,37.3411,18594,14474,495,False
+3188,Syria,Homs,34.4708,38.2063,6191,8976,470,False
+3189,Syria,Idleb,35.8547,36.5648,27713,16659,493,False
+3190,Syria,Lattakia,35.5854,35.9916,3330,3898,473,False
+3191,Syria,Quneitra,33.0113,35.7989,3423,831,372,False
+3192,Syria,Rural Damascus,33.4538,37.4305,9381,16083,489,False
+3193,Syria,Tartous,34.9536,36.075,422,870,116,False
+3347,Turkey,Adana,37.4745,35.3726,1377,12,442,False
+3348,Turkey,Adiyaman,37.815,38.2092,278,19,184,False
+3349,Turkey,Afyonkarahisar,38.5248,30.6111,89,0,64,False
+3350,Turkey,Agri,39.466,43.4673,453,197,272,False
+3351,Turkey,Aksaray,38.5127,33.8656,35,0,28,False
+3352,Turkey,Amasya,40.6554,35.8544,105,0,86,False
+3353,Turkey,Ankara,39.7073,32.5011,4520,255,519,False
+3354,Turkey,Antalya,36.7628,31.9301,724,7,327,False
+3355,Turkey,Ardahan,41.1153,42.9326,37,15,33,False
+3356,Turkey,Artvin,41.0385,41.8484,193,2,133,False
+3357,Turkey,Aydin,37.7322,28.0578,559,1,283,False
+3358,Turkey,Balikesir,39.8038,27.9824,541,3,274,False
+3359,Turkey,Bartin,41.571,32.4886,47,0,36,False
+3360,Turkey,Batman,38.0226,41.3125,936,65,406,False
+3361,Turkey,Bayburt,40.2477,40.2223,41,0,27,False
+3362,Turkey,Bilecik,40.1112,30.1285,93,0,65,False
+3363,Turkey,Bingol,39.0247,40.718,325,206,214,False
+3364,Turkey,Bitlis,38.4969,42.2274,565,274,272,False
+3365,Turkey,Bolu,40.5731,31.59,130,2,104,False
+3366,Turkey,Burdur,37.326,30.2481,58,0,45,False
+3367,Turkey,Bursa,40.1017,28.9389,851,4,323,False
+3368,Turkey,Canakkale,39.9635,26.8428,502,0,240,False
+3369,Turkey,Cankiri,40.6726,33.4398,38,0,27,False
+3370,Turkey,Corum,40.646,34.7294,125,0,87,False
+3371,Turkey,Denizli,37.6788,29.2458,360,1,218,False
+3372,Turkey,Diyarbakir,38.1105,40.2245,3849,1072,538,False
+3373,Turkey,Duzce,40.8687,31.2116,96,0,70,False
+3374,Turkey,Edirne,41.2961,26.6957,289,20,194,False
+3375,Turkey,Elazig,38.7101,39.3439,225,58,157,False
+3376,Turkey,Erzincan,39.5452,39.043,110,46,89,False
+3377,Turkey,Erzurum,40.0725,41.4751,267,56,179,False
+3378,Turkey,Eskisehir,39.6143,31.0627,542,3,264,False
+3379,Turkey,Gaziantep,37.1146,37.2439,507,100,283,False
+3380,Turkey,Giresun,40.5664,38.4409,114,7,94,False
+3381,Turkey,Gumushane,40.3376,39.4286,54,11,39,False
+3382,Turkey,Hakkari,37.3909,43.9965,2103,1930,509,False
+3383,Turkey,Hatay,36.4111,36.2273,762,103,350,False
+3384,Turkey,Igdir,39.8813,43.9762,151,16,124,False
+3385,Turkey,Isparta,37.9293,30.8094,37,0,33,False
+3386,Turkey,Istanbul,41.2707,28.4707,8487,331,541,False
+3387,Turkey,Izmir,38.5994,27.042,4436,17,509,False
+3388,Turkey,Kahramanmaras,37.8852,36.8854,135,5,109,False
+3389,Turkey,Karabuk,41.2036,32.5224,69,1,51,False
+3390,Turkey,Karaman,37.0098,33.1805,53,0,38,False
+3391,Turkey,Kars,40.5157,43.0403,170,76,115,False
+3392,Turkey,Kastamonu,41.4214,33.7891,58,0,47,False
+3393,Turkey,Kayseri,38.5057,35.9186,301,16,148,False
+3394,Turkey,Kilis,36.8316,37.0107,97,14,65,False
+3395,Turkey,Kirikkale,39.8662,33.6922,51,1,43,False
+3396,Turkey,Kirklareli,41.6597,27.5054,175,0,136,False
+3397,Turkey,Kirsehir,39.3091,34.0422,63,0,47,False
+3398,Turkey,Kocaeli,40.8691,29.8208,868,2,346,False
+3399,Turkey,Konya,38.0284,32.412,253,17,163,False
+3400,Turkey,Kutahya,39.3321,29.606,139,0,78,False
+3401,Turkey,Malatya,38.5104,37.8439,288,3,191,False
+3402,Turkey,Manisa,38.7462,28.0939,393,0,231,False
+3403,Turkey,Mardin,37.3257,40.7757,1284,796,444,False
+3404,Turkey,Mersin,36.7331,33.7591,1184,11,405,False
+3405,Turkey,Mugla,36.946,28.646,1165,9,339,False
+3406,Turkey,Mus,39.009,41.9466,418,83,269,False
+3407,Turkey,Nevsehir,38.8286,34.6035,61,0,44,False
+3408,Turkey,Nigde,37.8547,34.7331,62,0,45,False
+3409,Turkey,Ordu,40.738,37.411,179,12,116,False
+3410,Turkey,Osmaniye,37.3416,36.2986,127,34,106,False
+3411,Turkey,Rize,40.9104,40.817,155,0,112,False
+3412,Turkey,Sakarya,40.7353,30.5722,200,10,150,False
+3413,Turkey,Samsun,41.2783,35.8756,436,1,241,False
+3414,Turkey,Sanliurfa,37.3442,38.9233,985,82,379,False
+3415,Turkey,Siirt,37.9278,42.0911,553,360,284,False
+3416,Turkey,Sinop,41.6486,34.992,73,2,58,False
+3417,Turkey,Sirnak,37.4379,42.5882,1910,2403,501,False
+3418,Turkey,Sivas,39.5473,37.2125,156,0,114,False
+3419,Turkey,Tekirdag,41.0734,27.3901,268,1,191,False
+3420,Turkey,Tokat,40.4006,36.6865,74,0,60,False
+3421,Turkey,Trabzon,40.8094,39.7814,204,8,152,False
+3422,Turkey,Tunceli,39.1892,39.347,962,502,422,False
+3423,Turkey,Usak,38.5491,29.3243,68,0,55,False
+3424,Turkey,Van,38.5455,43.5949,1766,420,488,False
+3425,Turkey,Yalova,40.5992,29.2123,56,9,41,False
+3426,Turkey,Yozgat,39.6218,35.2999,50,0,39,False
+3427,Turkey,Zonguldak,41.2978,31.8293,142,0,102,False
+3472,United Arab Emirates,Abu Dhabi,23.7727,53.7133,177,11,30,False
+3474,United Arab Emirates,Al Fujayrah,25.4363,56.2301,15,2,8,False
+3475,United Arab Emirates,Ash Shariqah,25.1368,55.8094,9,2,8,False
+3476,United Arab Emirates,Dubai,24.9904,55.3711,64,4,18,False
+3477,United Arab Emirates,Ras Al Khaymah,25.698,55.9686,3,0,1,False
+3478,United Arab Emirates,Umm Al Qaywayn,25.4619,55.7262,1,0,1,False
+3674,Yemen,Abyan,13.6274,46.228,3507,3655,559,False
+3675,Yemen,Ad Dali,13.8943,44.7825,5363,11149,559,False
+3676,Yemen,Aden,12.8058,44.788,4215,3592,588,False
+3677,Yemen,Al Bayda,14.326,45.216,3989,9731,583,False
+3678,Yemen,Al Hudaydah,14.7791,43.2181,16198,18730,593,False
+3679,Yemen,Al Jawf,16.5962,45.5989,5823,16021,569,False
+3680,Yemen,Al Mahrah,17.0575,51.8238,422,38,218,False
+3681,Yemen,Al Mahwit,15.3084,43.4994,1395,79,224,False
+3682,Yemen,Amanat al Asimah,15.4201,44.1919,3922,2398,561,False
+3683,Yemen,Amran,16.1156,43.9414,1638,711,405,False
+3684,Yemen,Dhamar,14.5395,44.3063,1625,683,394,False
+3685,Yemen,Hadramawt,16.5288,48.6269,1852,1215,507,False
+3686,Yemen,Hajjah,16.0944,43.2039,6444,10625,554,False
+3687,Yemen,Ibb,14.0881,44.175,5326,1575,500,False
+3688,Yemen,Lahij,13.3204,44.7623,3610,5109,569,False
+3689,Yemen,Marib,15.3329,45.4523,10593,24062,597,False
+3690,Yemen,Raymah,14.657,43.6874,672,49,214,False
+3691,Yemen,Sadah,17.0883,44.0424,15628,21304,582,False
+3692,Yemen,Sanaa,15.3931,44.4753,5196,7965,528,False
+3693,Yemen,Shabwah,14.651,46.62,3379,4812,565,False
+3694,Yemen,Suqutra,12.5081,53.893,291,10,148,False
+3695,Yemen,Taizz,13.2949,43.7855,13247,23906,600,False
+3853,Qatar,Al Khor,25.7618,51.3405,10,7,5,False
+4199,Indian Ocean,North Indian Ocean,13.7278,70.4734,845,101,216,True
+4202,Mediterranean Sea,Wider Black Sea Region,43.4965,34.2569,305,30,118,True
+4203,Mediterranean Sea,Eastern Mediterranean Sea,34.924,28.7224,107,179,70,True

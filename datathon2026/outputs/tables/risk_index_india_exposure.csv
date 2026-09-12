@@ -1,0 +1,26 @@
+chokepoint,msri,india_dependency,india_exposure,india_dependency_note
+Strait of Hormuz,0.6220357556503646,1.0,0.6220357556503646,Bulk of India's crude and LPG imports originate inside the Gulf and must transit Hormuz.
+Southern Red Sea,0.6953524680179409,0.8,0.5562819744143528,"Same corridor, northbound leg."
+Bab-el-Mandeb,0.6772603943996036,0.8,0.5418083155196829,Suez routing for India-Europe and India-US East Coast trade.
+Gulf of Aden,0.722365964070668,0.75,0.541774473053001,Convoy and escort water for Indian-flag shipping; anti-piracy patrol area.
+Gulf of Oman,0.5873411263072245,0.9,0.528607013676502,Immediate approach to Hormuz; Indian-flag and Indian-crewed tankers transit daily.
+India West Coast corridor,0.5182485136985734,1.0,0.5182485136985734,"Kandla, Mumbai, JNPT, Cochin approaches - India's own gateway waters."
+Persian Gulf,0.5179153721014618,0.95,0.4920196034963887,Loading ports for the same crude and LPG flows.
+Suez Canal & Gulf of Suez,0.5443944230355459,0.8,0.4355155384284367,India-Europe container and refined-product flows.
+Dondra Head / Sri Lanka corridor,0.3651478690531659,0.9,0.3286330821478493,Main east-west lane south of Sri Lanka; India's container transhipment axis.
+Black Sea,0.6669857377663934,0.45,0.300143581994877,Sunflower oil and fertiliser imports; a supply concentration rather than a route India sails.
+Eastern Mediterranean,0.6594209122495447,0.4,0.26376836489981786,Onward leg of the Suez route to European markets.
+Northern & Central Red Sea,0.3450995030209242,0.75,0.2588246272656931,"Same corridor, approach to Suez."
+Strait of Malacca,0.3178352051952922,0.7,0.2224846436367045,India-East Asia trade and naval deployment route.
+Bay of Bengal,0.3138438224668524,0.7,0.21969067572679665,"East-coast ports, coastal shipping and Andaman approaches."
+South China Sea,0.42221096953721526,0.5,0.21110548476860763,India-East Asia trade and ONGC Videsh interests off Vietnam.
+Singapore Strait,0.29273184906480165,0.7,0.20491229434536115,Transhipment hub for Indian containerised exports.
+Cape of Good Hope corridor,0.3869422250655258,0.5,0.1934711125327629,Diversion route that Indian trade falls back on when Suez is unusable.
+Mozambique Channel,0.33230039603915507,0.45,0.14953517821761977,India-Africa and LNG routes.
+Taiwan Strait,0.33197373367435756,0.45,0.14938818015346092,Electronics and semiconductor supply into Indian manufacturing.
+Gulf of Guinea,0.3200476873967567,0.35,0.11201669058886483,Crude imports from Nigeria and Angola; Indian seafarers frequently kidnapped here.
+Strait of Gibraltar,0.3043817249163057,0.3,0.09131451747489171,Atlantic leg of India-Europe and India-Americas routes.
+Turkish Straits (Bosphorus-Dardanelles),0.4434216251319395,0.2,0.0886843250263879,
+Panama Canal approaches,0.32634380277683295,0.2,0.0652687605553666,Limited direct Indian dependence.
+Sunda Strait,0.16914414238071449,0.3,0.05074324271421434,Alternative to Malacca if it closes.
+Dover Strait / English Channel,0.1488029309103772,0.25,0.0372007327275943,North European destination leg.

@@ -1,0 +1,613 @@
+admin_id,chokepoint_id,chokepoint,country,admin1,distance_km,decay_weight
+2723,bab_el_mandeb,Bab-el-Mandeb,Saudi Arabia,Jizan,395.07612006974244,0.07180215420915967
+2725,bab_el_mandeb,Bab-el-Mandeb,Saudi Arabia,Najran,515.9772411502104,0.032069550732667686
+3674,bab_el_mandeb,Bab-el-Mandeb,Yemen,Abyan,219.15470876371336,0.23199687163048743
+3675,bab_el_mandeb,Bab-el-Mandeb,Yemen,Ad Dali,63.75687876020793,0.6537398049800528
+3676,bab_el_mandeb,Bab-el-Mandeb,Yemen,Aden,63.75642426677835,0.653741785786027
+3677,bab_el_mandeb,Bab-el-Mandeb,Yemen,Al Bayda,124.21910945046675,0.4368665988249506
+3678,bab_el_mandeb,Bab-el-Mandeb,Yemen,Al Hudaydah,108.87110305665206,0.4839337055210344
+3679,bab_el_mandeb,Bab-el-Mandeb,Yemen,Al Jawf,345.25518186481696,0.10008842712994696
+3681,bab_el_mandeb,Bab-el-Mandeb,Yemen,Al Mahwit,167.72665902426115,0.3268749076037415
+3682,bab_el_mandeb,Bab-el-Mandeb,Yemen,Amanat al Asimah,180.14714948634654,0.30089888630210265
+3683,bab_el_mandeb,Bab-el-Mandeb,Yemen,Amran,257.48332778876903,0.17968400141038415
+3684,bab_el_mandeb,Bab-el-Mandeb,Yemen,Dhamar,83.02353929465374,0.5749396144977587
+3685,bab_el_mandeb,Bab-el-Mandeb,Yemen,Hadramawt,563.6825530101665,0.023333068241722904
+3686,bab_el_mandeb,Bab-el-Mandeb,Yemen,Hajjah,255.12599208781796,0.18253014395331313
+3687,bab_el_mandeb,Bab-el-Mandeb,Yemen,Ibb,32.03530261528093,0.8076966823241511
+3688,bab_el_mandeb,Bab-el-Mandeb,Yemen,Lahij,60.84286465703125,0.6665640148336089
+3689,bab_el_mandeb,Bab-el-Mandeb,Yemen,Marib,217.2926802578389,0.23489471925640962
+3690,bab_el_mandeb,Bab-el-Mandeb,Yemen,Raymah,95.29418376013757,0.5297794143551173
+3691,bab_el_mandeb,Bab-el-Mandeb,Yemen,Sadah,365.6427823319263,0.08736866812375339
+3692,bab_el_mandeb,Bab-el-Mandeb,Yemen,Sanaa,179.60462565670628,0.3019891555446031
+3693,bab_el_mandeb,Bab-el-Mandeb,Yemen,Shabwah,277.4707669358693,0.15726781279427626
+3695,bab_el_mandeb,Bab-el-Mandeb,Yemen,Taizz,0.0,1.0
+3347,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Adana,518.2438864517376,0.03158859178572423
+3349,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Afyonkarahisar,146.15805369650528,0.3774236340579811
+3351,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Aksaray,346.9262983887541,0.09897955263121061
+3352,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Amasya,476.90729548154377,0.04161136425241491
+3353,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Ankara,196.97831712366664,0.26896102971462843
+3354,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Antalya,369.9254653395595,0.08490945980773452
+3357,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Aydin,229.92918690689953,0.2159169910087287
+3358,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Balikesir,0.0,1.0
+3359,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Bartin,190.38037035911427,0.28105568302147504
+3362,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Bilecik,0.0,1.0
+3365,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Bolu,117.399847987715,0.45718568703399737
+3366,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Burdur,275.128401110611,0.15974294639241424
+3367,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Bursa,0.0,1.0
+3368,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Canakkale,0.0,1.0
+3369,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Cankiri,273.2146062479258,0.16179410509237535
+3370,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Corum,382.09921298595657,0.07829057241858761
+3371,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Denizli,235.8670041913694,0.2075367815352877
+3373,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Duzce,85.06188207962981,0.5671796321569995
+3374,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Edirne,0.0,1.0
+3378,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Eskisehir,76.6332805499348,0.5999622532472528
+3385,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Isparta,214.5980484673382,0.23915254753668114
+3386,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Istanbul,0.0,1.0
+3387,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Izmir,133.50081332837905,0.41065352610519723
+3389,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Karabuk,194.28675534822298,0.2738307578109862
+3390,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Karaman,404.55521632823104,0.0674050879175831
+3392,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Kastamonu,299.24200659256326,0.13602090244367365
+3393,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Kayseri,513.567404034182,0.032588927564549314
+3395,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Kirikkale,298.0300172384277,0.13712439374390964
+3396,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Kirklareli,6.638346289941869,0.956709351180763
+3397,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Kirsehir,333.8695076897066,0.1079813536739066
+3398,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Kocaeli,0.0,1.0
+3399,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Konya,274.63183068803767,0.16027264683652204
+3400,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Kutahya,52.02817804127009,0.7069081615823388
+3402,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Manisa,117.17737555009681,0.45786426488742776
+3404,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Mersin,461.2673459266466,0.046184287344465245
+3405,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Mugla,317.35075898650325,0.12055228417631024
+3407,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Nevsehir,393.8804808156873,0.07237677110916593
+3408,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Nigde,448.2323491417511,0.05037724666277568
+3410,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Osmaniye,596.32293551254,0.01877017252775282
+3412,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Sakarya,31.36010392186072,0.8113405823237476
+3413,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Samsun,474.19517350278085,0.042370574441883135
+3416,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Sinop,398.29714527955116,0.07027674708111674
+3419,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Tekirdag,0.0,1.0
+3420,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Tokat,549.1441697409451,0.02570779227677482
+3423,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Usak,139.09392586412574,0.39562327784397905
+3425,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Yalova,0.0,1.0
+3426,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Yozgat,436.6355867976866,0.05442651085227336
+3427,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Turkey,Zonguldak,136.10922497060903,0.40357423393512637
+4202,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Mediterranean Sea,Wider Black Sea Region,393.52318364020255,0.07254937670511441
+4203,bosphorus,Turkish Straits (Bosphorus-Dardanelles),Mediterranean Sea,Eastern Mediterranean Sea,542.1872112187064,0.026928194781941424
+285,hormuz,Strait of Hormuz,Bahrain,Capital,394.02400965641505,0.07230754987157458
+286,hormuz,Strait of Hormuz,Bahrain,Muharraq,384.64042944984146,0.07697538914855517
+287,hormuz,Strait of Hormuz,Bahrain,Northern,401.155541206023,0.06895023443288119
+288,hormuz,Strait of Hormuz,Bahrain,Southern,395.5587412375908,0.07157150386713847
+1331,hormuz,Strait of Hormuz,Iran,Bushehr,331.77778952243733,0.1094976785781796
+1334,hormuz,Strait of Hormuz,Iran,Fars,246.4978257685914,0.19333732100060838
+1338,hormuz,Strait of Hormuz,Iran,Hormozgan,0.0,1.0
+1341,hormuz,Strait of Hormuz,Iran,Kerman,203.77610403597257,0.257044165093125
+1344,hormuz,Strait of Hormuz,Iran,Kohgiluyeh and Boyer-Ahmad,494.36699577808554,0.037039144287738086
+1354,hormuz,Strait of Hormuz,Iran,Sistan and Baluchestan,279.08868714112117,0.15558061650191254
+1358,hormuz,Strait of Hormuz,Iran,Yazd,454.02637866915325,0.04846843467033244
+2271,hormuz,Strait of Hormuz,Oman,Ad Dakhiliyah,290.3859520298711,0.144293429641945
+2272,hormuz,Strait of Hormuz,Oman,Ad Dhahirah,221.6785119535714,0.2281260968933915
+2273,hormuz,Strait of Hormuz,Oman,Al Batinah North,84.98639982248913,0.567465117306783
+2274,hormuz,Strait of Hormuz,Oman,Al Batinah South,168.67181720624586,0.32482172637764284
+2275,hormuz,Strait of Hormuz,Oman,Al Buraymi,74.53406228053706,0.6084176256398628
+2276,hormuz,Strait of Hormuz,Oman,Al Wusta,503.0354234684795,0.03495934410078953
+2277,hormuz,Strait of Hormuz,Oman,Ash Sharqiyah North,366.1725193978908,0.08706066283720366
+2278,hormuz,Strait of Hormuz,Oman,Ash Sharqiyah South,347.8311538859314,0.09838426864097595
+2280,hormuz,Strait of Hormuz,Oman,Musandam,0.0,1.0
+2281,hormuz,Strait of Hormuz,Oman,Muscat,202.71142077879824,0.25887512617770786
+2501,hormuz,Strait of Hormuz,Qatar,Ad Dawnah,301.4579839200559,0.1340262111181177
+2503,hormuz,Strait of Hormuz,Qatar,Al Wakrah,323.16773010783544,0.11596677700205774
+2504,hormuz,Strait of Hormuz,Qatar,Ar Rayyan,355.0686628573217,0.09374992453904335
+2505,hormuz,Strait of Hormuz,Qatar,Ash Shamal,328.06506808845546,0.11224172730438275
+2506,hormuz,Strait of Hormuz,Qatar,Ash Sheehaniya,350.3064990361713,0.0967740247332983
+2507,hormuz,Strait of Hormuz,Qatar,Umm Salal,317.4883933181949,0.1204417206880634
+2721,hormuz,Strait of Hormuz,Saudi Arabia,Eastern,471.6495288907927,0.04309578025399676
+3472,hormuz,Strait of Hormuz,United Arab Emirates,Abu Dhabi,158.02311408308933,0.3487194922052571
+3474,hormuz,Strait of Hormuz,United Arab Emirates,Al Fujayrah,0.0,1.0
+3475,hormuz,Strait of Hormuz,United Arab Emirates,Ash Shariqah,0.0,1.0
+3476,hormuz,Strait of Hormuz,United Arab Emirates,Dubai,1.0674727702417504,0.9929087770838032
+3477,hormuz,Strait of Hormuz,United Arab Emirates,Ras Al Khaymah,0.0,1.0
+3478,hormuz,Strait of Hormuz,United Arab Emirates,Umm Al Qaywayn,0.0,1.0
+3853,hormuz,Strait of Hormuz,Qatar,Al Khor,316.39506112083654,0.12132281328442979
+1405,suez_canal,Suez Canal & Gulf of Suez,Israel,HaDarom,27.073648783410047,0.8348602011760983
+1406,suez_canal,Suez Canal & Gulf of Suez,Israel,Haifa,119.81223519276935,0.44989177073685793
+1407,suez_canal,Suez Canal & Gulf of Suez,Israel,HaMerkaz,61.67118186543817,0.6628933162108954
+1408,suez_canal,Suez Canal & Gulf of Suez,Israel,HaZafon,156.12191110633066,0.3531675316551882
+1409,suez_canal,Suez Canal & Gulf of Suez,Israel,Jerusalem,39.96132552782712,0.7661258429862345
+1410,suez_canal,Suez Canal & Gulf of Suez,Israel,Tel Aviv,58.87182202555377,0.6753806551507644
+1506,suez_canal,Suez Canal & Gulf of Suez,Jordan,Ajlun,131.5789039322868,0.4159489706790616
+1507,suez_canal,Suez Canal & Gulf of Suez,Jordan,Al Aqabah,58.34235231223537,0.6777688248954098
+1508,suez_canal,Suez Canal & Gulf of Suez,Jordan,Al Balqa,105.97729878463711,0.49336040606898846
+1509,suez_canal,Suez Canal & Gulf of Suez,Jordan,Al Karak,117.90713797462043,0.4556421271388702
+1510,suez_canal,Suez Canal & Gulf of Suez,Jordan,Al Mafraq,350.6826131535372,0.09653167485166933
+1511,suez_canal,Suez Canal & Gulf of Suez,Jordan,Amman,162.55534432899645,0.3383405671964759
+1512,suez_canal,Suez Canal & Gulf of Suez,Jordan,At Tafilah,101.34684547050404,0.5088277967506455
+1513,suez_canal,Suez Canal & Gulf of Suez,Jordan,Az Zarqa,216.99628564721812,0.23535932164973294
+1514,suez_canal,Suez Canal & Gulf of Suez,Jordan,Irbid,151.6301761820557,0.3639030324460357
+1515,suez_canal,Suez Canal & Gulf of Suez,Jordan,Jerash,142.0503125566668,0.3879021803241853
+1516,suez_canal,Suez Canal & Gulf of Suez,Jordan,Maan,182.60984288992753,0.29599907413078175
+1517,suez_canal,Suez Canal & Gulf of Suez,Jordan,Madaba,101.042340085591,0.5098617846058124
+1736,suez_canal,Suez Canal & Gulf of Suez,Lebanon,Akkar,359.90758421653356,0.09077386231541686
+1737,suez_canal,Suez Canal & Gulf of Suez,Lebanon,Baalbek-Hermel,326.59246413878174,0.11334907141453922
+1738,suez_canal,Suez Canal & Gulf of Suez,Lebanon,Beirut,268.08343961790433,0.16742447401844526
+1739,suez_canal,Suez Canal & Gulf of Suez,Lebanon,Bekaa,253.62043797596132,0.18437142906848822
+1740,suez_canal,Suez Canal & Gulf of Suez,Lebanon,Mount Lebanon,268.8330767577859,0.1665898439622067
+1741,suez_canal,Suez Canal & Gulf of Suez,Lebanon,Al Nabatieh,205.22238558423115,0.2545776867213876
+1742,suez_canal,Suez Canal & Gulf of Suez,Lebanon,North,327.0989426888464,0.11296699100703914
+1743,suez_canal,Suez Canal & Gulf of Suez,Lebanon,South,204.5920990394861,0.25564964989426825
+2289,suez_canal,Suez Canal & Gulf of Suez,Palestine,Gaza Strip,0.0,1.0
+2290,suez_canal,Suez Canal & Gulf of Suez,Palestine,West Bank,73.9498950283893,0.6107916965043225
+2716,suez_canal,Suez Canal & Gulf of Suez,Saudi Arabia,Al Jawf,494.3944103161589,0.03703237549942575
+2717,suez_canal,Suez Canal & Gulf of Suez,Saudi Arabia,Al Madinah,588.7504206012015,0.019742081514460465
+2727,suez_canal,Suez Canal & Gulf of Suez,Saudi Arabia,Tabuk,429.9402507291528,0.056910903064876325
+3181,suez_canal,Suez Canal & Gulf of Suez,Syria,Aleppo,567.4398641184657,0.02275586356993533
+3183,suez_canal,Suez Canal & Gulf of Suez,Syria,As Sweida,251.44689748936867,0.18706247071351503
+3184,suez_canal,Suez Canal & Gulf of Suez,Syria,Damascus,264.4987933238408,0.1714737151033964
+3185,suez_canal,Suez Canal & Gulf of Suez,Syria,Dara,197.34806786341906,0.2682988559160853
+3187,suez_canal,Suez Canal & Gulf of Suez,Syria,Hama,485.1673280867715,0.039381904142255154
+3188,suez_canal,Suez Canal & Gulf of Suez,Syria,Homs,463.51813177478834,0.04549645452910533
+3189,suez_canal,Suez Canal & Gulf of Suez,Syria,Idleb,506.75948520676,0.034102091302808765
+3190,suez_canal,Suez Canal & Gulf of Suez,Syria,Lattakia,461.5045708242274,0.0461113046518153
+3191,suez_canal,Suez Canal & Gulf of Suez,Syria,Quneitra,193.1872589791319,0.275845304908224
+3192,suez_canal,Suez Canal & Gulf of Suez,Syria,Rural Damascus,335.9958290995385,0.10646146460590894
+3193,suez_canal,Suez Canal & Gulf of Suez,Syria,Tartous,397.2988804776762,0.07074600551642223
+3354,suez_canal,Suez Canal & Gulf of Suez,Turkey,Antalya,574.113910064412,0.021765566700109807
+3383,suez_canal,Suez Canal & Gulf of Suez,Turkey,Hatay,555.5741564792295,0.024629072870068484
+3404,suez_canal,Suez Canal & Gulf of Suez,Turkey,Mersin,570.7754663467475,0.022255418417280362
+4203,suez_canal,Suez Canal & Gulf of Suez,Mediterranean Sea,Eastern Mediterranean Sea,478.9735453830908,0.04104209756281728
+286,gulf_of_oman,Gulf of Oman,Bahrain,Muharraq,594.0222250430841,0.019060289977275515
+1331,gulf_of_oman,Gulf of Oman,Iran,Bushehr,562.5254371748539,0.023513758027392254
+1334,gulf_of_oman,Gulf of Oman,Iran,Fars,452.671041634872,0.048908359595812884
+1338,gulf_of_oman,Gulf of Oman,Iran,Hormozgan,171.15343848668724,0.3194920387726188
+1341,gulf_of_oman,Gulf of Oman,Iran,Kerman,303.8516762461523,0.1319044025812682
+1354,gulf_of_oman,Gulf of Oman,Iran,Sistan and Baluchestan,197.12663823800722,0.26869521049402056
+1358,gulf_of_oman,Gulf of Oman,Iran,Yazd,593.301355160672,0.019152110362352568
+2271,gulf_of_oman,Gulf of Oman,Oman,Ad Dakhiliyah,0.0,1.0
+2272,gulf_of_oman,Gulf of Oman,Oman,Ad Dhahirah,62.66932312819228,0.658496885485112
+2273,gulf_of_oman,Gulf of Oman,Oman,Al Batinah North,2.646405550461242,0.9825120175900188
+2274,gulf_of_oman,Gulf of Oman,Oman,Al Batinah South,0.0,1.0
+2275,gulf_of_oman,Gulf of Oman,Oman,Al Buraymi,55.34085416788164,0.6914675694737357
+2276,gulf_of_oman,Gulf of Oman,Oman,Al Wusta,169.45018276788068,0.3231405583910066
+2277,gulf_of_oman,Gulf of Oman,Oman,Ash Sharqiyah North,30.867754272828694,0.8140080460179401
+2278,gulf_of_oman,Gulf of Oman,Oman,Ash Sharqiyah South,0.0,1.0
+2279,gulf_of_oman,Gulf of Oman,Oman,Dhofar,408.9631442689379,0.06545313021019034
+2280,gulf_of_oman,Gulf of Oman,Oman,Musandam,29.68379948500868,0.820458460683399
+2281,gulf_of_oman,Gulf of Oman,Oman,Muscat,0.0,1.0
+2501,gulf_of_oman,Gulf of Oman,Qatar,Ad Dawnah,512.5568830931385,0.032809214036727645
+2503,gulf_of_oman,Gulf of Oman,Qatar,Al Wakrah,534.8034709645376,0.028286900167816646
+2504,gulf_of_oman,Gulf of Oman,Qatar,Ar Rayyan,566.8050979520269,0.02285236529457127
+2505,gulf_of_oman,Gulf of Oman,Qatar,Ash Shamal,537.910067578952,0.027707085142073477
+2506,gulf_of_oman,Gulf of Oman,Qatar,Ash Sheehaniya,561.1340113938392,0.02373289047204257
+2507,gulf_of_oman,Gulf of Oman,Qatar,Umm Salal,528.262089076956,0.02954776239965468
+3472,gulf_of_oman,Gulf of Oman,United Arab Emirates,Abu Dhabi,293.74664686433454,0.14109653477157472
+3474,gulf_of_oman,Gulf of Oman,United Arab Emirates,Al Fujayrah,37.1439414144334,0.7806516369454406
+3475,gulf_of_oman,Gulf of Oman,United Arab Emirates,Ash Shariqah,79.58522301750928,0.5882706467164742
+3476,gulf_of_oman,Gulf of Oman,United Arab Emirates,Dubai,123.8540654656152,0.4379310637151644
+3477,gulf_of_oman,Gulf of Oman,United Arab Emirates,Ras Al Khaymah,63.26433497856106,0.6558899697207234
+3478,gulf_of_oman,Gulf of Oman,United Arab Emirates,Umm Al Qaywayn,87.72486588596004,0.5571992187151864
+3853,gulf_of_oman,Gulf of Oman,Qatar,Al Khor,526.6685292177368,0.029863343275511003
+2279,gulf_of_aden,Gulf of Aden,Oman,Dhofar,489.33783124611944,0.03830203663704131
+2720,gulf_of_aden,Gulf of Aden,Saudi Arabia,Asir,464.45235984416513,0.04521397467839205
+2723,gulf_of_aden,Gulf of Aden,Saudi Arabia,Jizan,282.2127899567019,0.15237379494240816
+2725,gulf_of_aden,Gulf of Aden,Saudi Arabia,Najran,337.7661757173799,0.10521235897977319
+3674,gulf_of_aden,Gulf of Aden,Yemen,Abyan,0.0,1.0
+3675,gulf_of_aden,Gulf of Aden,Yemen,Ad Dali,0.0,1.0
+3676,gulf_of_aden,Gulf of Aden,Yemen,Aden,0.0,1.0
+3677,gulf_of_aden,Gulf of Aden,Yemen,Al Bayda,0.0,1.0
+3678,gulf_of_aden,Gulf of Aden,Yemen,Al Hudaydah,105.5702281117391,0.4947011081309957
+3679,gulf_of_aden,Gulf of Aden,Yemen,Al Jawf,155.25057102205884,0.3552250286468629
+3680,gulf_of_aden,Gulf of Aden,Yemen,Al Mahrah,206.5448615337876,0.25234306618277996
+3681,gulf_of_aden,Gulf of Aden,Yemen,Al Mahwit,76.11894926025433,0.6020229799454406
+3682,gulf_of_aden,Gulf of Aden,Yemen,Amanat al Asimah,24.48944999922853,0.8493677753165164
+3683,gulf_of_aden,Gulf of Aden,Yemen,Amran,105.50793068253684,0.4949066081835256
+3684,gulf_of_aden,Gulf of Aden,Yemen,Dhamar,0.0,1.0
+3685,gulf_of_aden,Gulf of Aden,Yemen,Hadramawt,147.75602261431857,0.3734242333680961
+3686,gulf_of_aden,Gulf of Aden,Yemen,Hajjah,145.82940828017712,0.3782514642511338
+3687,gulf_of_aden,Gulf of Aden,Yemen,Ibb,2.696265509082544,0.9821854851390606
+3688,gulf_of_aden,Gulf of Aden,Yemen,Lahij,0.0,1.0
+3689,gulf_of_aden,Gulf of Aden,Yemen,Marib,14.777826163036764,0.9061786190633098
+3690,gulf_of_aden,Gulf of Aden,Yemen,Raymah,55.14373361559847,0.6923768499303014
+3691,gulf_of_aden,Gulf of Aden,Yemen,Sadah,210.6432751559217,0.24554169697944808
+3692,gulf_of_aden,Gulf of Aden,Yemen,Sanaa,21.471769993095254,0.8666282831562577
+3693,gulf_of_aden,Gulf of Aden,Yemen,Shabwah,0.0,1.0
+3694,gulf_of_aden,Gulf of Aden,Yemen,Suqutra,205.4958979746926,0.25411390866901046
+3695,gulf_of_aden,Gulf of Aden,Yemen,Taizz,44.8551037754699,0.7415341781794395
+2719,southern_red_sea,Southern Red Sea,Saudi Arabia,Ar Riyadh,464.1171995834654,0.04531511381264543
+2720,southern_red_sea,Southern Red Sea,Saudi Arabia,Asir,0.0,1.0
+2723,southern_red_sea,Southern Red Sea,Saudi Arabia,Jizan,0.0,1.0
+2724,southern_red_sea,Southern Red Sea,Saudi Arabia,Mecca,170.3175043937025,0.3212775045082476
+2725,southern_red_sea,Southern Red Sea,Saudi Arabia,Najran,191.3317770631711,0.2792786694473997
+3674,southern_red_sea,Southern Red Sea,Yemen,Abyan,262.9851691933802,0.17321278636693785
+3675,southern_red_sea,Southern Red Sea,Yemen,Ad Dali,106.05250182556108,0.4931131200443192
+3676,southern_red_sea,Southern Red Sea,Yemen,Aden,153.78994599287398,0.3587009282539354
+3677,southern_red_sea,Southern Red Sea,Yemen,Al Bayda,152.55578991881356,0.3616643889756285
+3678,southern_red_sea,Southern Red Sea,Yemen,Al Hudaydah,0.0,1.0
+3679,southern_red_sea,Southern Red Sea,Yemen,Al Jawf,191.6952904170672,0.27860267871175476
+3681,southern_red_sea,Southern Red Sea,Yemen,Al Mahwit,0.0,1.0
+3682,southern_red_sea,Southern Red Sea,Yemen,Amanat al Asimah,42.00865669414971,0.7557401254563514
+3683,southern_red_sea,Southern Red Sea,Yemen,Amran,15.10512758318629,0.9042034844020467
+3684,southern_red_sea,Southern Red Sea,Yemen,Dhamar,54.49510086007246,0.695377321295101
+3685,southern_red_sea,Southern Red Sea,Yemen,Hadramawt,514.5359377964812,0.0323791822671152
+3686,southern_red_sea,Southern Red Sea,Yemen,Hajjah,0.0,1.0
+3687,southern_red_sea,Southern Red Sea,Yemen,Ibb,40.44397837812176,0.7636646526328482
+3688,southern_red_sea,Southern Red Sea,Yemen,Lahij,116.89361604870224,0.458731240240597
+3689,southern_red_sea,Southern Red Sea,Yemen,Marib,177.18755266679327,0.3068947723849575
+3690,southern_red_sea,Southern Red Sea,Yemen,Raymah,0.0,1.0
+3691,southern_red_sea,Southern Red Sea,Yemen,Sadah,25.763762399362005,0.8421826064407747
+3692,southern_red_sea,Southern Red Sea,Yemen,Sanaa,72.39633158582008,0.6171505938343991
+3693,southern_red_sea,Southern Red Sea,Yemen,Shabwah,303.37225099314674,0.13232666571102603
+3695,southern_red_sea,Southern Red Sea,Yemen,Taizz,56.16463502595745,0.6876805263194877
+285,persian_gulf,Persian Gulf,Bahrain,Capital,0.0,1.0
+286,persian_gulf,Persian Gulf,Bahrain,Muharraq,0.0,1.0
+287,persian_gulf,Persian Gulf,Bahrain,Northern,0.0,1.0
+288,persian_gulf,Persian Gulf,Bahrain,Southern,0.0,1.0
+1329,persian_gulf,Persian Gulf,Iran,Alborz,594.4155404043968,0.019010377411541508
+1331,persian_gulf,Persian Gulf,Iran,Bushehr,0.0,1.0
+1332,persian_gulf,Persian Gulf,Iran,Chaharmahal and Bakhtiari,153.3380156420411,0.35978327683143513
+1334,persian_gulf,Persian Gulf,Iran,Fars,0.0,1.0
+1337,persian_gulf,Persian Gulf,Iran,Hamadan,474.780753581138,0.04220548779437409
+1338,persian_gulf,Persian Gulf,Iran,Hormozgan,0.0,1.0
+1339,persian_gulf,Persian Gulf,Iran,Ilam,276.216731131349,0.1585881206026973
+1340,persian_gulf,Persian Gulf,Iran,Isfahan,223.4353942212606,0.22546974561932315
+1341,persian_gulf,Persian Gulf,Iran,Kerman,71.72723605584673,0.6199096274742465
+1342,persian_gulf,Persian Gulf,Iran,Kermanshah,435.7638027776003,0.05474375293073627
+1343,persian_gulf,Persian Gulf,Iran,Khuzestan,96.02807128967854,0.5271937547533798
+1344,persian_gulf,Persian Gulf,Iran,Kohgiluyeh and Boyer-Ahmad,11.475332280099966,0.9263508622335018
+1345,persian_gulf,Persian Gulf,Iran,Kurdistan,557.3408541822602,0.024340693623804806
+1346,persian_gulf,Persian Gulf,Iran,Lorestan,324.2893319930744,0.11510288712409332
+1347,persian_gulf,Persian Gulf,Iran,Markazi,431.1255650814535,0.05646295983953358
+1351,persian_gulf,Persian Gulf,Iran,Qom,452.27486934187107,0.049037704576736126
+1353,persian_gulf,Persian Gulf,Iran,Semnan,576.7466421552879,0.021386880314618294
+1354,persian_gulf,Persian Gulf,Iran,Sistan and Baluchestan,417.28651901531333,0.061920119068058346
+1355,persian_gulf,Persian Gulf,Iran,South Khorasan,289.84868951446487,0.14481117931985157
+1356,persian_gulf,Persian Gulf,Iran,Tehran,545.1005223208247,0.026410239553896386
+1358,persian_gulf,Persian Gulf,Iran,Yazd,98.12965830609234,0.5198589667191754
+1361,persian_gulf,Persian Gulf,Iraq,Al Basrah,0.0,1.0
+1362,persian_gulf,Persian Gulf,Iraq,Al Muthanna,195.5692206397963,0.2714995480459568
+1363,persian_gulf,Persian Gulf,Iraq,Al Najaf,387.3338987157274,0.07560551933096525
+1364,persian_gulf,Persian Gulf,Iraq,Al Qadissiya,253.50584879729237,0.18451232935130804
+1365,persian_gulf,Persian Gulf,Iraq,Al Sulaymaniyah,579.2087501598405,0.02103870026006991
+1366,persian_gulf,Persian Gulf,Iraq,Babil,341.71830559829374,0.10247647311635866
+1367,persian_gulf,Persian Gulf,Iraq,Baghdad,412.2330780307021,0.06404172081947794
+1368,persian_gulf,Persian Gulf,Iraq,Diyala,452.24981657597846,0.049045895461615974
+1371,persian_gulf,Persian Gulf,Iraq,Kerbala,400.0888714092067,0.06944229613419636
+1373,persian_gulf,Persian Gulf,Iraq,Maysan,157.5861216775203,0.3497368919373212
+1375,persian_gulf,Persian Gulf,Iraq,Salah Al Din,573.6501943950698,0.02183295770953508
+1376,persian_gulf,Persian Gulf,Iraq,Thi Qar,131.88409588443412,0.4151035358480323
+1377,persian_gulf,Persian Gulf,Iraq,Wassit,283.8974062290273,0.15067209271668372
+1589,persian_gulf,Persian Gulf,Kuwait,Al Ahmadi,0.0,1.0
+1590,persian_gulf,Persian Gulf,Kuwait,Al Asimah,0.0,1.0
+1591,persian_gulf,Persian Gulf,Kuwait,Al Farwaniyah,0.0,1.0
+1592,persian_gulf,Persian Gulf,Kuwait,Al Jahra,3.1840757484423996,0.9789965390407593
+1593,persian_gulf,Persian Gulf,Kuwait,Hawalli,0.0,1.0
+1594,persian_gulf,Persian Gulf,Kuwait,Mubarak al Kabir,0.0,1.0
+2271,persian_gulf,Persian Gulf,Oman,Ad Dakhiliyah,139.1183486453861,0.3955588682824815
+2272,persian_gulf,Persian Gulf,Oman,Ad Dhahirah,54.88589160327215,0.6935680323617399
+2273,persian_gulf,Persian Gulf,Oman,Al Batinah North,0.0,1.0
+2274,persian_gulf,Persian Gulf,Oman,Al Batinah South,107.03313407948342,0.48989988396281503
+2275,persian_gulf,Persian Gulf,Oman,Al Buraymi,0.0,1.0
+2276,persian_gulf,Persian Gulf,Oman,Al Wusta,337.70201989730464,0.10525736850564653
+2277,persian_gulf,Persian Gulf,Oman,Ash Sharqiyah North,281.10289369269924,0.15350543716917284
+2278,persian_gulf,Persian Gulf,Oman,Ash Sharqiyah South,336.6279942724417,0.10601373386667112
+2279,persian_gulf,Persian Gulf,Oman,Dhofar,515.9785308076628,0.03206927500895234
+2280,persian_gulf,Persian Gulf,Oman,Musandam,0.0,1.0
+2281,persian_gulf,Persian Gulf,Oman,Muscat,222.22116023030003,0.22730230633122261
+2501,persian_gulf,Persian Gulf,Qatar,Ad Dawnah,0.0,1.0
+2503,persian_gulf,Persian Gulf,Qatar,Al Wakrah,0.0,1.0
+2504,persian_gulf,Persian Gulf,Qatar,Ar Rayyan,0.0,1.0
+2505,persian_gulf,Persian Gulf,Qatar,Ash Shamal,0.0,1.0
+2506,persian_gulf,Persian Gulf,Qatar,Ash Sheehaniya,0.0,1.0
+2507,persian_gulf,Persian Gulf,Qatar,Umm Salal,0.0,1.0
+2718,persian_gulf,Persian Gulf,Saudi Arabia,Al Qassim,406.28105825629115,0.0666339955232726
+2719,persian_gulf,Persian Gulf,Saudi Arabia,Ar Riyadh,221.16676644449342,0.2289057093851113
+2721,persian_gulf,Persian Gulf,Saudi Arabia,Eastern,38.17327104417179,0.7753129895853472
+2722,persian_gulf,Persian Gulf,Saudi Arabia,Hail,588.9662136595912,0.019713700573062553
+2726,persian_gulf,Persian Gulf,Saudi Arabia,Northern Borders,454.8467692981709,0.048204071269466756
+3472,persian_gulf,Persian Gulf,United Arab Emirates,Abu Dhabi,0.0,1.0
+3474,persian_gulf,Persian Gulf,United Arab Emirates,Al Fujayrah,0.0,1.0
+3475,persian_gulf,Persian Gulf,United Arab Emirates,Ash Shariqah,0.0,1.0
+3476,persian_gulf,Persian Gulf,United Arab Emirates,Dubai,0.0,1.0
+3477,persian_gulf,Persian Gulf,United Arab Emirates,Ras Al Khaymah,0.0,1.0
+3478,persian_gulf,Persian Gulf,United Arab Emirates,Umm Al Qaywayn,0.0,1.0
+3853,persian_gulf,Persian Gulf,Qatar,Al Khor,0.0,1.0
+1362,northern_red_sea,Northern & Central Red Sea,Iraq,Al Muthanna,476.1321272594453,0.04182695956303013
+1363,northern_red_sea,Northern & Central Red Sea,Iraq,Al Najaf,440.0456714961463,0.05320314275834884
+1364,northern_red_sea,Northern & Central Red Sea,Iraq,Al Qadissiya,590.8494955731812,0.01946773815436509
+1405,northern_red_sea,Northern & Central Red Sea,Israel,HaDarom,375.6503395529444,0.08172988152709507
+1406,northern_red_sea,Northern & Central Red Sea,Israel,Haifa,592.4251484682169,0.019264312465916613
+1407,northern_red_sea,Northern & Central Red Sea,Israel,HaMerkaz,532.0684589174551,0.028807397722794188
+1409,northern_red_sea,Northern & Central Red Sea,Israel,Jerusalem,492.3829347821075,0.0375323181979057
+1410,northern_red_sea,Northern & Central Red Sea,Israel,Tel Aviv,533.5584729925839,0.028522658097133793
+1506,northern_red_sea,Northern & Central Red Sea,Jordan,Ajlun,554.9968844616095,0.024724039989644786
+1507,northern_red_sea,Northern & Central Red Sea,Jordan,Al Aqabah,297.41348110063,0.13768916792187766
+1508,northern_red_sea,Northern & Central Red Sea,Jordan,Al Balqa,515.8673357274289,0.03209305679330575
+1509,northern_red_sea,Northern & Central Red Sea,Jordan,Al Karak,423.71997273790095,0.059320530528403734
+1510,northern_red_sea,Northern & Central Red Sea,Jordan,Al Mafraq,582.7511764878992,0.020547667600249887
+1511,northern_red_sea,Northern & Central Red Sea,Jordan,Amman,485.8780225884451,0.039195755455047825
+1512,northern_red_sea,Northern & Central Red Sea,Jordan,At Tafilah,390.2613730956306,0.07414427013881533
+1513,northern_red_sea,Northern & Central Red Sea,Jordan,Az Zarqa,507.13852192909735,0.03401602712080719
+1514,northern_red_sea,Northern & Central Red Sea,Jordan,Irbid,575.2677475881824,0.021598782810305764
+1515,northern_red_sea,Northern & Central Red Sea,Jordan,Jerash,549.6484011023762,0.025621519528771307
+1516,northern_red_sea,Northern & Central Red Sea,Jordan,Maan,327.2582406353108,0.11284708528951914
+1517,northern_red_sea,Northern & Central Red Sea,Jordan,Madaba,478.4613107368691,0.04118249170436315
+1592,northern_red_sea,Northern & Central Red Sea,Kuwait,Al Jahra,579.0212803984101,0.021065010832224514
+2289,northern_red_sea,Northern & Central Red Sea,Palestine,Gaza Strip,456.67819451911964,0.047619101949044895
+2290,northern_red_sea,Northern & Central Red Sea,Palestine,West Bank,516.7791353853446,0.03189856559417089
+2716,northern_red_sea,Northern & Central Red Sea,Saudi Arabia,Al Jawf,317.02829325382555,0.12081172281424771
+2717,northern_red_sea,Northern & Central Red Sea,Saudi Arabia,Al Madinah,0.0,1.0
+2718,northern_red_sea,Northern & Central Red Sea,Saudi Arabia,Al Qassim,132.1085392402308,0.41448288542944617
+2719,northern_red_sea,Northern & Central Red Sea,Saudi Arabia,Ar Riyadh,329.67936508984144,0.11104026075457951
+2720,northern_red_sea,Northern & Central Red Sea,Saudi Arabia,Asir,105.29366453122174,0.49561405823320354
+2722,northern_red_sea,Northern & Central Red Sea,Saudi Arabia,Hail,0.0,1.0
+2723,northern_red_sea,Northern & Central Red Sea,Saudi Arabia,Jizan,253.20833390230203,0.18487866030287023
+2724,northern_red_sea,Northern & Central Red Sea,Saudi Arabia,Mecca,0.0,1.0
+2725,northern_red_sea,Northern & Central Red Sea,Saudi Arabia,Najran,405.10261406659635,0.06715955358866063
+2726,northern_red_sea,Northern & Central Red Sea,Saudi Arabia,Northern Borders,290.4901705749675,0.14419321078615932
+2727,northern_red_sea,Northern & Central Red Sea,Saudi Arabia,Tabuk,0.0,1.0
+3678,northern_red_sea,Northern & Central Red Sea,Yemen,Al Hudaydah,540.6506984129059,0.027205449148052376
+3679,northern_red_sea,Northern & Central Red Sea,Yemen,Al Jawf,498.98287249033035,0.03591671534806061
+3681,northern_red_sea,Northern & Central Red Sea,Yemen,Al Mahwit,492.47468593977135,0.037509367660119544
+3682,northern_red_sea,Northern & Central Red Sea,Yemen,Amanat al Asimah,509.7424292715628,0.03343062570646412
+3683,northern_red_sea,Northern & Central Red Sea,Yemen,Amran,428.77711316931186,0.057353919869465975
+3686,northern_red_sea,Northern & Central Red Sea,Yemen,Hajjah,399.553697104045,0.0696904968569567
+3689,northern_red_sea,Northern & Central Red Sea,Yemen,Marib,590.5793358555962,0.01950283240600081
+3690,northern_red_sea,Northern & Central Red Sea,Yemen,Raymah,567.5785674483677,0.02273483120195258
+3691,northern_red_sea,Northern & Central Red Sea,Yemen,Sadah,344.092787230341,0.10086705514802333
+3692,northern_red_sea,Northern & Central Red Sea,Yemen,Sanaa,526.7385074257829,0.029849414636443063
+1330,black_sea,Black Sea,Iran,Ardabil,577.5739845919903,0.021269243208927202
+1333,black_sea,Black Sea,Iran,East Azerbaijan,503.3097104948555,0.03489547654847269
+1357,black_sea,Black Sea,Iran,West Azerbaijan,399.6674360502757,0.06963767339527185
+1369,black_sea,Black Sea,Iraq,Duhok,429.0297836845408,0.05725739022971129
+1370,black_sea,Black Sea,Iraq,Erbil,527.7367291237338,0.029651431913530805
+1374,black_sea,Black Sea,Iraq,Ninewa,535.9470929215433,0.028072056739864973
+3180,black_sea,Black Sea,Syria,Al Hasakeh,487.8016974764856,0.03869629900327242
+3181,black_sea,Black Sea,Syria,Aleppo,517.6686960272126,0.03170995402847553
+3182,black_sea,Black Sea,Syria,Ar Raqqa,530.7897154947692,0.029054029293215884
+3189,black_sea,Black Sea,Syria,Idleb,549.8930302788904,0.025579768441649556
+3190,black_sea,Black Sea,Syria,Lattakia,579.8378653857809,0.020950646597693738
+3347,black_sea,Black Sea,Turkey,Adana,369.7792393166139,0.08499227331693089
+3348,black_sea,Black Sea,Turkey,Adiyaman,331.91731449709556,0.10939587486053175
+3349,black_sea,Black Sea,Turkey,Afyonkarahisar,252.99104654733412,0.1851466663376613
+3350,black_sea,Black Sea,Turkey,Agri,193.80635352221302,0.2747091556470466
+3351,black_sea,Black Sea,Turkey,Aksaray,254.33650701815927,0.18349337540865807
+3352,black_sea,Black Sea,Turkey,Amasya,16.07880860176882,0.8983531211054828
+3353,black_sea,Black Sea,Turkey,Ankara,121.50286417118186,0.44484957197301606
+3354,black_sea,Black Sea,Turkey,Antalya,448.91677791881904,0.050147906036254165
+3355,black_sea,Black Sea,Turkey,Ardahan,78.12634498091678,0.5940199942260462
+3356,black_sea,Black Sea,Turkey,Artvin,0.0,1.0
+3357,black_sea,Black Sea,Turkey,Aydin,341.12426714043255,0.1028831108868567
+3358,black_sea,Black Sea,Turkey,Balikesir,110.77253892864489,0.47783796330712536
+3359,black_sea,Black Sea,Turkey,Bartin,0.0,1.0
+3360,black_sea,Black Sea,Turkey,Batman,308.83321584061474,0.12759576406514544
+3361,black_sea,Black Sea,Turkey,Bayburt,61.41304281297971,0.6640350894001222
+3362,black_sea,Black Sea,Turkey,Bilecik,76.5911712648577,0.6001307034342529
+3363,black_sea,Black Sea,Turkey,Bingol,197.40462593859033,0.26819771187324976
+3364,black_sea,Black Sea,Turkey,Bitlis,256.832093574258,0.18046580643975943
+3365,black_sea,Black Sea,Turkey,Bolu,25.230163704989195,0.8451838584177387
+3366,black_sea,Black Sea,Turkey,Burdur,386.29170873129283,0.0761326505467591
+3367,black_sea,Black Sea,Turkey,Bursa,77.64752452707563,0.5959192167234328
+3368,black_sea,Black Sea,Turkey,Canakkale,104.30278403823144,0.4988988577831958
+3369,black_sea,Black Sea,Turkey,Cankiri,14.166253221751806,0.9098807899158167
+3370,black_sea,Black Sea,Turkey,Corum,17.124042355963994,0.8921149541204652
+3371,black_sea,Black Sea,Turkey,Denizli,347.0620844249025,0.09888999289978603
+3372,black_sea,Black Sea,Turkey,Diyarbakir,299.05916828808665,0.13618680240720088
+3373,black_sea,Black Sea,Turkey,Duzce,0.0,1.0
+3374,black_sea,Black Sea,Turkey,Edirne,58.838378286986234,0.6755312536324909
+3375,black_sea,Black Sea,Turkey,Elazig,232.3865981800607,0.21240849654105978
+3376,black_sea,Black Sea,Turkey,Erzincan,139.52758667703668,0.3944811542052064
+3377,black_sea,Black Sea,Turkey,Erzurum,80.8944208698951,0.5831585704508404
+3378,black_sea,Black Sea,Turkey,Eskisehir,131.84400663289964,0.41521449194160404
+3379,black_sea,Black Sea,Turkey,Gaziantep,409.7983486926619,0.0650896979904837
+3380,black_sea,Black Sea,Turkey,Giresun,25.975170742552915,0.8409964796308493
+3381,black_sea,Black Sea,Turkey,Gumushane,51.416605099985134,0.7097962177957093
+3382,black_sea,Black Sea,Turkey,Hakkari,416.36035768125134,0.06230362193532496
+3383,black_sea,Black Sea,Turkey,Hatay,488.0240876369528,0.03863897033724557
+3384,black_sea,Black Sea,Turkey,Igdir,196.17770950030922,0.27040041591461966
+3385,black_sea,Black Sea,Turkey,Isparta,319.20771682640293,0.11906908054616508
+3386,black_sea,Black Sea,Turkey,Istanbul,0.0,1.0
+3387,black_sea,Black Sea,Turkey,Izmir,246.60457415149767,0.19319978030475451
+3388,black_sea,Black Sea,Turkey,Kahramanmaras,324.1114198647018,0.1152394894496479
+3389,black_sea,Black Sea,Turkey,Karabuk,0.0,1.0
+3390,black_sea,Black Sea,Turkey,Karaman,421.4515931011366,0.06022442444087431
+3391,black_sea,Black Sea,Turkey,Kars,93.2733633909794,0.5369649682651559
+3392,black_sea,Black Sea,Turkey,Kastamonu,0.0,1.0
+3393,black_sea,Black Sea,Turkey,Kayseri,255.11487257979485,0.1825436754241856
+3394,black_sea,Black Sea,Turkey,Kilis,441.26655639875173,0.05277186750562529
+3395,black_sea,Black Sea,Turkey,Kirikkale,103.83396592207299,0.5004605825458258
+3396,black_sea,Black Sea,Turkey,Kirklareli,0.0,1.0
+3397,black_sea,Black Sea,Turkey,Kirsehir,165.78074512017412,0.3311430017430156
+3398,black_sea,Black Sea,Turkey,Kocaeli,0.0,1.0
+3399,black_sea,Black Sea,Turkey,Konya,308.18828437526014,0.12814554861666463
+3400,black_sea,Black Sea,Turkey,Kutahya,163.22325827480316,0.33683736715263685
+3401,black_sea,Black Sea,Turkey,Malatya,254.59225570269692,0.18318078736843513
+3402,black_sea,Black Sea,Turkey,Manisa,228.37245578362987,0.21816949057815466
+3403,black_sea,Black Sea,Turkey,Mardin,386.3250672553633,0.07611572127690829
+3404,black_sea,Black Sea,Turkey,Mersin,452.21927180175504,0.049055883783908016
+3405,black_sea,Black Sea,Turkey,Mugla,428.5458392200363,0.05744241785989776
+3406,black_sea,Black Sea,Turkey,Mus,199.1503886982575,0.26509440848991406
+3407,black_sea,Black Sea,Turkey,Nevsehir,219.20998117238673,0.2319114005394334
+3408,black_sea,Black Sea,Turkey,Nigde,327.5028698118242,0.11266319734782022
+3409,black_sea,Black Sea,Turkey,Ordu,6.894094974478753,0.9550795599118321
+3410,black_sea,Black Sea,Turkey,Osmaniye,384.5570654796499,0.07701818086538822
+3411,black_sea,Black Sea,Turkey,Rize,0.0,1.0
+3412,black_sea,Black Sea,Turkey,Sakarya,7.194321691109499,0.9531698690141617
+3413,black_sea,Black Sea,Turkey,Samsun,0.0,1.0
+3414,black_sea,Black Sea,Turkey,Sanliurfa,384.26795827104263,0.07716676741941705
+3415,black_sea,Black Sea,Turkey,Siirt,319.4704597817482,0.11886069935432514
+3416,black_sea,Black Sea,Turkey,Sinop,0.0,1.0
+3417,black_sea,Black Sea,Turkey,Sirnak,377.2741189769708,0.08084991104719855
+3418,black_sea,Black Sea,Turkey,Sivas,139.2940770085467,0.395095733538773
+3419,black_sea,Black Sea,Turkey,Tekirdag,0.8298820389270175,0.9944827294262023
+3420,black_sea,Black Sea,Turkey,Tokat,44.411315045273135,0.7437313235468108
+3421,black_sea,Black Sea,Turkey,Trabzon,0.0,1.0
+3422,black_sea,Black Sea,Turkey,Tunceli,179.11303524017447,0.3029804789059568
+3423,black_sea,Black Sea,Turkey,Usak,250.2890060976588,0.18851204517850256
+3424,black_sea,Black Sea,Turkey,Van,285.430123924862,0.1491403466068447
+3425,black_sea,Black Sea,Turkey,Yalova,22.327972110892922,0.8616956478490507
+3426,black_sea,Black Sea,Turkey,Yozgat,131.01004353114817,0.4175294116078221
+3427,black_sea,Black Sea,Turkey,Zonguldak,0.0,1.0
+4202,black_sea,Black Sea,Mediterranean Sea,Wider Black Sea Region,0.0,1.0
+1360,eastern_med,Eastern Mediterranean,Iraq,Al Anbar,455.8710184581556,0.04787603930222129
+1369,eastern_med,Eastern Mediterranean,Iraq,Duhok,589.2647496221298,0.019674504600187125
+1374,eastern_med,Eastern Mediterranean,Iraq,Ninewa,526.2242210471529,0.029951931261415068
+1405,eastern_med,Eastern Mediterranean,Israel,HaDarom,13.532441264420621,0.9137335460892575
+1406,eastern_med,Eastern Mediterranean,Israel,Haifa,0.0,1.0
+1407,eastern_med,Eastern Mediterranean,Israel,HaMerkaz,0.0,1.0
+1408,eastern_med,Eastern Mediterranean,Israel,HaZafon,0.0,1.0
+1409,eastern_med,Eastern Mediterranean,Israel,Jerusalem,0.0,1.0
+1410,eastern_med,Eastern Mediterranean,Israel,Tel Aviv,0.0,1.0
+1506,eastern_med,Eastern Mediterranean,Jordan,Ajlun,0.0,1.0
+1507,eastern_med,Eastern Mediterranean,Jordan,Al Aqabah,91.76929971673499,0.5423762493181684
+1508,eastern_med,Eastern Mediterranean,Jordan,Al Balqa,0.0,1.0
+1509,eastern_med,Eastern Mediterranean,Jordan,Al Karak,0.0,1.0
+1510,eastern_med,Eastern Mediterranean,Jordan,Al Mafraq,154.9011716359716,0.35605342912724786
+1511,eastern_med,Eastern Mediterranean,Jordan,Amman,0.0,1.0
+1512,eastern_med,Eastern Mediterranean,Jordan,At Tafilah,0.0,1.0
+1513,eastern_med,Eastern Mediterranean,Jordan,Az Zarqa,35.31171713032034,0.7902456381093692
+1514,eastern_med,Eastern Mediterranean,Jordan,Irbid,0.0,1.0
+1515,eastern_med,Eastern Mediterranean,Jordan,Jerash,0.0,1.0
+1516,eastern_med,Eastern Mediterranean,Jordan,Maan,61.92461426519267,0.6617742708588684
+1517,eastern_med,Eastern Mediterranean,Jordan,Madaba,0.0,1.0
+1736,eastern_med,Eastern Mediterranean,Lebanon,Akkar,0.0,1.0
+1737,eastern_med,Eastern Mediterranean,Lebanon,Baalbek-Hermel,0.0,1.0
+1738,eastern_med,Eastern Mediterranean,Lebanon,Beirut,0.0,1.0
+1739,eastern_med,Eastern Mediterranean,Lebanon,Bekaa,0.0,1.0
+1740,eastern_med,Eastern Mediterranean,Lebanon,Mount Lebanon,0.0,1.0
+1741,eastern_med,Eastern Mediterranean,Lebanon,Al Nabatieh,0.0,1.0
+1742,eastern_med,Eastern Mediterranean,Lebanon,North,0.0,1.0
+1743,eastern_med,Eastern Mediterranean,Lebanon,South,0.0,1.0
+2289,eastern_med,Eastern Mediterranean,Palestine,Gaza Strip,0.0,1.0
+2290,eastern_med,Eastern Mediterranean,Palestine,West Bank,0.0,1.0
+2716,eastern_med,Eastern Mediterranean,Saudi Arabia,Al Jawf,318.97341403314,0.11925521400136914
+2727,eastern_med,Eastern Mediterranean,Saudi Arabia,Tabuk,459.0927012662137,0.046858727180711976
+3180,eastern_med,Eastern Mediterranean,Syria,Al Hasakeh,362.5582126123891,0.08918389984047911
+3181,eastern_med,Eastern Mediterranean,Syria,Aleppo,80.6163969751561,0.5842404528850536
+3182,eastern_med,Eastern Mediterranean,Syria,Ar Raqqa,217.80114559723188,0.23409982844465183
+3183,eastern_med,Eastern Mediterranean,Syria,As Sweida,36.645129332679915,0.7832519478918875
+3184,eastern_med,Eastern Mediterranean,Syria,Damascus,0.0,1.0
+3185,eastern_med,Eastern Mediterranean,Syria,Dara,0.0,1.0
+3186,eastern_med,Eastern Mediterranean,Syria,Deir ez Zor,342.95080982178615,0.10163790505703471
+3187,eastern_med,Eastern Mediterranean,Syria,Hama,76.31443681284316,0.6012389043201558
+3188,eastern_med,Eastern Mediterranean,Syria,Homs,156.41614258903084,0.3524754572674676
+3189,eastern_med,Eastern Mediterranean,Syria,Idleb,5.840045963527816,0.9618145332749423
+3190,eastern_med,Eastern Mediterranean,Syria,Lattakia,0.0,1.0
+3191,eastern_med,Eastern Mediterranean,Syria,Quneitra,0.0,1.0
+3192,eastern_med,Eastern Mediterranean,Syria,Rural Damascus,86.32541447696487,0.5624220326236118
+3193,eastern_med,Eastern Mediterranean,Syria,Tartous,0.0,1.0
+3347,eastern_med,Eastern Mediterranean,Turkey,Adana,52.76206557081105,0.70345800133448
+3348,eastern_med,Eastern Mediterranean,Turkey,Adiyaman,176.07407630291897,0.3091813826749599
+3349,eastern_med,Eastern Mediterranean,Turkey,Afyonkarahisar,169.5502583400908,0.3229250404507029
+3351,eastern_med,Eastern Mediterranean,Turkey,Aksaray,168.2047978692656,0.32583462254834616
+3352,eastern_med,Eastern Mediterranean,Turkey,Amasya,406.4624962856561,0.06655344464415998
+3353,eastern_med,Eastern Mediterranean,Turkey,Ankara,301.0384407162431,0.13440160108781388
+3354,eastern_med,Eastern Mediterranean,Turkey,Antalya,0.0,1.0
+3357,eastern_med,Eastern Mediterranean,Turkey,Aydin,81.41703774699234,0.581130315763421
+3358,eastern_med,Eastern Mediterranean,Turkey,Balikesir,311.76876595878,0.1251229481697201
+3359,eastern_med,Eastern Mediterranean,Turkey,Bartin,508.2727117474788,0.03375979285843081
+3360,eastern_med,Eastern Mediterranean,Turkey,Batman,439.3862411908503,0.053437549394770543
+3361,eastern_med,Eastern Mediterranean,Turkey,Bayburt,484.64682148620767,0.03951879845986922
+3362,eastern_med,Eastern Mediterranean,Turkey,Bilecik,345.9501336225672,0.09962578880610826
+3363,eastern_med,Eastern Mediterranean,Turkey,Bingol,432.63864127189777,0.0558962710544844
+3364,eastern_med,Eastern Mediterranean,Turkey,Bitlis,530.2510531251908,0.029158552271305732
+3365,eastern_med,Eastern Mediterranean,Turkey,Bolu,397.31114118243573,0.07074022311350288
+3366,eastern_med,Eastern Mediterranean,Turkey,Burdur,36.249596156132014,0.7853200208717447
+3367,eastern_med,Eastern Mediterranean,Turkey,Bursa,344.8937803603493,0.10032986525445449
+3368,eastern_med,Eastern Mediterranean,Turkey,Canakkale,329.5266202720752,0.11115339050737322
+3369,eastern_med,Eastern Mediterranean,Turkey,Cankiri,408.3750516656731,0.06571025059440345
+3370,eastern_med,Eastern Mediterranean,Turkey,Corum,405.41726253146095,0.06701882357229115
+3371,eastern_med,Eastern Mediterranean,Turkey,Denizli,75.47922046252245,0.6045960057555169
+3372,eastern_med,Eastern Mediterranean,Turkey,Diyarbakir,350.74063167293195,0.0964943445726292
+3373,eastern_med,Eastern Mediterranean,Turkey,Duzce,430.1804068994681,0.05681985926989309
+3374,eastern_med,Eastern Mediterranean,Turkey,Edirne,477.7051841912812,0.041390610311623124
+3375,eastern_med,Eastern Mediterranean,Turkey,Elazig,313.818984920337,0.12342438641902387
+3376,eastern_med,Eastern Mediterranean,Turkey,Erzincan,359.65522643083165,0.09092670745752778
+3377,eastern_med,Eastern Mediterranean,Turkey,Erzurum,551.1791533387682,0.025361381155584305
+3378,eastern_med,Eastern Mediterranean,Turkey,Eskisehir,290.69729825452526,0.14399423882538948
+3379,eastern_med,Eastern Mediterranean,Turkey,Gaziantep,67.23024127721635,0.6387758883910705
+3380,eastern_med,Eastern Mediterranean,Turkey,Giresun,430.74340402532886,0.05660699620768537
+3381,eastern_med,Eastern Mediterranean,Turkey,Gumushane,449.80011354899176,0.049853457661788524
+3383,eastern_med,Eastern Mediterranean,Turkey,Hatay,0.0,1.0
+3385,eastern_med,Eastern Mediterranean,Turkey,Isparta,103.33358806102198,0.5021328328240603
+3386,eastern_med,Eastern Mediterranean,Turkey,Istanbul,474.88082915334843,0.042177338929854355
+3387,eastern_med,Eastern Mediterranean,Turkey,Izmir,177.8454113255128,0.305551763681793
+3388,eastern_med,Eastern Mediterranean,Turkey,Kahramanmaras,104.14448646190672,0.4994256322248199
+3389,eastern_med,Eastern Mediterranean,Turkey,Karabuk,467.41963926967935,0.044328346599884084
+3390,eastern_med,Eastern Mediterranean,Turkey,Karaman,1.0897117862883283,0.9927615792343482
+3392,eastern_med,Eastern Mediterranean,Turkey,Kastamonu,491.63792774454237,0.037719194168080956
+3393,eastern_med,Eastern Mediterranean,Turkey,Kayseri,167.42643230763005,0.3275298066474703
+3394,eastern_med,Eastern Mediterranean,Turkey,Kilis,45.4525724306515,0.7385864298460643
+3395,eastern_med,Eastern Mediterranean,Turkey,Kirikkale,318.70733896535194,0.11946694065746409
+3396,eastern_med,Eastern Mediterranean,Turkey,Kirklareli,518.1357153641932,0.03161137981694011
+3397,eastern_med,Eastern Mediterranean,Turkey,Kirsehir,256.7605597672508,0.18055188967212746
+3398,eastern_med,Eastern Mediterranean,Turkey,Kocaeli,430.2248849315626,0.05680301353073954
+3399,eastern_med,Eastern Mediterranean,Turkey,Konya,114.3530205121648,0.4665670822109765
+3400,eastern_med,Eastern Mediterranean,Turkey,Kutahya,259.31804661262174,0.17749959044570343
+3401,eastern_med,Eastern Mediterranean,Turkey,Malatya,205.33737063406505,0.25438261064708556
+3402,eastern_med,Eastern Mediterranean,Turkey,Manisa,194.16884910379505,0.2740460848029715
+3403,eastern_med,Eastern Mediterranean,Turkey,Mardin,380.57955720117843,0.07908776862125101
+3404,eastern_med,Eastern Mediterranean,Turkey,Mersin,0.0,1.0
+3405,eastern_med,Eastern Mediterranean,Turkey,Mugla,0.0,1.0
+3406,eastern_med,Eastern Mediterranean,Turkey,Mus,526.7913344031329,0.029838904125007476
+3407,eastern_med,Eastern Mediterranean,Turkey,Nevsehir,203.33132371503817,0.25780748413977106
+3408,eastern_med,Eastern Mediterranean,Turkey,Nigde,95.03843507560069,0.5306834540814569
+3409,eastern_med,Eastern Mediterranean,Turkey,Ordu,423.0560623916902,0.059583669193505696
+3410,eastern_med,Eastern Mediterranean,Turkey,Osmaniye,37.98423940777499,0.776290663381156
+3411,eastern_med,Eastern Mediterranean,Turkey,Rize,572.9086380108358,0.02194116074584196
+3412,eastern_med,Eastern Mediterranean,Turkey,Sakarya,415.3469831963154,0.06272595962169862
+3413,eastern_med,Eastern Mediterranean,Turkey,Samsun,475.72591176312415,0.04194038480493655
+3414,eastern_med,Eastern Mediterranean,Turkey,Sanliurfa,218.08940007465296,0.23365039159882214
+3415,eastern_med,Eastern Mediterranean,Turkey,Siirt,504.05177316443695,0.034723271985046315
+3416,eastern_med,Eastern Mediterranean,Turkey,Sinop,516.9014499736013,0.031872565130287515
+3417,eastern_med,Eastern Mediterranean,Turkey,Sirnak,541.1962197242565,0.027106687829619173
+3418,eastern_med,Eastern Mediterranean,Turkey,Sivas,289.9925757257175,0.1446723370425329
+3419,eastern_med,Eastern Mediterranean,Turkey,Tekirdag,452.9420398232726,0.04882007885390828
+3420,eastern_med,Eastern Mediterranean,Turkey,Tokat,378.4758897620863,0.08020474522917591
+3421,eastern_med,Eastern Mediterranean,Turkey,Trabzon,509.8556524726977,0.033405401077982864
+3422,eastern_med,Eastern Mediterranean,Turkey,Tunceli,348.28419327276254,0.09808757059459261
+3423,eastern_med,Eastern Mediterranean,Turkey,Usak,172.25229878976612,0.31716007674622687
+3425,eastern_med,Eastern Mediterranean,Turkey,Yalova,400.213332776532,0.06938470081129576
+3426,eastern_med,Eastern Mediterranean,Turkey,Yozgat,291.53126135627673,0.14319588765296454
+3427,eastern_med,Eastern Mediterranean,Turkey,Zonguldak,477.894215827678,0.04133848226603005
+4203,eastern_med,Eastern Mediterranean,Mediterranean Sea,Eastern Mediterranean Sea,0.0,1.0
+4199,india_west_coast,India West Coast corridor,Indian Ocean,North Indian Ocean,0.0,1.0
+3674,somali_basin,Somali Basin / Horn approaches,Yemen,Abyan,180.9588735720514,0.29927497167792044
+3675,somali_basin,Somali Basin / Horn approaches,Yemen,Ad Dali,211.95133540122274,0.24340978384313047
+3676,somali_basin,Somali Basin / Horn approaches,Yemen,Aden,92.51159698986017,0.5396988501299723
+3677,somali_basin,Somali Basin / Horn approaches,Yemen,Al Bayda,258.63975662319746,0.17830404923156018
+3678,somali_basin,Somali Basin / Horn approaches,Yemen,Al Hudaydah,364.1973142735874,0.08821466189415315
+3679,somali_basin,Somali Basin / Horn approaches,Yemen,Al Jawf,511.07482776936394,0.03313498790504862
+3680,somali_basin,Somali Basin / Horn approaches,Yemen,Al Mahrah,562.3691182810926,0.023538275097731202
+3681,somali_basin,Somali Basin / Horn approaches,Yemen,Al Mahwit,402.01484574270074,0.0685563686837658
+3682,somali_basin,Somali Basin / Horn approaches,Yemen,Amanat al Asimah,390.18559461841915,0.074181736534407
+3683,somali_basin,Somali Basin / Horn approaches,Yemen,Amran,471.6577406232264,0.04309342104513154
+3684,somali_basin,Somali Basin / Horn approaches,Yemen,Dhamar,292.1879762471975,0.1425703322124793
+3685,somali_basin,Somali Basin / Horn approaches,Yemen,Hadramawt,503.58027936162364,0.034832589086521266
+3686,somali_basin,Somali Basin / Horn approaches,Yemen,Hajjah,494.76792229831517,0.036940276640593385
+3687,somali_basin,Somali Basin / Horn approaches,Yemen,Ibb,248.78968323220863,0.19040576319251304
+3688,somali_basin,Somali Basin / Horn approaches,Yemen,Lahij,149.0694647423278,0.37016869988679163
+3689,somali_basin,Somali Basin / Horn approaches,Yemen,Marib,370.60208291034184,0.08452731412776147
+3690,somali_basin,Somali Basin / Horn approaches,Yemen,Raymah,327.80219927991885,0.11243859875270573
+3691,somali_basin,Somali Basin / Horn approaches,Yemen,Sadah,575.0977383339984,0.021623276641322613
+3692,somali_basin,Somali Basin / Horn approaches,Yemen,Sanaa,381.528986657932,0.07858876114722281
+3693,somali_basin,Somali Basin / Horn approaches,Yemen,Shabwah,294.77815769909546,0.14012957930319203
+3694,somali_basin,Somali Basin / Horn approaches,Yemen,Suqutra,56.49822026665806,0.6861528917775663
+3695,somali_basin,Somali Basin / Horn approaches,Yemen,Taizz,195.1780410763256,0.2722085059081619
+1338,arabian_sea,Arabian Sea (open),Iran,Hormozgan,458.9479766629139,0.04690395973609761
+1341,arabian_sea,Arabian Sea (open),Iran,Kerman,585.5314705602162,0.020170318485763738
+1354,arabian_sea,Arabian Sea (open),Iran,Sistan and Baluchestan,475.11433882183917,0.0421117312336663
+2271,arabian_sea,Arabian Sea (open),Oman,Ad Dakhiliyah,79.8140106406286,0.5873740703554509
+2272,arabian_sea,Arabian Sea (open),Oman,Ad Dhahirah,205.95881175195174,0.25333089864877023
+2273,arabian_sea,Arabian Sea (open),Oman,Al Batinah North,147.08583856724945,0.37509638584612665
+2274,arabian_sea,Arabian Sea (open),Oman,Al Batinah South,35.75615735173897,0.7879076571531967
+2275,arabian_sea,Arabian Sea (open),Oman,Al Buraymi,200.81708540878566,0.26216516596604444
+2276,arabian_sea,Arabian Sea (open),Oman,Al Wusta,114.14880620088152,0.4672027126313015
+2277,arabian_sea,Arabian Sea (open),Oman,Ash Sharqiyah North,0.0,1.0
+2278,arabian_sea,Arabian Sea (open),Oman,Ash Sharqiyah South,0.0,1.0
+2279,arabian_sea,Arabian Sea (open),Oman,Dhofar,362.3272542758713,0.08932132404522389
+2280,arabian_sea,Arabian Sea (open),Oman,Musandam,280.12210110752375,0.15451243907852022
+2281,arabian_sea,Arabian Sea (open),Oman,Muscat,0.0,1.0
+3472,arabian_sea,Arabian Sea (open),United Arab Emirates,Abu Dhabi,436.1996922008738,0.05458490236084537
+3474,arabian_sea,Arabian Sea (open),United Arab Emirates,Al Fujayrah,239.71528588847963,0.20228010050226794
+3475,arabian_sea,Arabian Sea (open),United Arab Emirates,Ash Shariqah,255.05105905573177,0.18262135031353713
+3476,arabian_sea,Arabian Sea (open),United Arab Emirates,Dubai,287.8971956630125,0.14670747544736248
+3477,arabian_sea,Arabian Sea (open),United Arab Emirates,Ras Al Khaymah,278.6673201248093,0.15601827453078007
+3478,arabian_sea,Arabian Sea (open),United Arab Emirates,Umm Al Qaywayn,281.3464540680566,0.15325638714031117
+3694,arabian_sea,Arabian Sea (open),Yemen,Suqutra,445.8346404615257,0.0511889834843186
+4199,arabian_sea,Arabian Sea (open),Indian Ocean,North Indian Ocean,51.13604047632262,0.7111250849101136

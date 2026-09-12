@@ -1,0 +1,26 @@
+event_type,sub_event_type,disorder_type,row_count
+Battles,Armed clash,Political violence,18212
+Battles,Government regains territory,Political violence,1555
+Battles,Non-state actor overtakes territory,Political violence,695
+Explosions/Remote violence,Air/drone strike,Political violence,10920
+Explosions/Remote violence,Chemical weapon,Political violence,54
+Explosions/Remote violence,Grenade,Political violence,1552
+Explosions/Remote violence,Remote explosive/landmine/IED,Political violence,9453
+Explosions/Remote violence,Shelling/artillery/missile attack,Political violence,9979
+Explosions/Remote violence,Suicide bomb,Political violence,508
+Protests,Excessive force against protesters,Political violence; Demonstrations,703
+Protests,Peaceful protest,Demonstrations,39625
+Protests,Protest with intervention,Demonstrations,3952
+Riots,Mob violence,Political violence,2435
+Riots,Violent demonstration,Demonstrations,5109
+Strategic developments,Agreement,Strategic developments,428
+Strategic developments,Arrests,Strategic developments,5227
+Strategic developments,Change to group/activity,Strategic developments,7089
+Strategic developments,Disrupted weapons use,Strategic developments,5474
+Strategic developments,Headquarters or base established,Strategic developments,338
+Strategic developments,Looting/property destruction,Strategic developments,6187
+Strategic developments,Non-violent transfer of territory,Strategic developments,475
+Strategic developments,Other,Strategic developments,4786
+Violence against civilians,Abduction/forced disappearance,Political violence,3559
+Violence against civilians,Attack,Political violence,11438
+Violence against civilians,Sexual violence,Political violence,72

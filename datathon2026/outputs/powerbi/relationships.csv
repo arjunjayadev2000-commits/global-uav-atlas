@@ -1,0 +1,12 @@
+from_table,from_column,to_table,to_column,cardinality,notes
+dim_date,date,fact_detections,detection_date,one-to-many,active
+dim_date,week_ending,fact_conflict_weekly,week,one-to-many,inactive (use USERELATIONSHIP or set week as the key)
+dim_date,week_ending,fact_corridor_pressure,week,one-to-many,active
+dim_corridor,chokepoint_id,fact_detections,chokepoint_id,one-to-many,active
+dim_corridor,chokepoint_id,fact_corridor_pressure,chokepoint_id,one-to-many,active
+dim_corridor,chokepoint_id,fact_msri,chokepoint_id,one-to-one,active
+dim_corridor,chokepoint_id,bridge_admin_corridor,chokepoint_id,one-to-many,active
+dim_admin_unit,admin_id,bridge_admin_corridor,admin_id,one-to-many,active
+dim_admin_unit,admin_id,fact_conflict_weekly,admin_id,one-to-many,active
+dim_vessel_class,length_class,fact_detections,length_class,one-to-many,active
+dim_event_type,sub_event_type,fact_conflict_weekly,sub_event_type,one-to-many,active (composite key recommended)

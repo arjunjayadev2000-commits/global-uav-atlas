@@ -1,0 +1,405 @@
+week,admin1,events,fatalities
+2015-09-05,North Indian Ocean,1,0
+2016-01-30,North Indian Ocean,1,0
+2016-02-27,North Indian Ocean,1,0
+2016-03-26,North Indian Ocean,6,0
+2016-10-01,North Indian Ocean,2,0
+2016-10-08,North Indian Ocean,2,0
+2016-10-15,North Indian Ocean,1,0
+2017-01-28,North Indian Ocean,1,2
+2017-03-11,North Indian Ocean,1,43
+2017-04-15,North Indian Ocean,1,0
+2017-05-27,North Indian Ocean,1,0
+2017-11-04,North Indian Ocean,1,1
+2018-01-20,North Indian Ocean,1,0
+2018-03-31,North Indian Ocean,2,0
+2018-04-21,North Indian Ocean,1,0
+2018-04-28,Wider Black Sea Region,3,0
+2018-05-19,North Indian Ocean,1,0
+2018-06-16,North Indian Ocean,1,3
+2018-07-21,North Indian Ocean,2,0
+2018-08-04,Wider Black Sea Region,1,0
+2018-08-25,North Indian Ocean,1,0
+2018-09-01,North Indian Ocean,1,0
+2018-09-01,Wider Black Sea Region,1,0
+2018-09-22,Wider Black Sea Region,1,0
+2019-04-13,Wider Black Sea Region,1,0
+2019-04-27,Eastern Mediterranean Sea,1,0
+2019-04-27,North Indian Ocean,1,0
+2019-05-11,Wider Black Sea Region,1,0
+2019-06-08,Eastern Mediterranean Sea,1,0
+2019-06-08,North Indian Ocean,2,0
+2019-06-15,North Indian Ocean,1,0
+2019-06-22,Eastern Mediterranean Sea,1,0
+2019-06-22,North Indian Ocean,1,0
+2019-07-06,North Indian Ocean,1,0
+2019-07-06,Wider Black Sea Region,1,0
+2019-07-13,Eastern Mediterranean Sea,1,0
+2019-07-20,Eastern Mediterranean Sea,1,0
+2019-08-03,Wider Black Sea Region,1,0
+2019-08-17,North Indian Ocean,1,0
+2019-09-14,Eastern Mediterranean Sea,1,0
+2019-09-14,North Indian Ocean,1,0
+2019-09-28,Eastern Mediterranean Sea,1,0
+2019-10-05,Eastern Mediterranean Sea,1,0
+2019-10-05,North Indian Ocean,1,0
+2019-10-12,Eastern Mediterranean Sea,1,0
+2019-10-19,Eastern Mediterranean Sea,1,0
+2019-11-16,Eastern Mediterranean Sea,1,0
+2019-11-23,North Indian Ocean,1,0
+2020-01-18,Eastern Mediterranean Sea,1,0
+2020-02-01,North Indian Ocean,1,3
+2020-02-08,North Indian Ocean,1,0
+2020-02-22,North Indian Ocean,2,0
+2020-02-29,Eastern Mediterranean Sea,2,0
+2020-02-29,North Indian Ocean,1,0
+2020-03-14,North Indian Ocean,1,0
+2020-04-11,North Indian Ocean,2,0
+2020-05-09,North Indian Ocean,1,19
+2020-05-16,North Indian Ocean,1,0
+2020-06-20,North Indian Ocean,1,0
+2020-06-27,North Indian Ocean,1,0
+2020-07-18,Eastern Mediterranean Sea,1,0
+2020-08-01,Eastern Mediterranean Sea,1,0
+2020-08-08,Eastern Mediterranean Sea,1,0
+2020-08-08,North Indian Ocean,2,0
+2020-08-22,Eastern Mediterranean Sea,2,0
+2020-08-29,North Indian Ocean,1,0
+2020-09-05,North Indian Ocean,1,0
+2020-09-12,Eastern Mediterranean Sea,1,0
+2020-10-03,North Indian Ocean,1,0
+2020-10-10,Eastern Mediterranean Sea,1,0
+2020-10-31,Eastern Mediterranean Sea,1,0
+2020-11-07,North Indian Ocean,2,0
+2020-11-14,North Indian Ocean,1,0
+2020-11-21,North Indian Ocean,5,0
+2020-12-05,North Indian Ocean,1,0
+2020-12-19,North Indian Ocean,3,0
+2020-12-26,North Indian Ocean,2,0
+2021-01-09,North Indian Ocean,1,0
+2021-01-16,North Indian Ocean,1,0
+2021-02-20,North Indian Ocean,2,0
+2021-03-06,Eastern Mediterranean Sea,1,0
+2021-03-20,North Indian Ocean,1,0
+2021-04-03,North Indian Ocean,1,0
+2021-05-01,North Indian Ocean,1,0
+2021-05-08,Eastern Mediterranean Sea,1,0
+2021-05-08,North Indian Ocean,1,0
+2021-05-15,Eastern Mediterranean Sea,1,0
+2021-05-22,North Indian Ocean,1,0
+2021-06-19,Eastern Mediterranean Sea,1,0
+2021-07-31,North Indian Ocean,1,0
+2021-09-04,North Indian Ocean,1,0
+2021-10-02,Eastern Mediterranean Sea,1,0
+2021-10-09,North Indian Ocean,1,0
+2021-10-23,North Indian Ocean,1,0
+2021-10-30,North Indian Ocean,1,0
+2021-11-06,North Indian Ocean,1,0
+2021-11-27,North Indian Ocean,1,0
+2021-12-18,North Indian Ocean,2,0
+2022-01-15,North Indian Ocean,1,0
+2022-01-22,North Indian Ocean,1,0
+2022-02-12,North Indian Ocean,1,0
+2022-02-19,North Indian Ocean,2,0
+2022-02-26,Eastern Mediterranean Sea,1,0
+2022-02-26,Wider Black Sea Region,1,0
+2022-03-05,North Indian Ocean,2,0
+2022-03-05,Wider Black Sea Region,1,0
+2022-03-19,North Indian Ocean,1,0
+2022-04-02,Wider Black Sea Region,1,0
+2022-04-16,North Indian Ocean,1,0
+2022-04-23,Eastern Mediterranean Sea,1,0
+2022-05-14,Eastern Mediterranean Sea,1,0
+2022-05-14,North Indian Ocean,2,0
+2022-05-21,Eastern Mediterranean Sea,1,0
+2022-05-21,North Indian Ocean,1,0
+2022-06-04,Wider Black Sea Region,1,0
+2022-06-18,Eastern Mediterranean Sea,1,0
+2022-06-18,North Indian Ocean,1,0
+2022-06-18,Wider Black Sea Region,1,0
+2022-07-16,Eastern Mediterranean Sea,1,0
+2022-07-23,Wider Black Sea Region,1,0
+2022-08-06,Eastern Mediterranean Sea,1,0
+2022-08-20,Wider Black Sea Region,1,0
+2022-08-27,Eastern Mediterranean Sea,1,0
+2022-08-27,North Indian Ocean,1,0
+2022-09-17,Eastern Mediterranean Sea,2,0
+2022-09-24,Wider Black Sea Region,1,0
+2022-10-15,Wider Black Sea Region,1,0
+2022-10-22,Wider Black Sea Region,1,0
+2022-11-05,North Indian Ocean,1,0
+2022-11-05,Wider Black Sea Region,1,0
+2022-11-12,North Indian Ocean,3,0
+2022-11-19,North Indian Ocean,1,0
+2022-11-26,North Indian Ocean,1,0
+2022-12-10,North Indian Ocean,1,0
+2022-12-24,North Indian Ocean,1,0
+2022-12-31,North Indian Ocean,1,0
+2023-01-14,North Indian Ocean,1,0
+2023-02-04,North Indian Ocean,1,0
+2023-02-18,North Indian Ocean,1,0
+2023-03-11,Wider Black Sea Region,1,0
+2023-04-08,Eastern Mediterranean Sea,1,0
+2023-04-15,North Indian Ocean,1,0
+2023-04-22,North Indian Ocean,1,0
+2023-04-29,North Indian Ocean,1,0
+2023-05-20,Wider Black Sea Region,1,0
+2023-06-10,Wider Black Sea Region,1,0
+2023-07-01,Wider Black Sea Region,1,0
+2023-07-08,North Indian Ocean,2,1
+2023-07-22,Wider Black Sea Region,1,0
+2023-07-29,Wider Black Sea Region,1,1
+2023-08-05,North Indian Ocean,1,0
+2023-08-12,North Indian Ocean,1,0
+2023-08-12,Wider Black Sea Region,1,0
+2023-08-19,Wider Black Sea Region,5,0
+2023-08-26,Eastern Mediterranean Sea,2,0
+2023-08-26,North Indian Ocean,1,0
+2023-08-26,Wider Black Sea Region,2,0
+2023-09-02,Wider Black Sea Region,2,16
+2023-09-09,Wider Black Sea Region,7,10
+2023-09-30,Wider Black Sea Region,1,0
+2023-10-07,Wider Black Sea Region,1,0
+2023-10-21,North Indian Ocean,2,0
+2023-10-21,Wider Black Sea Region,3,0
+2023-10-28,Eastern Mediterranean Sea,1,1
+2023-11-04,North Indian Ocean,2,0
+2023-11-04,Wider Black Sea Region,1,0
+2023-11-11,North Indian Ocean,1,0
+2023-11-11,Wider Black Sea Region,2,0
+2023-11-18,North Indian Ocean,3,0
+2023-11-18,Wider Black Sea Region,3,0
+2023-11-25,North Indian Ocean,7,0
+2023-11-25,Wider Black Sea Region,1,0
+2023-12-02,North Indian Ocean,6,0
+2023-12-09,North Indian Ocean,10,0
+2023-12-16,North Indian Ocean,7,0
+2023-12-23,North Indian Ocean,12,0
+2023-12-23,Wider Black Sea Region,1,0
+2023-12-30,North Indian Ocean,6,10
+2023-12-30,Wider Black Sea Region,1,0
+2024-01-06,North Indian Ocean,9,0
+2024-01-13,North Indian Ocean,8,0
+2024-01-20,North Indian Ocean,6,0
+2024-01-27,North Indian Ocean,20,0
+2024-02-03,North Indian Ocean,5,0
+2024-02-03,Wider Black Sea Region,3,0
+2024-02-10,North Indian Ocean,4,0
+2024-02-10,Wider Black Sea Region,3,0
+2024-02-17,North Indian Ocean,15,0
+2024-02-24,Eastern Mediterranean Sea,1,1
+2024-02-24,North Indian Ocean,10,1
+2024-02-24,Wider Black Sea Region,1,0
+2024-03-02,North Indian Ocean,7,3
+2024-03-09,North Indian Ocean,17,0
+2024-03-16,North Indian Ocean,10,0
+2024-03-23,North Indian Ocean,6,0
+2024-03-30,North Indian Ocean,4,0
+2024-03-30,Wider Black Sea Region,1,0
+2024-04-06,North Indian Ocean,12,0
+2024-04-13,Eastern Mediterranean Sea,1,0
+2024-04-13,North Indian Ocean,2,0
+2024-04-13,Wider Black Sea Region,1,0
+2024-04-20,North Indian Ocean,4,0
+2024-04-27,North Indian Ocean,6,0
+2024-05-04,North Indian Ocean,11,0
+2024-05-04,Wider Black Sea Region,1,0
+2024-05-11,North Indian Ocean,5,0
+2024-05-11,Wider Black Sea Region,2,0
+2024-05-18,Eastern Mediterranean Sea,1,0
+2024-05-18,North Indian Ocean,5,0
+2024-05-18,Wider Black Sea Region,3,0
+2024-05-25,Eastern Mediterranean Sea,1,0
+2024-05-25,North Indian Ocean,18,0
+2024-06-01,North Indian Ocean,18,0
+2024-06-01,Wider Black Sea Region,1,0
+2024-06-08,North Indian Ocean,17,1
+2024-06-15,North Indian Ocean,10,0
+2024-06-22,Eastern Mediterranean Sea,5,0
+2024-06-22,North Indian Ocean,15,0
+2024-06-29,Eastern Mediterranean Sea,1,0
+2024-06-29,North Indian Ocean,6,0
+2024-07-06,North Indian Ocean,11,0
+2024-07-13,Eastern Mediterranean Sea,1,0
+2024-07-13,North Indian Ocean,10,0
+2024-07-20,North Indian Ocean,4,0
+2024-07-20,Wider Black Sea Region,1,0
+2024-07-27,Eastern Mediterranean Sea,2,0
+2024-07-27,North Indian Ocean,1,0
+2024-08-03,North Indian Ocean,12,0
+2024-08-10,North Indian Ocean,6,1
+2024-08-10,Wider Black Sea Region,1,0
+2024-08-17,North Indian Ocean,13,1
+2024-08-24,Eastern Mediterranean Sea,1,1
+2024-08-24,North Indian Ocean,1,0
+2024-08-31,North Indian Ocean,2,0
+2024-08-31,Wider Black Sea Region,1,0
+2024-09-07,North Indian Ocean,1,0
+2024-09-07,Wider Black Sea Region,1,2
+2024-09-14,North Indian Ocean,1,0
+2024-09-21,North Indian Ocean,3,0
+2024-09-28,Eastern Mediterranean Sea,1,0
+2024-09-28,North Indian Ocean,6,0
+2024-10-05,North Indian Ocean,5,0
+2024-10-12,Eastern Mediterranean Sea,1,0
+2024-10-12,North Indian Ocean,2,0
+2024-10-19,North Indian Ocean,2,0
+2024-10-19,Wider Black Sea Region,3,0
+2024-10-26,North Indian Ocean,3,0
+2024-10-26,Wider Black Sea Region,2,0
+2024-11-02,North Indian Ocean,1,0
+2024-11-09,North Indian Ocean,3,0
+2024-11-16,North Indian Ocean,4,0
+2024-11-16,Wider Black Sea Region,1,0
+2024-11-30,North Indian Ocean,3,0
+2024-11-30,Wider Black Sea Region,2,0
+2024-12-07,North Indian Ocean,5,0
+2024-12-07,Wider Black Sea Region,4,0
+2024-12-14,Eastern Mediterranean Sea,2,0
+2024-12-14,North Indian Ocean,2,0
+2024-12-21,North Indian Ocean,4,0
+2024-12-28,North Indian Ocean,2,0
+2024-12-28,Wider Black Sea Region,1,0
+2025-01-04,Eastern Mediterranean Sea,1,0
+2025-01-04,North Indian Ocean,4,0
+2025-01-11,North Indian Ocean,3,0
+2025-01-11,Wider Black Sea Region,1,0
+2025-01-18,North Indian Ocean,1,0
+2025-01-18,Wider Black Sea Region,1,0
+2025-02-01,North Indian Ocean,1,0
+2025-02-08,North Indian Ocean,3,0
+2025-02-08,Wider Black Sea Region,3,0
+2025-02-15,North Indian Ocean,1,0
+2025-02-15,Wider Black Sea Region,1,0
+2025-03-08,North Indian Ocean,4,0
+2025-03-15,North Indian Ocean,8,0
+2025-03-22,North Indian Ocean,7,0
+2025-03-29,Eastern Mediterranean Sea,1,0
+2025-03-29,North Indian Ocean,5,0
+2025-04-05,North Indian Ocean,6,0
+2025-04-12,North Indian Ocean,6,0
+2025-04-19,North Indian Ocean,6,0
+2025-04-26,North Indian Ocean,10,0
+2025-04-26,Wider Black Sea Region,1,0
+2025-05-03,North Indian Ocean,6,0
+2025-05-10,North Indian Ocean,5,0
+2025-05-10,Wider Black Sea Region,1,0
+2025-05-17,North Indian Ocean,7,0
+2025-05-17,Wider Black Sea Region,2,0
+2025-05-24,North Indian Ocean,3,0
+2025-05-31,North Indian Ocean,5,0
+2025-05-31,Wider Black Sea Region,3,0
+2025-06-07,Eastern Mediterranean Sea,1,0
+2025-06-07,North Indian Ocean,3,0
+2025-06-07,Wider Black Sea Region,1,0
+2025-06-14,North Indian Ocean,5,0
+2025-06-21,Eastern Mediterranean Sea,1,0
+2025-06-21,North Indian Ocean,4,0
+2025-06-28,North Indian Ocean,3,0
+2025-06-28,Wider Black Sea Region,1,0
+2025-07-05,North Indian Ocean,9,4
+2025-07-05,Wider Black Sea Region,2,0
+2025-07-12,North Indian Ocean,4,0
+2025-07-12,Wider Black Sea Region,5,0
+2025-07-19,North Indian Ocean,9,0
+2025-07-19,Wider Black Sea Region,3,0
+2025-07-26,Eastern Mediterranean Sea,1,0
+2025-07-26,North Indian Ocean,3,0
+2025-07-26,Wider Black Sea Region,4,0
+2025-08-02,Eastern Mediterranean Sea,1,0
+2025-08-02,North Indian Ocean,5,0
+2025-08-02,Wider Black Sea Region,6,0
+2025-08-09,North Indian Ocean,3,0
+2025-08-09,Wider Black Sea Region,3,0
+2025-08-16,North Indian Ocean,3,0
+2025-08-16,Wider Black Sea Region,3,0
+2025-08-23,North Indian Ocean,2,0
+2025-08-23,Wider Black Sea Region,3,0
+2025-08-30,Eastern Mediterranean Sea,1,0
+2025-08-30,North Indian Ocean,8,0
+2025-08-30,Wider Black Sea Region,5,0
+2025-09-06,North Indian Ocean,7,0
+2025-09-06,Wider Black Sea Region,4,0
+2025-09-13,North Indian Ocean,7,0
+2025-09-13,Wider Black Sea Region,2,0
+2025-09-20,Eastern Mediterranean Sea,8,0
+2025-09-20,North Indian Ocean,5,0
+2025-09-20,Wider Black Sea Region,4,0
+2025-09-27,Eastern Mediterranean Sea,2,0
+2025-09-27,North Indian Ocean,4,1
+2025-09-27,Wider Black Sea Region,2,0
+2025-10-04,Eastern Mediterranean Sea,1,0
+2025-10-04,Wider Black Sea Region,5,0
+2025-10-11,North Indian Ocean,3,0
+2025-10-11,Wider Black Sea Region,5,0
+2025-10-18,Wider Black Sea Region,3,0
+2025-10-25,Wider Black Sea Region,1,0
+2025-11-01,North Indian Ocean,1,0
+2025-11-01,Wider Black Sea Region,2,0
+2025-11-08,North Indian Ocean,1,0
+2025-11-08,Wider Black Sea Region,6,0
+2025-11-15,Wider Black Sea Region,2,0
+2025-11-22,Wider Black Sea Region,6,0
+2025-11-29,North Indian Ocean,1,0
+2025-11-29,Wider Black Sea Region,8,0
+2025-12-06,North Indian Ocean,1,0
+2025-12-06,Wider Black Sea Region,3,0
+2025-12-13,Eastern Mediterranean Sea,2,0
+2025-12-13,Wider Black Sea Region,5,0
+2025-12-20,Wider Black Sea Region,3,0
+2025-12-27,Wider Black Sea Region,2,0
+2026-01-03,Wider Black Sea Region,3,0
+2026-01-10,Wider Black Sea Region,5,0
+2026-01-17,Eastern Mediterranean Sea,1,0
+2026-01-17,Wider Black Sea Region,3,0
+2026-01-24,North Indian Ocean,1,0
+2026-01-24,Wider Black Sea Region,3,0
+2026-01-31,Eastern Mediterranean Sea,1,0
+2026-01-31,North Indian Ocean,3,0
+2026-02-07,Wider Black Sea Region,1,0
+2026-02-14,North Indian Ocean,3,0
+2026-02-14,Wider Black Sea Region,6,0
+2026-02-21,Wider Black Sea Region,4,0
+2026-02-28,Eastern Mediterranean Sea,1,0
+2026-02-28,North Indian Ocean,16,1
+2026-02-28,Wider Black Sea Region,5,0
+2026-03-07,Eastern Mediterranean Sea,2,0
+2026-03-07,North Indian Ocean,12,3
+2026-03-07,Wider Black Sea Region,5,0
+2026-03-14,North Indian Ocean,4,0
+2026-03-14,Wider Black Sea Region,4,0
+2026-03-21,Eastern Mediterranean Sea,8,176
+2026-03-21,North Indian Ocean,3,0
+2026-03-21,Wider Black Sea Region,1,0
+2026-03-28,North Indian Ocean,9,0
+2026-03-28,Wider Black Sea Region,1,0
+2026-04-04,Eastern Mediterranean Sea,10,0
+2026-04-04,North Indian Ocean,10,0
+2026-04-04,Wider Black Sea Region,1,0
+2026-04-11,Eastern Mediterranean Sea,1,0
+2026-04-11,North Indian Ocean,1,0
+2026-04-11,Wider Black Sea Region,2,0
+2026-04-18,Eastern Mediterranean Sea,1,0
+2026-04-18,North Indian Ocean,13,0
+2026-04-18,Wider Black Sea Region,4,0
+2026-04-25,North Indian Ocean,4,0
+2026-04-25,Wider Black Sea Region,7,0
+2026-05-02,North Indian Ocean,17,0
+2026-05-02,Wider Black Sea Region,4,0
+2026-05-09,Eastern Mediterranean Sea,2,0
+2026-05-09,North Indian Ocean,4,0
+2026-05-09,Wider Black Sea Region,3,0
+2026-05-16,North Indian Ocean,1,0
+2026-05-16,Wider Black Sea Region,5,0
+2026-05-23,Eastern Mediterranean Sea,1,0
+2026-05-23,North Indian Ocean,4,0
+2026-05-23,Wider Black Sea Region,7,0
+2026-05-30,North Indian Ocean,6,0
+2026-05-30,Wider Black Sea Region,6,0
+2026-06-06,North Indian Ocean,9,3
+2026-06-06,Wider Black Sea Region,7,0
+2026-06-13,North Indian Ocean,3,0
+2026-06-13,Wider Black Sea Region,7,0
+2026-06-20,North Indian Ocean,3,0
+2026-06-20,Wider Black Sea Region,8,1
+2026-06-27,North Indian Ocean,2,0

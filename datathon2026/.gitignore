@@ -1,0 +1,22 @@
+# Cached, regenerable intermediates. Rebuild with `python run.py --all`.
+data/interim/
+data/processed/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# The outputs are deliverables and ARE tracked (figures, tables, report, Power BI
+# export, run manifest). Only scratch files inside them are ignored.
+outputs/**/*.tmp
+outputs/scratch/
+
+.DS_Store
