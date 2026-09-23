@@ -1,6 +1,9 @@
 # CDM Datathon-2026 - Global Conflicts: Impact on Supply Chains
 
-**Report:** `report/Datathon2026_Global_Conflicts_Supply_Chains_Report.pdf` (87 pages, formatted in the
+**Commander's Edition (lead document, 18 pages):** `report/Datathon2026_Commanders_Edition.pdf`, built by `report/build_commander.py`:
+the whole story in ten short chapters for a commander or senior leader, same numbers and charts.
+
+**Full technical report (78 pages):** `report/Datathon2026_Global_Conflicts_Supply_Chains_Report.pdf`, formatted in the
 style of an M.Tech thesis: declaration, abstract, lists, TOC, numbered chapters, references, appendices).
 
 **Thesis:** conflict at a maritime chokepoint first *blinds* the supply chain (large ships go AIS-dark), and the
@@ -62,7 +65,8 @@ report/       build_report.py -> PDF
 pip install pandas numpy scipy statsmodels scikit-learn ruptures matplotlib basemap pyarrow openpyxl pymupdf playwright
 # put the two CDM files in data/raw/
 python analysis/run_all.py          # ~1 min: figures, tables, metrics, Power BI tables
-python report/build_report.py       # PDF report (headless Chromium)
+python report/build_report.py       # full technical report (headless Chromium)
+python report/build_commander.py    # 18-page Commander's Edition
 ```
 
 Placeholders to fill before submission: `[Rank]`, `[Service No]`, `[Unit / Formation]` (top of `report/build_report.py`).

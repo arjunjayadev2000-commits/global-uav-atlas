@@ -73,8 +73,9 @@ class Doc:
         mid = f"S{self.ch}"
         self.sec.append((mid, 1, f"{self.ch}.", title))
         self.add(f'<h1 class="chapter"><span class="mk">@@{mid}@@ </span>{self.ch}.&nbsp;&nbsp;{title.upper()}</h1>')
-        if self.ch in ST.KICKER:
-            self.add(f'<div class="kicker">{ST.KICKER[self.ch]}</div>')
+        kick = getattr(self, "kickers", ST.KICKER)
+        if self.ch in kick:
+            self.add(f'<div class="kicker">{kick[self.ch]}</div>')
         op = getattr(self, "opens", {}).get(self.ch)
         if op:
             self.add(f'<div class="story"><span class="lab">The story so far</span>{op}</div>')
@@ -92,7 +93,7 @@ class Doc:
     def bullets(self, items, cls=""):
         self.add(f'<ul class="{cls}">' + "".join(f"<li>{i}</li>" for i in items) + "</ul>")
 
-    def fig(self, name, caption, width=100, source=None):
+    def fig(self, name, caption, width=86, source=None):
         self.fig_no += 1
         label = f"{self.pfx}.{self.fig_no}"
         mid = f"F{label.replace('.', '_')}"
@@ -153,14 +154,14 @@ def T(name):
 CSS = """
 @page { size: A4; margin: 24mm 22mm 22mm 26mm; }
 * { box-sizing: border-box; }
-body { font-family: 'Liberation Serif', 'Times New Roman', serif; font-size: 12pt; line-height: 1.5; color: #111; }
+body { font-family: 'Liberation Serif', 'Times New Roman', serif; font-size: 11pt; line-height: 1.38; color: #111; }
 p { text-align: justify; margin: 0 0 8pt 0; }
 h1.chapter { page-break-before: always; font-size: 15pt; margin: 0 0 14pt 0; }
 h2 { font-size: 12.5pt; margin: 14pt 0 6pt 0; page-break-after: avoid; }
 h3 { font-size: 12pt; font-style: italic; margin: 10pt 0 4pt 0; page-break-after: avoid; }
 ul { margin: 0 0 8pt 0; padding-left: 22pt; } li { text-align: justify; margin-bottom: 3pt; }
 ul.alpha { list-style: lower-alpha; }
-figure { margin: 10pt 0 12pt 0; text-align: center; page-break-inside: avoid; }
+figure { margin: 6pt 0 9pt 0; text-align: center; page-break-inside: avoid; }
 figcaption { font-size: 10.5pt; margin-top: 4pt; text-align: center; }
 .src { font-size: 9pt; color: #555; text-align: center; margin-top: 2pt; }
 .tblwrap { margin: 10pt 0 12pt 0; page-break-inside: avoid; }
@@ -449,7 +450,7 @@ def build_body():
         "Its share rises sharply in years of inter-state war: 44.7 per cent in 2024 and 38.0 per cent in 2026. In between, protests and strategic developments "
         "dominate. The pattern for 2026 is clear: stand-off strikes (air/drone strike plus shelling/missile) made up "
         "<b>84 per cent</b> of all political violence recorded between 28 February and 10 April 2026.")
-    d.fig("f5_3_heatmap", "Political-violence events by country and year (log colour scale)", width=96)
+    d.fig("f5_3_heatmap", "Political-violence events by country and year (log colour scale)", width=84)
     d.p("The heat map shows the conflict moving across the region. Syria and Iraq dominated from 2015 to 2018. Palestine, Israel and Lebanon rose "
         "after 2023. In 2026 Iran and the GCC states, which had previously seen little political violence, turned dark. Bahrain, Kuwait, the UAE, "
         "Qatar and Oman record more political violence in the first half of 2026 than in the previous decade.")
@@ -473,7 +474,7 @@ def build_body():
     d.p(f"Before the war the six GCC states together recorded about {M['gcc_pre_wk']:.1f} political-violence events a week. In "
         f"the six weeks from 28 February 2026 this rose to {M['gcc_war_wk']:.1f} a week, a <b>{M['gcc_multiplier']:.0f}-fold</b> increase. The UAE, "
         "Kuwait, Bahrain and Qatar, which host the region's export terminals, refineries and LNG trains, were struck directly.")
-    d.fig("f5_7_war_map", "Geography of political violence, 28 February - 10 April 2026", width=92)
+    d.fig("f5_7_war_map", "Geography of political violence, 28 February - 10 April 2026", width=81)
     d.table(T("t5_3_top_admin1_war"), "Top provinces by political-violence events, 28 Feb - 10 Apr 2026", small=True)
     d.p(f"Hormozgan, the Iranian province on the northern shore of the Strait of Hormuz, recorded {229} events and 215 fatalities "
         "in six weeks. Bushehr, Khuzestan (the oil province at the head of the Gulf) and Fars were also among the most affected Iranian "
@@ -598,7 +599,7 @@ def build_body():
         f"{M['flag_world_shadow']:.1f} per cent elsewhere. Iranian-flagged ships make up 6.9 per cent of visible large ships in the Gulf against 0.1 per cent worldwide. "
         "The ships still transmitting in the war zone lean towards registries with weak oversight, which adds to the identity problem.")
     d.section("7.6", "India's Maritime Neighbourhood")
-    d.fig("f7_10_india_seas", "Arabian Sea and Bay of Bengal: AIS-matched, small dark and large dark detections", width=95)
+    d.fig("f7_10_india_seas", "Arabian Sea and Bay of Bengal: AIS-matched, small dark and large dark detections", width=84)
     d.p(f"India's seas have the highest overall dark shares in the dataset (Arabian Sea {pct(M['arab_all_dark'])}, Bay of Bengal "
         f"{pct(M['bob_all_dark'])}). This is <b>not</b> a conflict signal: {pct(M['india_seas_small_dark_share'])} of craft under 40 m "
         f"are dark, and {pct(M['india_seas_fishing_share_dark'])} of dark detections score as fishing vessels. "
@@ -1246,7 +1247,7 @@ def render(browser, html_str, path):
     pg = browser.new_page()
     pg.set_content(html_str, wait_until="load")
     pg.pdf(path=str(path), format="A4", print_background=True,
-           margin={"top": "24mm", "bottom": "22mm", "left": "26mm", "right": "22mm"})
+           margin={"top": "20mm", "bottom": "18mm", "left": "22mm", "right": "18mm"})
     pg.close()
 
 
@@ -1298,10 +1299,10 @@ def main():
         if i == 0:
             continue
         label = roman(i + 1) if i < nf else str(i - nf + 1)
-        pg_.insert_text((w / 2 - 6, h - 30), label, fontsize=10, fontname="times-roman")
-        pg_.insert_text((74, 40), "CDM Datathon-2026  |  Global Conflicts - Impact on Supply Chains", fontsize=7.5,
+        pg_.insert_text((w / 2 - 6, h - 24), label, fontsize=10, fontname="times-roman")
+        pg_.insert_text((62, 36), "CDM Datathon-2026  |  Global Conflicts - Impact on Supply Chains", fontsize=7.5,
                         fontname="helv", color=(0.45, 0.45, 0.45))
-        pg_.draw_line((74, 45), (w - 62, 45), color=(0.75, 0.75, 0.75), width=0.4)
+        pg_.draw_line((62, 41), (w - 51, 41), color=(0.75, 0.75, 0.75), width=0.4)
     doc.set_metadata({"title": f"{TITLE.title()} - CDM Datathon 2026", "author": AUTHOR,
                       "subject": "Global Conflicts - Impact on Supply Chains"})
     out = OUT / "Datathon2026_Global_Conflicts_Supply_Chains_Report.pdf"

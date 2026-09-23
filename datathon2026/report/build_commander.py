@@ -1,0 +1,282 @@
+"""Commander's Edition - a ~20-page version of the report for a commander or senior leader.
+
+Same evidence, same numbers (data/metrics.json), same charts; told as one story in ten short chapters, each opening with
+'The story so far' and closing with 'So what'. The full report remains the technical annex.
+"""
+import base64
+import re
+
+import pandas as pd
+
+import build_report as BR
+from build_report import AUTHOR, FIG, IG, M, OUT, RANK, SERVICE_NO, ST, T, UNIT, fitz, pct, roman, sync_playwright
+
+KICK = {1: "Prologue - the question", 2: "Part I - the storm gathers", 3: "Part II - the storm reaches the sea lanes",
+        4: "Part III - the ships go blind", 5: "Part IV - the bill arrives", 6: "Part V - what we know, and how sure we are",
+        7: "Part VI - what it means for the world and for India", 8: "Part VII - what it means for the Armed Forces",
+        9: "Part VIII - what we should do", 10: "Epilogue"}
+
+OPEN = {
+    1: "On 28 February 2026 war reached the shores of the Strait of Hormuz, the passage for about a fifth of the world's oil and a large part of "
+       "India's. This edition answers five questions a commander would ask: what happened, what did it do to the ships, what did it cost, "
+       "how sure are we, and what should we do?",
+    2: "The story begins on land. Before the war reached the sea, it changed in size, in weapons and in geography.",
+    3: "The war had moved to the Gulf's energy coast and was being fought with missiles and drones. The next question: did it reach the sea "
+       "lanes, and how long do such crises last?",
+    4: "Violence reached the waters around Hormuz and the Red Sea, and such crises can outlast our reserves. What did the ships do? "
+       "Satellite radar sees every ship, whether or not it wants to be seen.",
+    5: "Ships near the fighting switched off their identities or stayed away. A supply chain is ultimately about goods and money, so "
+       "we follow the shock to the oil price, the rupee and India's import bill.",
+    6: "The evidence is complete. Before acting on it, a good staff officer asks: are we sure, and could something else explain it?",
+    7: "Having established what we know and how sure we are, we turn to what it means: first for the world, then for India.",
+    8: "The same shocks that hit India's economy reach its Armed Forces through fuel, spares, threats to bases and the need to protect citizens abroad.",
+    9: "The story has shown what happens, how long it lasts, what it costs and whom it hurts. Now: what to do, what to watch, and in what order.",
+    10: "We end where we began, with the commander's questions, now answered with evidence.",
+}
+CLOSE = {
+    1: ("Two datasets from CDM (11 years of conflict events; 106,533 ships seen by satellite radar) plus four open-source datasets (oil price, rupee, "
+        "India's oil balance, world ports), tested with standard analytics and intelligence tradecraft.", "How did the conflict itself change?"),
+    2: (f"The war nearly tripled violence ({M['pv_war_ratio']:.1f}x). 84% of it was delivered by missiles and drones, and it hit the Gulf states that export "
+        f"the world's energy ({M['gcc_multiplier']:.0f}x).", "Did it reach the sea lanes?"),
+    3: (f"Yes. Violence around Hormuz reached {M['hormuz_war_mult']:.0f}x its normal level, and in the Red Sea it moved from shore to sea. Most crises end in "
+        f"weeks, but {pct(M['km_p_gt_spr'])} outlast India's emergency oil reserve.", "What did the ships do?"),
+    4: (f"Big ships went dark: {pct(M['hormuz_large_dark'])} at Hormuz against about 10% in peaceful seas. Where a detour existed (Red Sea) they stayed "
+        "away; where none existed (Gulf) they sailed on with identities switched off. A model can forecast where this will happen.", "What did it cost?"),
+    5: (f"Oil went from ${M['brent_prewar']:.0f} to ${M['brent_war_peak']:.0f}, the rupee weakened, and India's oil bill rose by about "
+        f"US${M['extra_bill_usd_bn']:.0f} billion. Our warning signals stayed Red when the market relaxed, and oil then rose {M['brent_oos_change']:.0f}%.",
+        "How sure are we?"),
+    6: ("Very sure of the main finding. It holds however it is measured, grows stronger closer to the fighting, repeats in another war, "
+        "and no other explanation fits.", "What does it mean for the world and for India?"),
+    7: ("For the world, chokepoint war is a recurring cost and a hazard at sea. For India the exposure is concentrated in oil, westbound "
+        "trade, connectivity projects and nine million citizens in the Gulf.", "And for the Armed Forces?"),
+    8: ("Fuel and spares stocks sized on evidence, rear areas defended against drones and missiles, navigation that does not depend on GPS, "
+        "and a joint watch on the chokepoints.", "What should we do, and in what order?"),
+    9: ("Thirteen actions, a six-signal watch-list and a three-phase plan, each traced to evidence.", None),
+}
+PL = ST.PLAIN
+
+
+def build():
+    d = BR.Doc()
+    d.kickers, d.opens, d.closes = KICK, OPEN, CLOSE
+
+    # 1 ---------------------------------------------------------------- the question
+    d.chapter("The Question and How We Answered It")
+    d.html_fig(IG.theatre_map(M, base64.b64encode((FIG / "base_theatre.png").read_bytes()).decode()),
+               "The theatre: India's western sea lanes, the chokepoints and the headline findings")
+    d.html_fig(IG.methodology(), "How the question was answered")
+    d.p("The two CDM datasets are the <b>ACLED</b> conflict record (every reported attack, battle and protest in the Middle East, week by week, "
+        "2015 to June 2026) and <b>Sentinel-1 satellite radar</b> detections of 106,533 ships in the first fortnight of the war, each checked "
+        "against the ship's identity beacon (AIS). Open-source oil-price, exchange-rate and energy data (to September 2026) measure the cost. "
+        "The glossary at the end explains every technique in plain words.")
+
+    # 2 ---------------------------------------------------------------- the storm gathers
+    d.chapter("The Storm Gathers")
+    d.fig("f5_4_changepoints", "Weekly political violence, 2015-2026, with the dates the 'battle rhythm' changed", width=96)
+    d.p(f"Without being told any dates, the computer found the weeks when the conflict changed: <b>7 October 2023</b> (the Gaza war) and "
+        f"<b>28 February 2026</b> (the regional war). In the war weeks violence ran at <b>{M['pv_war_ratio']:.1f} times</b> the previous year's level. "
+        "<b>84%</b> of it was delivered from a distance, by missiles, drones and artillery.")
+    d.fig("f5_7_war_map", "Where the violence fell, 28 February - 10 April 2026", width=78)
+    d.p(f"The fighting reached the <b>shore of the Strait of Hormuz</b> (Hormozgan province: 229 attacks, 215 deaths in six weeks). The Gulf states, "
+        f"which had seen almost no violence, were struck every week: <b>{M['gcc_multiplier']:.0f} times</b> their pre-war rate.")
+
+    # 3 ---------------------------------------------------------------- reaches the sea lanes
+    d.chapter("The Storm Reaches the Sea Lanes")
+    d.fig("f6_5_offshore", "Red Sea: attacks on land fell while attacks at sea rose", width=82)
+    d.p(f"A 'thermometer' of violence was built for each sea route. Around Hormuz it reached <b>{M['hormuz_war_mult']:.0f} times</b> its normal level. "
+        f"In the Red Sea the threat <b>moved offshore</b>: attacks at sea rose from {M['sea_2022']} (2022) to {M['sea_2024']} (2024) while the land war faded. "
+        "A land-only measure would have shown the Red Sea getting safer just as it became the most dangerous waterway for merchant ships.")
+    d.fig("f6_4_km", "How long do sea-lane crises last? Share still going after each week (red lines = India's oil reserves)", width=80)
+    d.p(f"Most crises end within weeks (median {M['ep_median_wk']:.1f} weeks), but some run for months (longest {M['ep_max_wk']} weeks). "
+        f"<b>{pct(M['km_p_gt_spr'])} outlast India's strategic petroleum reserve</b> (about 9.5 days) and about {pct(M['km_p_gt_74d'])} outlast "
+        "total national cover (about 74 days). The danger is not the spike but its duration.")
+
+    # 4 ---------------------------------------------------------------- the ships go blind
+    d.chapter("The Ships Go Blind")
+    d.fig("f7_2_dark_by_region", "Share of ships with their identity beacon off, by sea (right panel: big ships only)", width=86)
+    d.p(f"Small boats run without beacons everywhere, so the test that matters is <b>big ships (100 m and over)</b>, which must carry one by law. "
+        f"In peaceful seas about 1 in 10 is dark. At <b>Hormuz it was {pct(M['hormuz_large_dark'])}</b>, in the Persian Gulf {pct(M['pg_large_dark'])}, "
+        f"and in the Black Sea, the other war zone, {pct(M['black_large_dark'])}. Big ships in war zones were <b>{M['large_rr']:.1f} times</b> as likely "
+        "to be dark.")
+    d.html_fig(IG.blinding_vs_diversion(M), "Two responses to war at sea: blinding where there is no detour, diversion where there is")
+    d.fig("f7_6_dbscan", "Where dark ships gather: tanker queues off Dubai and Fujairah, and in the Black Sea", width=76)
+    d.fig("f8_3_risk_surface", "Forecast: where a 180 m merchant ship is likely to go dark", width=76)
+    d.p(f"A machine-learning model, trained on 62,000 ships and tested only on seas it had never seen, forecasts where ships will go dark "
+        f"(score {M['auc_gbt']:.2f}, where 0.5 is a coin toss). After a ship's size, <b>distance from the fighting</b> is the strongest clue. "
+        "It is good enough to point satellites at the right waters.")
+
+    # 5 ---------------------------------------------------------------- the bill arrives
+    d.chapter("The Bill Arrives")
+    d.fig("f9o_2_event_study", "Oil price after four Middle-East shocks (day 0 = the day before each began)", width=80)
+    d.p(f"Only the war that reached Hormuz produced a lasting shock: <b>Brent +{M['ev_war_peak']:.0f}%</b> within 40 days, from "
+        f"${M['brent_prewar']:.0f} to a peak of ${M['brent_war_peak']:.0f}. The Red Sea campaign, where ships could detour, left oil <i>lower</i> "
+        "a month later. The market confirms the blinding-versus-diversion finding.")
+    wp = T("t9o_3_war_premium")
+    d.table(wp, "What the war cost India (open-source data)", small=True)
+    d.p(f"India imports <b>{M['india_dep']:.0f}%</b> of its oil, and the share is rising. The war added about <b>US${M['extra_bill_usd_bn']:.0f} billion "
+        f"(Rs {M['extra_bill_inr_lakh_cr']:.1f} lakh crore)</b> to the oil bill in {M['war_days']} days. Every US$10 a barrel for a year costs about "
+        f"US${M['per10_usd_bn']:.1f} billion.")
+    d.callout(f"<b>Could we have seen it coming?</b> On 26 June 2026, when the conflict data end, the oil market looked calm: Brent was back at "
+              f"${M['brent_at_cut']:.0f}. The six warning signals built in this study all read Red or Amber and said <i>hold the buffers</i>. "
+              f"Oil then rose <b>{M['brent_oos_change']:.0f}%</b> to ${M['brent_last']:.0f} by {M['brent_last_date']}. The data saw what the market missed.")
+
+    # 6 ---------------------------------------------------------------- inference
+    d.chapter("Inference: What We Know and How Sure We Are")
+    d.fig("f9_3_dose_response", "The closer to the fighting, the more big ships went dark (Gulf war zone)", width=78)
+    d.p(f"Four tests make the main finding solid. (1) It holds under <b>eight different ways</b> of measuring it (war zones {M['rob_min_rr']:.1f} to "
+        f"{M['rob_max_rr']:.1f} times darker). (2) It gets <b>stronger nearer the fighting</b>, from {pct(M['dose_0_50'])} within 50 km to 43% at 150-200 km. "
+        "(3) It <b>repeats in a separate war</b> (Black Sea). (4) Of four possible explanations (deliberate switch-off, GPS jamming, radio "
+        "reception gaps, computer error), only <b>deliberate switch-off</b> fits all the evidence.")
+    KJ = pd.DataFrame([
+        ("Almost certain", "The war caused big ships to go dark.", "High"),
+        ("Highly likely", "Ships are switching off deliberately; GPS jamming probably adds to it.", "Moderate"),
+        ("Highly likely", "The Hormuz coast stays in crisis, at least on and off, through September 2026.", "Moderate"),
+        ("Likely", f"A sea-lane crisis outlasts India's emergency oil reserve ({pct(M['km_p_gt_spr'])} of cases).", "Moderate"),
+        ("Almost certain", "Drones and missiles will remain the main threat to rear-area logistics and energy sites.", "High"),
+        ("Highly likely", "Conflict and satellite signals warn earlier than market prices.", "Moderate"),
+    ], columns=["How likely", "Judgement", "Confidence"])
+    d.table(KJ, "Key judgements (intelligence estimative language)", small=True)
+
+    # 7 ---------------------------------------------------------------- world and India
+    d.chapter("What It Means for the World and for India")
+    d.add("<h3>For the world</h3>")
+    d.bullets([
+        "<b>Energy:</b> about a fifth of the world's oil passes Hormuz. Chokepoint risk is now a recurring cost, not a rare event.",
+        "<b>Trade:</b> where a detour exists, conflict adds 10-14 days per Asia-Europe voyage and raises freight and insurance costs.",
+        "<b>Safety at sea:</b> when most big ships are dark, collision avoidance, rescue and identification fail, and neutral ships risk being mistaken for targets.",
+        "<b>Shadow fleets:</b> ships registered in flags often linked to sanctions evasion are about three times over-represented in war zones.",
+    ])
+    d.add("<h3>For India</h3>")
+    d.html_fig(IG.impact_cascade(M), "How the shock travels from the strait to India's import bill and the Armed Forces")
+    d.bullets([
+        f"<b>Energy:</b> {M['india_dep']:.0f}% of oil is imported, much of it through Hormuz, which has no detour. Only buffers and other suppliers help.",
+        "<b>Trade:</b> the Red Sea diversion lengthens and raises the cost of India's westbound exports.",
+        "<b>Connectivity:</b> the Chabahar corridor and IMEC run through the theatres studied.",
+        f"<b>People:</b> about nine million Indians live in the Gulf states, where violence rose {M['gcc_multiplier']:.0f}-fold. At least "
+        f"{M['ind_gulf_ships']} Indian-flag ships were inside the Gulf war zone.",
+        "<b>Home waters:</b> India's own seas hold thousands of small boats without beacons, so coastal security cannot rely on AIS.",
+    ])
+
+    # 8 ---------------------------------------------------------------- Armed Forces
+    d.chapter("What It Means for the Indian Armed Forces")
+    d.html_fig(IG.triservice(M), "Impact on the Indian Navy, Air Force and Army")
+    d.fig("f9_1_stock_cover", "How much stock is enough? Risk of running dry and average days short, by days of stock held", width=82)
+    sc = T("t9_7_scenarios")
+    d.table(sc[["Scenario", "Duration", "P(disruption lasts at least this long)", "Days beyond national cover (74 d)",
+                "Days beyond 30 d / 45 d Service holdings"]], "Planning scenarios for a Hormuz or Red Sea disruption", small=True)
+    d.p(f"<b>A six-week crisis is the planning case</b>: roughly 1 in 5 crises last that long. It leaves a 30-day holding 12 days short, while "
+        f"45 days covers it fully. Beyond about {M['stock_knee_days']} days each extra day of stock buys little. Hence 35-45 days for fuel, "
+        "aviation fuel and critical spares.")
+
+    # 9 ---------------------------------------------------------------- way forward
+    d.chapter("Way Forward")
+    R = pd.DataFrame([
+        ("National", "Size strategic oil and LPG reserves on the crisis-duration evidence (35-45 days), not a fixed number."),
+        ("National", "Diversify away from Hormuz: non-Gulf crude and LNG, bypass export points (Yanbu, Fujairah), war-risk clauses."),
+        ("National", "Run a weekly chokepoint early-warning watch using the six signals below."),
+        ("Maritime", "Fuse national satellite radar (NISAR, EOS-04) with AIS at IFC-IOR to flag every dark big ship automatically."),
+        ("Maritime", "Treat AIS identity as untrusted: automatic checks for cloned and fake identities and shadow-fleet flags."),
+        ("Maritime", "Know the small-boat population in India's seas: transponders, coastal radar, satellite radar."),
+        ("Joint", "Re-set fuel, aviation-fuel and critical-spares War Wastage Reserves for all three Services at 35-45 days."),
+        ("Joint", "Stand up a tri-service Data Analytics Cell under HQ IDS to run this watch and dashboard weekly."),
+        ("Joint", "Keep the Gulf evacuation plan (Navy sealift, IAF airlift, Army reception) ready while signals are Amber or Red."),
+        ("Navy", "Use dark-ship forecasts to direct escort and surveillance in the Gulf and Arabian Sea; stock counter-drone defences for long campaigns."),
+        ("Air Force", "Harden and disperse air bases and fuel farms; make avionics and weapons work when GPS is jammed (NavIC, anti-jam)."),
+        ("Army", "Air defence and counter-drone cover for depots, railheads and fuel points; GPS-denied fallback for drones and precision fires."),
+        ("All Services", "Indigenise first the items that come through Hormuz or the Red Sea and have long lead-times."),
+    ], columns=["Level", "Action"])
+    d.table(R, "Thirteen actions, each traced to the evidence", small=True)
+    iwt = T("t9_6_iw_matrix")
+    d.html_fig(IG.iw_dashboard(M, iwt), "The six-signal watch-list at 27 June 2026, and what happened next")
+    d.html_fig(IG.roadmap(), "Three-phase plan")
+
+    # 10 --------------------------------------------------------------- conclusion
+    d.chapter("Conclusion")
+    d.html_fig(IG.takeaways(M), "Five takeaways")
+    d.p("<b>The first casualty of war at a chokepoint is visibility.</b> Physical disruption follows, lasts longer than intuition suggests, "
+        "and reaches India's energy, trade, citizens and military sustainment. The same data that measured it can warn of it. Turned into a "
+        "standing weekly watch, the tools built here let India and its Armed Forces decide on evidence rather than precedent. That is the aim "
+        "of this Datathon.")
+    d.add(f'<div class="story"><span class="lab">Where to find the detail</span>The full technical report (method, all charts and tables, '
+          f'robustness tests, references) and the Power BI dashboard accompany this edition. Every number here is reproduced there, and can be '
+          f'regenerated from the raw data with one command.</div>')
+
+    # glossary (short)
+    d.chapter("Annex - Data Analytics in Plain Words", letter="A")
+    d.add(ST.glossary_html())
+    return d
+
+
+def main():
+    body = build()
+    css_extra = """
+body { font-size: 11pt; line-height: 1.4; }
+h1.chapter { font-size: 14pt; margin: 18pt 0 10pt 0; page-break-before: auto; break-before: auto; border-top: 1.5pt solid #1f3b5c; padding-top: 8pt; }
+table.tbl.small td, table.tbl.small th { padding: 2pt 4pt; }
+figure { margin: 6pt 0 8pt 0; } .story, .sowhat { font-size: 10.5pt; padding: 6pt 9pt; }
+"""
+    html_body = f"<!doctype html><html><head><meta charset='utf-8'><style>{BR.CSS}{IG.CSS}{css_extra}</style></head><body>{''.join(body.parts)}</body></html>"
+    with sync_playwright() as p:
+        br = p.chromium.launch(executable_path="/opt/pw-browsers/chromium-1194/chrome-linux/chrome")
+
+        def render(h, path):
+            pg = br.new_page()
+            pg.set_content(h, wait_until="load")
+            pg.pdf(path=str(path), format="A4", print_background=True,
+                   margin={"top": "20mm", "bottom": "18mm", "left": "20mm", "right": "18mm"})
+            pg.close()
+
+        render(html_body, OUT / "_cbody.pdf")
+        bd = fitz.open(OUT / "_cbody.pdf")
+        pages = {}
+        for i, pg_ in enumerate(bd):
+            for mk in re.findall(r"@@([A-Z0-9_]+)@@", pg_.get_text()):
+                pages.setdefault(mk, i + 1)
+            hits = [w for w in pg_.get_text("words") if "@@" in w[4]]
+            for w in hits:
+                pg_.add_redact_annot(fitz.Rect(w[:4]), fill=False)
+            if hits:
+                pg_.apply_redactions(images=fitz.PDF_REDACT_IMAGE_NONE, graphics=fitz.PDF_REDACT_LINE_ART_NONE)
+        toc = "".join(f'<tr class="l1"><td class="t">{lab}&nbsp;&nbsp;{title}</td><td class="pg">{pages.get(mid, "")}</td></tr>'
+                      for mid, lvl, lab, title in body.sec if lvl == 1)
+        front = f"""<div class="titlepage" style="padding-top:10mm">
+<div class="t3">COLLEGE OF DEFENCE MANAGEMENT &middot; DATATHON - 2026</div>
+<div class="t3" style="margin-bottom:20pt">Theme: Global Conflicts &ndash; Impact on Supply Chains</div>
+<div class="t1">{BR.TITLE}</div><div class="t2" style="margin-bottom:14pt">Commander's Edition</div>
+<div class="t3" style="font-size:10.5pt;max-width:80%;margin:0 auto 18pt auto">What the 2026 war did to the ships that carry India's oil and trade,
+what it cost, how long such crises last, and what India and its Armed Forces should do. Told as one story, in plain words.</div>
+<div class="t3">Submitted by</div><div class="t3"><b>{RANK} {AUTHOR.upper()}</b></div><div class="t3">{SERVICE_NO} &middot; {UNIT}</div>
+<div class="t3" style="margin-top:18pt">September 2026</div>
+<div class="t3" style="margin-top:40pt;font-size:9.5pt;color:#444">Companion documents: full technical report, Power BI dashboard (.pbix), analysis code and data</div></div>
+<div class="front pb"><h1>THE STUDY AT A GLANCE</h1>{IG.at_a_glance(M)}</div>
+<div class="front pb es"><h1>EXECUTIVE SUMMARY</h1>{ST.exec_summary_story(M)}</div>
+<div class="front pb"><h1>CONTENTS</h1><table class="toc">{toc}</table>
+<p style="font-size:10pt;margin-top:14pt">Each chapter opens with <b>The story so far</b> and closes with <b>So what</b>; every chart carries
+<b>What this shows</b>. A commander can read the Executive Summary and the coloured boxes alone in about ten minutes.</p></div>"""
+        render(f"<!doctype html><html><head><meta charset='utf-8'><style>{BR.CSS}{IG.CSS}{css_extra}</style></head><body>{front}</body></html>",
+               OUT / "_cfront.pdf")
+        br.close()
+    fr = fitz.open(OUT / "_cfront.pdf")
+    doc = fitz.open()
+    doc.insert_pdf(fr)
+    doc.insert_pdf(bd)
+    nf = len(fr)
+    for i, pg_ in enumerate(doc):
+        if i == 0:
+            continue
+        w, h = pg_.rect.width, pg_.rect.height
+        label = roman(i + 1) if i < nf else str(i - nf + 1)
+        pg_.insert_text((w / 2 - 6, h - 24), label, fontsize=9.5, fontname="times-roman")
+        pg_.insert_text((57, 36), "CDM Datathon-2026  |  Commander's Edition  |  Global Conflicts - Impact on Supply Chains", fontsize=7.2,
+                        fontname="helv", color=(0.45, 0.45, 0.45))
+        pg_.draw_line((57, 41), (w - 51, 41), color=(0.75, 0.75, 0.75), width=0.4)
+    doc.set_metadata({"title": f"{BR.TITLE.title()} - Commander's Edition", "author": AUTHOR})
+    out = OUT / "Datathon2026_Commanders_Edition.pdf"
+    doc.save(out, garbage=4, deflate=True)
+    for f in ("_cbody.pdf", "_cfront.pdf"):
+        (OUT / f).unlink()
+    print("pages:", len(doc), "front:", nf, "->", out)
+
+
+if __name__ == "__main__":
+    main()
