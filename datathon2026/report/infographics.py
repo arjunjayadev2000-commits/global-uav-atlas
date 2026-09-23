@@ -84,6 +84,10 @@ def at_a_glance(M):
     out = ['<div class="ig">']
     out.append('<div class="ig-band">Global Conflicts and the Blinding of Supply Chains<small>CDM Datathon-2026 &middot; '
                'Theme: Global Conflicts - Impact on Supply Chains &middot; the study on one page</small></div>')
+    import story as ST
+    cells = "".join(f'<div style="background:{c}">{icon(i, 15, "#fff")}<b>{h}</b>{x}</div>' for (i, h, x), c in
+                    zip(ST.storyline(M), ["#3d5a80", "#46638a", "#9a4a3a", "#b8452e", "#a93226", "#7b241c", "#1f3b5c"]))
+    out.append(f'<div class="ig-h">The story in seven steps</div><div class="ig-chev">{cells}</div>')
     out.append('<div class="ig-h">Data fused</div><div class="ig-row">' + "".join(
         f'<div class="ig-src">{icon(i, 20)}<b>{t}</b>{s}</div>' for i, t, s in src) + "</div>")
     out.append('<div class="ig-h">Methods</div><div style="margin-top:4pt">' + "".join(

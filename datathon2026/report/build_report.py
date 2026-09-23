@@ -17,6 +17,7 @@ import pandas as pd
 from playwright.sync_api import sync_playwright
 
 import infographics as IG
+import story as ST
 
 ROOT = Path(__file__).resolve().parents[1]
 FIG, TAB, OUT = ROOT / "figures", ROOT / "tables", ROOT / "report"
@@ -54,6 +55,12 @@ class Doc:
         self.parts.append(s)
 
     def chapter(self, title, letter=None):
+        close = getattr(self, "closes", {}).get(self.ch) if self.ch else None
+        if close and not letter and self.ch not in getattr(self, "_closed", set()) or (close and letter and self.ch not in getattr(self, "_closed", set())):
+            self._closed = getattr(self, "_closed", set()) | {self.ch}
+            what, nxt = close
+            nx = f'<span class="next">Next: {nxt}</span>' if nxt else ""
+            self.add(f'<div class="sowhat"><span class="lab">So what</span>{what}{nx}</div>')
         self.fig_no = self.tab_no = 0
         if letter:
             self.pfx = letter
@@ -66,6 +73,11 @@ class Doc:
         mid = f"S{self.ch}"
         self.sec.append((mid, 1, f"{self.ch}.", title))
         self.add(f'<h1 class="chapter"><span class="mk">@@{mid}@@ </span>{self.ch}.&nbsp;&nbsp;{title.upper()}</h1>')
+        if self.ch in ST.KICKER:
+            self.add(f'<div class="kicker">{ST.KICKER[self.ch]}</div>')
+        op = getattr(self, "opens", {}).get(self.ch)
+        if op:
+            self.add(f'<div class="story"><span class="lab">The story so far</span>{op}</div>')
 
     def section(self, num, title, level=2):
         mid = "S" + num.replace(".", "_")
@@ -87,8 +99,9 @@ class Doc:
         self.figs.append((mid, label, caption))
         data = base64.b64encode((FIG / f"{name}.png").read_bytes()).decode()
         src = f'<div class="src">Source: {source}</div>' if source else ""
+        pl = f'<div class="plain"><b>What this shows:</b> {ST.PLAIN[name]}</div>' if name in ST.PLAIN else ""
         self.add(f'<figure><img src="data:image/png;base64,{data}" style="width:{width}%">'
-                 f'<figcaption><span class="mk">@@{mid}@@ </span><b>Figure {label} :</b> {caption}</figcaption>{src}</figure>')
+                 f'<figcaption><span class="mk">@@{mid}@@ </span><b>Figure {label} :</b> {caption}</figcaption>{pl}{src}</figure>')
         return label
 
     def html_fig(self, inner, caption):
@@ -186,12 +199,19 @@ table.tbl tr:nth-child(even) td { background: #f4f3ef; }
 .rag.red { background: #c62828; } .rag.amber { background: #e08a00; } .rag.green { background: #2e7d32; }
 .bluf { border: 1.2pt solid #1f3b5c; padding: 8pt 10pt; margin-bottom: 8pt; background: #eef2f7; font-size: 11pt; text-align: justify; }
 .es h2 { font-size: 11.5pt; margin: 8pt 0 3pt 0; } .es p, .es li { font-size: 10.5pt; line-height: 1.38; margin-bottom: 3pt; }
+.kicker { font-family: 'Liberation Sans', sans-serif; font-size: 9pt; color: #9a4a3a; text-transform: uppercase; letter-spacing: .6pt; margin: -8pt 0 8pt 0; font-weight: bold; }
+.story { border: .8pt solid #d9c7a3; background: #fbf6ec; border-radius: 4pt; padding: 7pt 10pt; margin: 4pt 0 12pt 0; font-size: 11pt; text-align: justify; page-break-inside: avoid; }
+.story .lab, .sowhat .lab { font-family: 'Liberation Sans', sans-serif; font-size: 8pt; font-weight: bold; letter-spacing: .5pt; text-transform: uppercase; color: #9a4a3a; display: block; margin-bottom: 2pt; }
+.sowhat { border: .8pt solid #1f3b5c; background: #eef2f7; border-radius: 4pt; padding: 7pt 10pt; margin: 14pt 0 4pt 0; font-size: 11pt; text-align: justify; page-break-inside: avoid; }
+.sowhat .lab { color: #1f3b5c; } .sowhat .next { display: block; margin-top: 4pt; font-style: italic; color: #1f3b5c; }
+.plain { font-family: 'Liberation Sans', sans-serif; font-size: 8.8pt; color: #333; background: #f7f7f4; border-left: 3pt solid #9a4a3a; padding: 3pt 7pt; margin: 4pt auto 0 auto; text-align: left; max-width: 94%; }
 .code { font-family: 'Liberation Mono', monospace; font-size: 8pt; line-height: 1.3; background: #f6f6f4; border: 0.5pt solid #ddd; padding: 6pt; white-space: pre-wrap; text-align: left; }
 """
 
 
 def build_body():
     d = Doc()
+    d.opens, d.closes = ST.openings(M), ST.closings(M)
     # ================================================================== 1 INTRODUCTION
     d.chapter("Introduction")
     d.p(
@@ -1171,8 +1191,9 @@ their encouragement, and to the open-data communities (ACLED, Global Fishing Wat
 The analytical grounding I received during my M.Tech at IIT Kharagpur, where I applied survival analysis to predictive maintenance
 of armoured vehicles, shaped much of the method used here.</p></div>
 <div class="front pb"><h1>ABSTRACT</h1>{abstract}</div>
-<div class="front pb es"><h1>EXECUTIVE SUMMARY</h1>{exec_summary()}</div>
+<div class="front pb es"><h1>EXECUTIVE SUMMARY</h1>{ST.exec_summary_story(M)}</div>
 <div class="front pb"><h1>THE STUDY AT A GLANCE</h1>{IG.at_a_glance(M)}</div>
+<div class="front pb"><h1>DATA ANALYTICS IN PLAIN WORDS</h1>{ST.glossary_html()}</div>
 <div class="front pb"><h1>LIST OF ABBREVIATIONS</h1><table class="toc">{ab}</table></div>
 <div class="front pb"><h1>LIST OF FIGURES</h1><table class="toc">{lof}</table></div>
 <div class="front pb"><h1>LIST OF TABLES</h1><table class="toc">{lot}</table></div>
@@ -1180,6 +1201,7 @@ of armoured vehicles, shaped much of the method used here.</p></div>
 <tr class="l1"><td class="t">Abstract</td><td class="pg">{fp.get("ABSTRACT", "")}</td></tr>
 <tr class="l1"><td class="t">Executive Summary</td><td class="pg">{fp.get("EXECUTIVE SUMMARY", "")}</td></tr>
 <tr class="l1"><td class="t">The Study at a Glance</td><td class="pg">{fp.get("THE STUDY AT A GLANCE", "")}</td></tr>
+<tr class="l1"><td class="t">Data Analytics in Plain Words</td><td class="pg">{fp.get("DATA ANALYTICS IN PLAIN WORDS", "")}</td></tr>
 <tr class="l1"><td class="t">List of Abbreviations</td><td class="pg">{fp.get("LIST OF ABBREVIATIONS", "")}</td></tr>
 <tr class="l1"><td class="t">List of Figures</td><td class="pg">{fp.get("LIST OF FIGURES", "")}</td></tr>
 <tr class="l1"><td class="t">List of Tables</td><td class="pg">{fp.get("LIST OF TABLES", "")}</td></tr>
@@ -1261,7 +1283,7 @@ def main():
         fp = {}
         for i, pg_ in enumerate(fitz.open(OUT / "_front.pdf")):
             head = pg_.get_text().strip().split("\n")[0].strip()
-            if head in ("ABSTRACT", "EXECUTIVE SUMMARY", "THE STUDY AT A GLANCE", "LIST OF ABBREVIATIONS", "LIST OF FIGURES", "LIST OF TABLES"):
+            if head in ("ABSTRACT", "EXECUTIVE SUMMARY", "THE STUDY AT A GLANCE", "DATA ANALYTICS IN PLAIN WORDS", "LIST OF ABBREVIATIONS", "LIST OF FIGURES", "LIST OF TABLES"):
                 fp.setdefault(head, roman(i + 1))
         front = page(front_html(body, pages, fp))
         render(br, front, OUT / "_front.pdf")

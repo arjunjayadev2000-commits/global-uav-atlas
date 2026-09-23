@@ -1,6 +1,6 @@
 # CDM Datathon-2026 - Global Conflicts: Impact on Supply Chains
 
-**Report:** `report/Datathon2026_Global_Conflicts_Supply_Chains_Report.pdf` (75 pages, formatted in the
+**Report:** `report/Datathon2026_Global_Conflicts_Supply_Chains_Report.pdf` (87 pages, formatted in the
 style of an M.Tech thesis: declaration, abstract, lists, TOC, numbered chapters, references, appendices).
 
 **Thesis:** conflict at a maritime chokepoint first *blinds* the supply chain (large ships go AIS-dark), and the
@@ -14,6 +14,12 @@ Forces (joint, Navy, Air Force, Army, stock-cover model) -> 13 Way Forward (13 t
 - New Chapter 9 *Economic Transmission*: event study (Hormuz war Brent +94% peak vs Red Sea campaign -5%), Granger tests
   (conflict does not lead prices), rupee, India import dependence 87.4%, war premium ~US$27 bn, and an out-of-sample test:
   the June I&W call was Red with Brent at $70; Brent then rose 86% to $131.
+
+## Story layer for non-specialist readers (report/story.py)
+Written for a tactical commander or senior leader: every chapter carries a story kicker (Prologue, Part I ... Part X, Epilogue),
+opens with *The story so far* (linking to the previous chapter) and closes with *So what* plus the question that leads into the
+next chapter; every chart has a one-line *What this shows*; a *Data Analytics in Plain Words* glossary explains each technique
+with military analogies; the executive summary is told as a six-step story.
 
 ## Infographics (report/infographics.py)
 Study-at-a-glance page, theatre map with callouts, blinding-vs-diversion pictogram, impact cascade, tri-service impact
