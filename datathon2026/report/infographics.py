@@ -82,7 +82,7 @@ def at_a_glance(M):
     meth = ["Change-points (PELT)", "Conflict index + ARIMA", "Kaplan-Meier / Cox", "Chi-square, bootstrap", "Getis-Ord Gi*",
             "DBSCAN", "Gradient boosting, spatial CV", "Event study, Granger", "Expected shortfall"]
     out = ['<div class="ig">']
-    out.append('<div class="ig-band">Global Conflicts and the Blinding of Supply Chains<small>CDM Datathon-2026 &middot; '
+    out.append('<div class="ig-band">PROJECT DARKWATER &middot; Global Conflicts and the Blinding of Supply Chains<small>CDM Datathon-2026 &middot; '
                'Theme: Global Conflicts - Impact on Supply Chains &middot; the study on one page</small></div>')
     import story as ST
     cells = "".join(f'<div style="background:{c}">{icon(i, 15, "#fff")}<b>{h}</b>{x}</div>' for (i, h, x), c in
@@ -222,3 +222,51 @@ def takeaways(M):
           ("explosion", "<b>Stand-off weapons erase the rear area.</b> 84% of war violence; energy and logistics nodes far from the front were hit."),
           ("traffic-light", f"<b>Data beats the market as a warning.</b> The June I&amp;W call was Red at $70 Brent; oil then rose {M['brent_oos_change']:.0f}%.")]
     return '<div class="ig">' + "".join(f'<div class="ig-tk"><div class="i">{icon(i, 14, "#fff")}</div><div>{t}</div></div>' for i, t in tk) + "</div>"
+
+
+def signatures(M, sig):
+    """Four-signature 2x2: is being identified dangerous? x can the route be given up?"""
+    g = lambda k: sig.set_index("Sea").loc[k]
+    cells = [
+        ("CONCEALMENT", "eye-slash", "#9a2a1f", "Identity dangerous &middot; route cannot be given up",
+         f"Hormuz SDR {g('Strait of Hormuz')['SDR %']:.0f}%, Persian Gulf {g('Persian Gulf')['SDR %']:.0f}%, rising ~{g('Persian Gulf')['Trend pp/day']:.0f} pts/day",
+         "Price and insurance shock with cargo still moving; picture collapses", "Non-AIS surveillance, escort, war-risk cover; do NOT assume cargo stopped"),
+        ("EVACUATION", "route", "#1f3b5c", "Identity dangerous &middot; route can be given up",
+         f"Red Sea SDR {g('Red Sea')['SDR %']:.0f}%, Bab-el-Mandeb/Aden {g('Bab-el-Mandeb + Gulf of Aden')['SDR %']:.0f}%; traffic thins",
+         "Volume, transit-time and freight shock system-wide", "Re-plan lead-times via the Cape; inventory and port buffers"),
+        ("ATTRITION / FROZEN", "hourglass-half", "#7a5a1a", "Long war &middot; two fleets settle in",
+         f"Black Sea SDR {g('Black Sea')['SDR %']:.0f}%, flat trend", "Persistent premium; sanctions and provenance risk",
+         "Pattern-of-life baselining; provenance checks"),
+        ("DETERRENCE / COMPLIANCE", "shield-halved", "#2e6b3a", "Identity protective &middot; authority enforces reporting",
+         f"East Med / Suez SDR {g('East Med / Suez approaches')['SDR %']:.0f}% with {g('East Med / Suez approaches')['Violent events <=300 km (war wks 1-2)']:,} violent events within 300 km",
+         "Largely unaffected: what a protected sea line looks like", "The benchmark Indian presence should aim to produce"),
+    ]
+    box = lambda c: (f'<div style="flex:1;border:1pt solid {c[2]};border-radius:5pt;padding:6pt 8pt;background:#fff">'
+                     f'<div style="color:{c[2]};font-weight:bold;font-size:10pt">{icon(c[1], 13, c[2])} {c[0]}</div>'
+                     f'<div style="font-size:7.6pt;color:#555;margin:1pt 0 3pt 0">{c[3]}</div>'
+                     f'<div style="font-size:8pt"><b>Measured:</b> {c[4]}</div><div style="font-size:8pt"><b>Supply chain:</b> {c[5]}</div>'
+                     f'<div style="font-size:8pt"><b>Staff response:</b> {c[6]}</div></div>')
+    return (f'<div class="ig"><div style="font-size:8pt;color:#555;text-align:center;margin-bottom:4pt">A master switches off AIS when being identified is '
+            f'dangerous <b>and</b> not sailing is not an option. Read the wrong signature and you get the wrong response.</div>'
+            f'<div class="ig-row">{box(cells[0])}{box(cells[1])}</div><div class="ig-row">{box(cells[2])}{box(cells[3])}</div></div>')
+
+
+def cog(M):
+    """Centre-of-gravity analysis (Strange, 1996) with measured vulnerabilities."""
+    col = lambda t, c, items: (f'<div style="flex:1;border-radius:4pt;overflow:hidden;border:.6pt solid #c9d3de">'
+                               f'<div style="background:{c};color:#fff;font-weight:bold;font-size:8.6pt;padding:4pt 6pt;text-align:center">{t}</div>'
+                               '<ul style="margin:4pt 0 5pt 0;padding:0 6pt 0 15pt;font-size:7.8pt">' + "".join(f"<li>{x}</li>" for x in items) + "</ul></div>")
+    return ('<div class="ig">'
+            f'<div class="ig-band" style="text-align:center">{icon("bullseye", 14, "#fff")} CENTRE OF GRAVITY: India\'s economic access to the sea'
+            '<small>What must be protected for the economy and the Armed Forces to keep functioning in a chokepoint crisis</small></div>'
+            '<div class="ig-row">'
+            + col("CRITICAL CAPABILITIES", "#2a5a8a", ["Import energy through western SLOCs", "Move westbound trade via Red Sea / Suez",
+                                                         "Protect and evacuate citizens in the Gulf"])
+            + col("CRITICAL REQUIREMENTS", "#46638a", ["Open, insurable chokepoints", "A trustworthy maritime picture", "Reserve depth to ride out disruption",
+                                                         "Warning early enough to act"])
+            + col("CRITICAL VULNERABILITIES (measured)", "#9a2a1f", [
+                f"<b>CV1 Hormuz:</b> no detour; {M['india_dep']:.0f}% of oil imported",
+                f"<b>CV2 Picture integrity:</b> SDR {M['hormuz_large_dark'] * 100:.0f}% at Hormuz vs {M['sdr_baseline']:.0f}% baseline",
+                f"<b>CV3 Price / insurance:</b> oil premium = {M['def_ratio_mar_lo'] * 100:.0f}-{M['def_ratio_mar_hi'] * 100:.0f}% of monthly defence budget",
+                f"<b>CV4 Reserve depth:</b> {M['km_p_gt_spr'] * 100:.0f}% of crises outlast the SPR"])
+            + "</div></div>")

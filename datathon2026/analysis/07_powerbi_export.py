@@ -37,5 +37,5 @@ for name, df in out.items():
     df.to_csv(PBI / name, index=False)
     print(f"  {name}: {len(df):,} rows")
 for t in ["t6_ccii_weekly", "t6_2_episodes", "t7_1_dark_by_region", "t7_4_dark_clusters", "t8_3_poi_risk",
-          "t9_1_stock_decision", "t8_2_model_cv", "t9_6_iw_matrix", "t9_7_scenarios", "t9_2_robustness", "t9o_1_event_study", "t9o_3_war_premium"]:
+          "t9_1_stock_decision", "t8_2_model_cv", "t9_6_iw_matrix", "t9_7_scenarios", "t9_2_robustness", "t9o_1_event_study", "t9o_3_war_premium", "t11_6_signatures", "t11_7_defence_budget"]:
     pd.read_csv(TAB / f"{t}.csv").to_csv(PBI / f"{t}.csv", index=False)

@@ -1,17 +1,24 @@
-# CDM Datathon-2026 - Global Conflicts: Impact on Supply Chains
+# PROJECT DARKWATER - CDM Datathon-2026, Global Conflicts: Impact on Supply Chains
 
-**Commander's Edition - THE SUBMISSION (20 pages):** `report/Datathon2026_Commanders_Edition.pdf`, built by `report/build_commander.py`:
+**Commander's Edition - THE SUBMISSION (22 pages):** `report/Datathon2026_Commanders_Edition.pdf`, built by `report/build_commander.py`:
 the whole story in ten short chapters for a commander or senior leader, plus Annex A (plain-words glossary), Annex B
 (technical summary for assessors), Annex C (software used and screenshots; two Power BI screenshot slots to fill) and
 Annex D (references).
 
-**Full technical report (78 pages):** `report/Datathon2026_Global_Conflicts_Supply_Chains_Report.pdf`, formatted in the
+**Full technical report (84 pages):** `report/Datathon2026_Global_Conflicts_Supply_Chains_Report.pdf`, formatted in the
 style of an M.Tech thesis: declaration, abstract, lists, TOC, numbered chapters, references, appendices).
 
 **Thesis:** conflict at a maritime chokepoint first *blinds* the supply chain (large ships go AIS-dark), and the
 physical disruption that follows lasts longer than national buffers. The report closes with: 9 Inference (findings,
 hypothesis verdicts, inferences I1-I6) -> 10 Impact on the Globe -> 11 Impact on India -> 12 Impact on the Indian Armed
 Forces (joint, Navy, Air Force, Army, stock-cover model) -> 13 Way Forward (13 traced recommendations, roadmap) -> 14 Conclusion.
+
+## DARKWATER layer (analysis/11_darkwater.py)
+Strategic Dark Ratio (SDR); presence vs identity on a common radar footprint (AIS -83% vs radar -33% at Hormuz, dark fleet
+unchanged); stasis index against a crowding null (dark hulls held at anchor, z = 5.3); all-dark-pass and day/night checks;
+scene-level difference-in-differences vs 11 control seas (+5.7 pts/day, p = 0.008); flag-retention shift; four signatures
+(concealment, evacuation, attrition/frozen, deterrence/compliance); oil premium vs monthly defence budget; centre-of-gravity
+analysis; staffed recommendations and DARKWATCH.
 
 ## Open-source data (data/open/, analysis/09_opendata.py)
 - Brent/WTI daily (EIA, via datasets/oil-prices) to 15 Sep 2026; INR/US$ daily (Fed H.10, via datasets/exchange-rates) to 18 Sep 2026;

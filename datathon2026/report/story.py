@@ -70,8 +70,9 @@ def closings(M):
         6: (f"Yes. Violence around Hormuz reached {M['hormuz_war_mult']:.0f} times its normal level, and in the Red Sea it moved from land to sea. "
             f"Such crises usually last a few weeks, but {pct(M['km_p_gt_spr'])} of them outlast India's emergency oil reserve.",
             "What did the ships do while this was happening?"),
-        7: (f"Big ships went dark: {pct(M['hormuz_large_dark'])} at Hormuz against about 10% in peaceful seas. Where they could take "
-            "another route (the Red Sea), they stayed away. Where they could not (the Gulf), they kept sailing with their identity switched off.",
+        7: (f"Big ships went dark: {pct(M['hormuz_large_dark'])} at Hormuz against about 10% in peaceful seas. AIS counts said traffic fell "
+            f"{abs(M['pi_lit_chg'])}%, but radar saw most hulls still there, many held at anchor. Four behaviours emerged: concealment in the Gulf, "
+            "evacuation from the Red Sea, a frozen Black Sea, and compliance where an authority enforces reporting.",
             "Could we have predicted where ships would go dark?"),
         8: (f"Partly, and usefully. After a ship's size, its distance from the fighting is the strongest clue. The model beats chance on seas it "
             f"has never seen (score {M['auc_gbt']:.2f}, where 0.5 is a coin toss and 1.0 is perfect). It is good enough to point satellites "
@@ -149,6 +150,11 @@ GLOSSARY = [
     ("Granger test", "Checks whether A reliably happens before B, i.e. whether A could serve as a warning of B."),
     ("Expected shortfall", "The average number of days a stock would run short in a crisis. It is used here to size fuel and spares reserves."),
     ("I&W (indicators and warnings)", "A short watch-list of measurable signals with thresholds that trigger pre-agreed actions."),
+    ("Strategic Dark Ratio (SDR)", "Of the big ships (100 m and over) the radar sees in one satellite image, the share not transmitting their identity. Peaceful seas: about 10%."),
+    ("Maritime Picture Assurance", "Checking, as a standing duty, that the maritime picture used for decisions still represents the ships actually on the water."),
+    ("DARKWATCH", "The six-signal watch-list built in this study, with Amber and Red thresholds and a pre-agreed action for each."),
+    ("Stasis index", "The share of ships seen in the same 100 m square on two different days: a ship under way cannot do that, a ship at anchor can."),
+    ("Difference-in-differences", "Did the Gulf change more than everywhere else over the same fortnight? Compares the change, not just the level."),
     ("Estimative language", "'Almost certain' (over 95%), 'highly likely' (80-95%), 'likely' (55-80%): the standard way intelligence expresses probability."),
 ]
 
@@ -162,36 +168,29 @@ def glossary_html():
 
 
 def exec_summary_story(M):
-    a_ = M["ach_inconsistent"]
     return f"""
-<div class="bluf"><b>BOTTOM LINE.</b> When war reaches a sea chokepoint, ships first <b>go blind</b>: they switch off their identity beacons. The
-disruption then <b>lasts longer than our reserves</b>. It cost India about <b>US${M['extra_bill_usd_bn']:.0f} billion</b> in six months. Our warning
-signals saw it coming when the market did not. Hold 35-45 days of fuel and critical spares, defend rear areas against drones and missiles, and
-watch the chokepoints every week.</div>
-<h2>The story in six steps</h2><ol style="font-size:10.5pt;line-height:1.4;padding-left:16pt">
-<li><b>The storm.</b> On 28 February 2026 regional violence nearly tripled. 84% of it came from missiles and drones, and it hit the Gulf states that export
-the world's oil ({M['gcc_multiplier']:.0f} times more attacks than before).</li>
-<li><b>It reached the sea lanes.</b> Violence around the Strait of Hormuz rose to {M['hormuz_war_mult']:.0f} times its normal level. In the Red Sea, attacks moved from
-the shore onto the shipping lanes.</li>
-<li><b>The ships went blind.</b> Satellite radar showed that <b>3 in 4 big ships at Hormuz</b> ({pct(M['hormuz_large_dark'])}) had switched off their identity
-beacons, against 1 in 10 in peaceful seas. The closer to the fighting, the darker. Where ships had another route (the Red Sea), they stayed away
-instead.</li>
-<li><b>It lasts.</b> Most sea-lane crises end in a few weeks, but {pct(M['km_p_gt_spr'])} outlast India's emergency oil reserve of about ten days,
-and about 1 in 10 outlasts our total national cover.</li>
-<li><b>The bill.</b> Oil jumped from ${M['brent_prewar']:.0f} to ${M['brent_war_peak']:.0f} a barrel and the rupee weakened. India imports
-{M['india_dep']:.0f}% of its oil, so its bill rose by about US${M['extra_bill_usd_bn']:.0f} billion.</li>
-<li><b>We could see it coming.</b> In late June the oil market relaxed (${M['brent_at_cut']:.0f}). Our six warning signals stayed <b>Red</b>.
-Oil then rose <b>{M['brent_oos_change']:.0f}%</b>.</li></ol>
-<h2>How sure are we?</h2><p style="font-size:10.5pt">Very. The main finding (war makes big ships go dark) held under eight different ways of measuring it,
-grew stronger the closer ships were to the fighting, and appeared again in a separate war (the Black Sea). Of four possible explanations, only
-deliberate switch-off fits all the evidence ({a_['H-A Deliberate switch-off']} contradictions, against {a_['H-C AIS reception gap']} and
-{a_['H-D Matching artefact']} for the alternatives).</p>
-<h2>What we should do</h2><ul style="font-size:10.5pt">
-<li><b>Stocks:</b> size fuel, aviation fuel and critical-spares reserves for all three Services on evidence, at 35-45 days.</li>
-<li><b>Protection:</b> give depots, air bases, fuel points and ports the air defence and counter-drone cover the Gulf's terminals lacked.</li>
-<li><b>Navigation:</b> make drones, missiles and aircraft able to work when GPS is jammed or spoofed (NavIC, anti-jam, inertial back-up).</li>
-<li><b>Watch:</b> set up a tri-service data cell to run the six-signal watch-list every week, using satellite radar to spot dark ships.</li>
-<li><b>People:</b> keep the plan to evacuate Indians from the Gulf ready to execute while the signals are Amber or Red.</li></ul>"""
+<div class="bluf"><b>BOTTOM LINE UP FRONT.</b> When war reaches a sea chokepoint, the first thing to fail is the <b>maritime picture</b>: big ships stop
+identifying themselves, so AIS-based counts overstate how much shipping has gone and hide what is still there. The disruption then <b>outlasts our reserves</b>
+and cost India about <b>US${M['extra_bill_usd_bn']:.0f} billion</b> in six months. Our warning signals saw it coming when the market did not.</div>
+<h2>Situation</h2><p style="font-size:10.3pt">War reached the Strait of Hormuz on 28 February 2026. This study joins 11 years of conflict data, satellite radar of
+106,533 ships in the first fortnight, and open oil, rupee and energy data to September 2026.</p>
+<h2>Assessment</h2><ol style="font-size:10.3pt;line-height:1.36;padding-left:16pt;margin-bottom:4pt">
+<li><b>The storm.</b> Violence nearly tripled ({M['pv_war_ratio']:.1f}x); 84% by missiles and drones; the Gulf states were hit {M['gcc_multiplier']:.0f} times more than before.</li>
+<li><b>The picture failed.</b> {pct(M['hormuz_large_dark'])} of big ships at Hormuz were dark against {M['sdr_baseline']:.0f}% in peaceful seas. AIS counts fell
+{abs(M['pi_lit_chg'])}%, but radar saw most hulls still there, many of them held at anchor. The Gulf darkened {M['did_excess']:.1f} points a day faster than 11 control seas.</li>
+<li><b>Four behaviours, not one.</b> Concealment in the Gulf, evacuation from the Red Sea, a frozen Black Sea, and compliance in the East Med (8% dark beside heavy fighting).</li>
+<li><b>It lasts.</b> {pct(M['km_p_gt_spr'])} of sea-lane crises outlast India's ~10-day emergency oil reserve; about 1 in 10 outlasts total national cover.</li>
+<li><b>The bill.</b> Brent ${M['brent_prewar']:.0f} to ${M['brent_war_peak']:.0f}; in March the extra oil bill equalled {M['def_ratio_mar_lo'] * 100:.0f}-{M['def_ratio_mar_hi'] * 100:.0f}%
+of the monthly defence budget.</li>
+<li><b>We saw it coming.</b> On 26 June the market relaxed (${M['brent_at_cut']:.0f}); our DARKWATCH signals stayed Red. Oil then rose {M['brent_oos_change']:.0f}%.</li></ol>
+<h2>Deduction</h2><p style="font-size:10.3pt">The decision variable is the <b>state of the corridor</b>, not AIS silence alone. Classify first (concealment,
+evacuation, frozen, compliance), then act. Each needs a different response: escort and surveillance, rerouting, provenance checks, or sustained presence.</p>
+<h2>Recommendation</h2><ul style="font-size:10.3pt;margin-bottom:4pt">
+<li>Make <b>Maritime Picture Assurance</b> a named joint warning function under HQ IDS, run through IFC-IOR, with the SDR and DARKWATCH as standing products.</li>
+<li>Size fuel, aviation-fuel and critical-spares reserves for all three Services at <b>35-45 days</b>; harden rear areas against drones and missiles; GPS-resilient navigation.</li>
+<li>Standing rule: <b>no AIS-derived traffic count</b> for a contested corridor without a radar cross-check.</li></ul>
+<h2>Decision sought</h2><p style="font-size:10.3pt">Approve a <b>four-month Phase 1 proof of concept</b> using existing establishment, free Copernicus
+Sentinel-1 imagery and the analysis pipeline already built. Continue only if a principal acts on a DARKWATCH warning in that period.</p>"""
 
 
 def storyline(M):

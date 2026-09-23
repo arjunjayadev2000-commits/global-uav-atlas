@@ -1,0 +1,5 @@
+Check,Gulf SDR %,Peaceful seas SDR %,War-zone relative risk
+All passes,60.9,10.1,5.17
+Excluding 67 passes that were 100% dark (possible AIS feed outage),56.3,6.5,7.54
+Daylight passes only,60.5,8.5,5.08
+Night passes only,60.9,11.2,5.33

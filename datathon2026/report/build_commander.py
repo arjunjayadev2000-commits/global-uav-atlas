@@ -40,8 +40,8 @@ CLOSE = {
         f"the world's energy ({M['gcc_multiplier']:.0f}x).", "Did it reach the sea lanes?"),
     3: (f"Yes. Violence around Hormuz reached {M['hormuz_war_mult']:.0f}x its normal level, and in the Red Sea it moved from shore to sea. Most crises end in "
         f"weeks, but {pct(M['km_p_gt_spr'])} outlast India's emergency oil reserve.", "What did the ships do?"),
-    4: (f"Big ships went dark: {pct(M['hormuz_large_dark'])} at Hormuz against about 10% in peaceful seas. Where a detour existed (Red Sea) they stayed "
-        "away; where none existed (Gulf) they sailed on with identities switched off. A model can forecast where this will happen.", "What did it cost?"),
+    4: (f"Big ships went dark: {pct(M['hormuz_large_dark'])} at Hormuz against about 10% in peaceful seas. They did not simply leave; many were held "
+        "at anchor with identities off. The same war produced four behaviours at sea, and a model can forecast where darkness will appear.", "What did it cost?"),
     5: (f"Oil went from ${M['brent_prewar']:.0f} to ${M['brent_war_peak']:.0f}, the rupee weakened, and India's oil bill rose by about "
         f"US${M['extra_bill_usd_bn']:.0f} billion. Our warning signals stayed Red when the market relaxed, and oil then rose {M['brent_oos_change']:.0f}%.",
         "How sure are we?"),
@@ -51,7 +51,7 @@ CLOSE = {
         "trade, connectivity projects and nine million citizens in the Gulf.", "And for the Armed Forces?"),
     8: ("Fuel and spares stocks sized on evidence, rear areas defended against drones and missiles, navigation that does not depend on GPS, "
         "and a joint watch on the chokepoints.", "What should we do, and in what order?"),
-    9: ("Thirteen actions, a six-signal watch-list and a three-phase plan, each traced to evidence.", None),
+    9: ("Eleven staffed actions, the DARKWATCH watch-list and a three-phase plan that starts at no new cost and stops if it does not help a decision.", None),
 }
 PL = ST.PLAIN
 
@@ -98,7 +98,12 @@ def build():
         f"In peaceful seas about 1 in 10 is dark. At <b>Hormuz it was {pct(M['hormuz_large_dark'])}</b>, in the Persian Gulf {pct(M['pg_large_dark'])}, "
         f"and in the Black Sea, the other war zone, {pct(M['black_large_dark'])}. Big ships in war zones were <b>{M['large_rr']:.1f} times</b> as likely "
         "to be dark.")
-    d.html_fig(IG.blinding_vs_diversion(M), "Two responses to war at sea: blinding where there is no detour, diversion where there is")
+    d.fig("f11_1_presence_identity", "Did the ships leave or go silent? Same sea area at Hormuz, imaged on 4 and 12 March", width=80)
+    d.p(f"<b>The ships did not simply leave.</b> On the same patch of sea, AIS-transmitting big hulls fell {abs(M['pi_lit_chg'])}% while radar saw the "
+        f"physical fleet fall only {abs(M['pi_radar_chg'])}%, and the dark fleet did not shrink at all. Many dark hulls were <b>held at anchor</b>: seen in "
+        f"the same 100 m square on different days far more than chance allows (z = {M['stasis_dark_z']}). An AIS-based traffic count therefore "
+        "overstated the collapse of shipping and hid the collapse of the maritime picture.")
+    d.html_fig(IG.signatures(M, T("t11_6_signatures")), "Four behaviours at sea: the same war produced concealment, evacuation, a frozen sea and compliance")
     d.fig("f7_6_dbscan", "Where dark ships gather: tanker queues off Dubai and Fujairah, and in the Black Sea", width=76)
     d.fig("f8_3_risk_surface", "Forecast: where a 180 m merchant ship is likely to go dark", width=76)
     d.p(f"A machine-learning model, trained on 62,000 ships and tested only on seas it had never seen, forecasts where ships will go dark "
@@ -116,6 +121,8 @@ def build():
     d.p(f"India imports <b>{M['india_dep']:.0f}%</b> of its oil, and the share is rising. The war added about <b>US${M['extra_bill_usd_bn']:.0f} billion "
         f"(Rs {M['extra_bill_inr_lakh_cr']:.1f} lakh crore)</b> to the oil bill in {M['war_days']} days. Every US$10 a barrel for a year costs about "
         f"US${M['per10_usd_bn']:.1f} billion.")
+    d.p(f"<b>In defence terms:</b> in March 2026 the extra oil bill equalled <b>{M['def_ratio_mar_lo'] * 100:.0f}-{M['def_ratio_mar_hi'] * 100:.0f}% of the whole "
+        f"monthly defence budget</b>; in April it reached {M['def_ratio_apr_hi'] * 100:.0f}%.")
     d.callout(f"<b>Could we have seen it coming?</b> On 26 June 2026, when the conflict data end, the oil market looked calm: Brent was back at "
               f"${M['brent_at_cut']:.0f}. The six warning signals built in this study all read Red or Amber and said <i>hold the buffers</i>. "
               f"Oil then rose <b>{M['brent_oos_change']:.0f}%</b> to ${M['brent_last']:.0f} by {M['brent_last_date']}. The data saw what the market missed.")
@@ -126,10 +133,13 @@ def build():
     d.p(f"Four tests make the main finding solid. (1) It holds under <b>eight different ways</b> of measuring it (war zones {M['rob_min_rr']:.1f} to "
         f"{M['rob_max_rr']:.1f} times darker). (2) It gets <b>stronger nearer the fighting</b>, from {pct(M['dose_0_50'])} within 50 km to 43% at 150-200 km. "
         "(3) It <b>repeats in a separate war</b> (Black Sea). (4) Of four possible explanations (deliberate switch-off, GPS jamming, radio "
-        "reception gaps, computer error), only <b>deliberate switch-off</b> fits all the evidence.")
+        "reception gaps, computer error), only <b>deliberate switch-off</b> fits all the evidence. (5) It survives removing the "
+        f"{M['alldark_n']} passes that were entirely dark (a possible feed outage) and holds by day and by night. (6) The Gulf darkened "
+        f"{M['did_excess']:.1f} points a day faster than 11 control seas (p = {M['did_p']:.3f}). A failed identity match proves the picture failed; "
+        "it cannot prove intent, so that judgement is held at 'likely'.")
     KJ = pd.DataFrame([
         ("Almost certain", "The war caused big ships to go dark.", "High"),
-        ("Highly likely", "Ships are switching off deliberately; GPS jamming probably adds to it.", "Moderate"),
+        ("Likely", "Most of the darkness is deliberate switch-off; GPS jamming probably adds to it.", "Moderate"),
         ("Highly likely", "The Hormuz coast stays in crisis, at least on and off, through September 2026.", "Moderate"),
         ("Likely", f"A sea-lane crisis outlasts India's emergency oil reserve ({pct(M['km_p_gt_spr'])} of cases).", "Moderate"),
         ("Almost certain", "Drones and missiles will remain the main threat to rear-area logistics and energy sites.", "High"),
@@ -148,6 +158,7 @@ def build():
     ])
     d.add("<h3>For India</h3>")
     d.html_fig(IG.impact_cascade(M), "How the shock travels from the strait to India's import bill and the Armed Forces")
+    d.html_fig(IG.cog(M), "India's centre of gravity at sea, with the vulnerabilities this study measured")
     d.bullets([
         f"<b>Energy:</b> {M['india_dep']:.0f}% of oil is imported, much of it through Hormuz, which has no detour. Only buffers and other suppliers help.",
         "<b>Trade:</b> the Red Sea diversion lengthens and raises the cost of India's westbound exports.",
@@ -171,23 +182,21 @@ def build():
     # 9 ---------------------------------------------------------------- way forward
     d.chapter("Way Forward")
     R = pd.DataFrame([
-        ("National", "Size strategic oil and LPG reserves on the crisis-duration evidence (35-45 days), not a fixed number."),
-        ("National", "Diversify away from Hormuz: non-Gulf crude and LNG, bypass export points (Yanbu, Fujairah), war-risk clauses."),
-        ("National", "Run a weekly chokepoint early-warning watch using the six signals below."),
-        ("Maritime", "Fuse national satellite radar (NISAR, EOS-04) with AIS at IFC-IOR to flag every dark big ship automatically."),
-        ("Maritime", "Treat AIS identity as untrusted: automatic checks for cloned and fake identities and shadow-fleet flags."),
-        ("Maritime", "Know the small-boat population in India's seas: transponders, coastal radar, satellite radar."),
-        ("Joint", "Re-set fuel, aviation-fuel and critical-spares War Wastage Reserves for all three Services at 35-45 days."),
-        ("Joint", "Stand up a tri-service Data Analytics Cell under HQ IDS to run this watch and dashboard weekly."),
-        ("Joint", "Keep the Gulf evacuation plan (Navy sealift, IAF airlift, Army reception) ready while signals are Amber or Red."),
-        ("Navy", "Use dark-ship forecasts to direct escort and surveillance in the Gulf and Arabian Sea; stock counter-drone defences for long campaigns."),
-        ("Air Force", "Harden and disperse air bases and fuel farms; make avionics and weapons work when GPS is jammed (NavIC, anti-jam)."),
-        ("Army", "Air defence and counter-drone cover for depots, railheads and fuel points; GPS-denied fallback for drones and precision fires."),
-        ("All Services", "Indigenise first the items that come through Hormuz or the Red Sea and have long lead-times."),
-    ], columns=["Level", "Action"])
-    d.table(R, "Thirteen actions, each traced to the evidence", small=True)
+        ("Maritime Picture Assurance as a named joint warning function; SDR and DARKWATCH as weekly products.", "HQ IDS with IFC-IOR", "4 months", "A principal acts on a DARKWATCH warning"),
+        ("Standing rule: no AIS-derived traffic count for a contested corridor without a radar cross-check.", "HQ IDS", "Immediate", "Rule issued; cited in assessments"),
+        ("Fuse national satellite radar (NISAR, EOS-04) with AIS to flag every dark big ship automatically.", "Navy (IFC-IOR), DSA", "6-18 months", "Dark hulls cued within 24 h of a pass"),
+        ("Treat AIS identity as untrusted: automatic checks for cloned or fake identities.", "Navy (IFC-IOR)", "6 months", "Checks shared with ports and insurers"),
+        ("Know the small-boat population in India's seas: transponders, coastal radar, satellite radar.", "Navy, Coast Guard, MoFAH", "18 months", "Share of small craft identifiable"),
+        ("Size strategic oil and LPG reserves on crisis-duration evidence; diversify away from Hormuz.", "MoPNG with MEA", "12 months", "Cover set on the survival curve"),
+        ("Re-set fuel, aviation-fuel and critical-spares War Wastage Reserves for all three Services at 35-45 days.", "HQ IDS (Log)", "6 months", "Days of cover within the band"),
+        ("Air defence and counter-drone cover for depots, railheads, air bases and fuel points; GPS-denied fallback.", "Army, IAF", "3 years, rolling", "Critical nodes covered; drills done"),
+        ("Keep the Gulf evacuation plan (Navy sealift, IAF airlift, Army reception) ready while signals are Amber or Red.", "HQ IDS with MEA", "3 months", "Time to first lift from alert"),
+        ("Indigenise first the items that come through Hormuz or the Red Sea with long lead-times.", "DDP, Services", "Rolling", "Exposure-weighted list adopted"),
+        ("Archive corridor satellite imagery and write up what shipping did after every chokepoint crisis.", "HQ IDS, CDM", "After each crisis", "Report within 90 days"),
+    ], columns=["Action", "Lead", "Timeline", "Measure of effectiveness"])
+    d.table(R, "Eleven staffed actions, each traced to the evidence", small=True)
     iwt = T("t9_6_iw_matrix")
-    d.html_fig(IG.iw_dashboard(M, iwt), "The six-signal watch-list at 27 June 2026, and what happened next")
+    d.html_fig(IG.iw_dashboard(M, iwt), "DARKWATCH: the six-signal watch-list at 27 June 2026, and what happened next")
     d.html_fig(IG.roadmap(), "Three-phase plan")
 
     # 10 --------------------------------------------------------------- conclusion
@@ -231,6 +240,12 @@ def build():
          f"RR {M['rob_min_rr']:.1f}-{M['rob_max_rr']:.1f}; {pct(M['dose_0_50'])} to 43% with distance; switch-off 0 inconsistencies", "10.4-10.6"),
         ("Expected shortfall from the survival curve; scenario matrix", "How much stock is enough?",
          f"Returns flatten at ~{M['stock_knee_days']} days; 45 days covers the 6-week case", "13.5-13.6"),
+        ("Presence vs identity on a common footprint; stasis index against a crowding null", "Did ships leave or go silent?",
+         f"AIS {M['pi_lit_chg']}% vs radar {M['pi_radar_chg']}%; dark hulls held in place (z = {M['stasis_dark_z']})", "7.8"),
+        ("Scene-level difference-in-differences with 5,000 permutations; all-dark and day/night checks", "Did the Gulf change more than elsewhere?",
+         f"+{M['did_excess']:.1f} pts/day vs controls (p = {M['did_p']:.3f}); RR {M['rr_excl_alldark']:.1f} without all-dark passes", "10.4"),
+        ("Flag-retention shift (chi-square); rule-based signature assignment", "Who kept transmitting; what kind of event is it?",
+         f"Gulf flags {M['flag_littoral_1']:.0f}% to {M['flag_littoral_2']:.0f}% of lit fleet; four signatures", "7.9-7.10"),
         ("Indicators & warnings matrix; out-of-sample test", "Would we have been warned?",
          f"{M['iw_red']} Red / {M['iw_amber']} Amber at ${M['brent_at_cut']:.0f} Brent; oil then {M['brent_oos_change']:+.0f}%", "9.8, 14.2"),
     ], columns=["Technique", "Commander's question", "Key result", "Full report"])
@@ -273,7 +288,8 @@ def main():
     body = build()
     css_extra = """
 body { font-size: 11pt; line-height: 1.4; }
-h1.chapter { font-size: 14pt; margin: 18pt 0 10pt 0; page-break-before: auto; break-before: auto; border-top: 1.5pt solid #1f3b5c; padding-top: 8pt; }
+h1.chapter { font-size: 14pt; margin: 18pt 0 10pt 0; page-break-before: auto; break-before: auto; border-top: 1.5pt solid #1f3b5c; padding-top: 8pt; page-break-after: avoid; break-after: avoid; }
+.kicker, .story { page-break-after: avoid; break-after: avoid; }
 table.tbl.small td, table.tbl.small th { padding: 2pt 4pt; }
 figure { margin: 6pt 0 8pt 0; } .story, .sowhat { font-size: 10.5pt; padding: 6pt 9pt; }
 """
@@ -304,7 +320,8 @@ figure { margin: 6pt 0 8pt 0; } .story, .sowhat { font-size: 10.5pt; padding: 6p
         front = f"""<div class="titlepage" style="padding-top:10mm">
 <div class="t3">COLLEGE OF DEFENCE MANAGEMENT &middot; DATATHON - 2026</div>
 <div class="t3" style="margin-bottom:20pt">Theme: Global Conflicts &ndash; Impact on Supply Chains</div>
-<div class="t1">{BR.TITLE}</div><div class="t2" style="margin-bottom:14pt">Commander's Edition</div>
+<div class="t1">{BR.TITLE}</div><div class="t2" style="margin-bottom:6pt">{BR.SUBTITLE}</div>
+<div class="t2" style="margin-bottom:14pt;font-style:normal;font-weight:bold">Commander's Edition</div>
 <div class="t3" style="font-size:10.5pt;max-width:80%;margin:0 auto 18pt auto">What the 2026 war did to the ships that carry India's oil and trade,
 what it cost, how long such crises last, and what India and its Armed Forces should do. Told as one story, in plain words.</div>
 <div class="t3">Submitted by</div><div class="t3"><b>{RANK} {AUTHOR.upper()}</b></div><div class="t3">{SERVICE_NO} &middot; {UNIT}</div>

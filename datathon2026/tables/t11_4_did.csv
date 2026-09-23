@@ -1,0 +1,5 @@
+Quantity,Value (percentage points per day)
+Control seas trend,-0.22
+Gulf excess trend (difference-in-differences),5.67
+"Permutation p-value (5,000 label shuffles)",0.0082
+Scene-sea units (treated / control),47 / 1483
