@@ -1,0 +1,9 @@
+Direction,Lags (weeks),F,p-value
+Hormuz littoral CCII -> Brent weekly return,1,0.03,0.8716
+Hormuz littoral CCII -> Brent weekly return,2,0.7,0.4985
+Hormuz littoral CCII -> Brent weekly return,4,0.6,0.6638
+Brent weekly return -> Hormuz littoral CCII (reverse),2,1.31,0.2710
+Red Sea at-sea CCII -> Brent weekly return,1,0.2,0.6548
+Red Sea at-sea CCII -> Brent weekly return,2,0.8,0.4489
+Red Sea at-sea CCII -> Brent weekly return,4,0.83,0.5081
+Brent weekly return -> Red Sea at-sea CCII (reverse),2,3.45,0.0323
