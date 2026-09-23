@@ -88,7 +88,7 @@ def closings(M):
              "And for the Armed Forces?"),
         13: ("For the Armed Forces it means fuel and spares stocks sized on evidence, rear areas defended against drones and missiles, "
              "navigation that does not rely on GPS alone, and a joint watch on the chokepoints.", "What should we do, and in what order?"),
-        14: ("Thirteen actions, a six-indicator watch-list and a three-phase plan, each traced to a finding.", None),
+        14: ("Fifteen staffed actions, the DARKWATCH watch-list and a three-phase plan that starts at no new cost, each traced to a finding.", None),
     }
 
 

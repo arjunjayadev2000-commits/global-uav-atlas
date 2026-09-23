@@ -217,7 +217,7 @@ def methodology():
 
 def takeaways(M):
     tk = [("eye-slash", f"<b>Visibility is the first casualty.</b> {pct(M['hormuz_large_dark'])} of large ships dark at Hormuz; the effect is robust, graded and replicated."),
-          ("route", "<b>Detour decides the response.</b> No detour means blinding and a price shock; a detour means diversion and higher freight."),
+          ("route", "<b>Four signatures, not one.</b> No detour means concealment and a price shock; a detour means evacuation and higher freight; enforced reporting keeps a sea visible."),
           ("hourglass-half", f"<b>Disruption is a duration problem.</b> {pct(M['km_p_gt_spr'])} outlast the SPR; returns to stock flatten at ~35-45 days."),
           ("explosion", "<b>Stand-off weapons erase the rear area.</b> 84% of war violence; energy and logistics nodes far from the front were hit."),
           ("traffic-light", f"<b>Data beats the market as a warning.</b> The June I&amp;W call was Red at $70 Brent; oil then rose {M['brent_oos_change']:.0f}%.")]

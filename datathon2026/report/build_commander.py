@@ -115,7 +115,8 @@ def build():
     d.fig("f9o_2_event_study", "Oil price after four Middle-East shocks (day 0 = the day before each began)", width=80)
     d.p(f"Only the war that reached Hormuz produced a lasting shock: <b>Brent +{M['ev_war_peak']:.0f}%</b> within 40 days, from "
         f"${M['brent_prewar']:.0f} to a peak of ${M['brent_war_peak']:.0f}. The Red Sea campaign, where ships could detour, left oil <i>lower</i> "
-        "a month later. The market confirms the blinding-versus-diversion finding.")
+        "a month later. The market confirms the signatures of Chapter 4: concealment where there is no detour produces a price shock; evacuation where "
+        "there is a detour produces a freight shock instead.")
     wp = T("t9o_3_war_premium")
     d.table(wp, "What the war cost India (open-source data)", small=True)
     d.p(f"India imports <b>{M['india_dep']:.0f}%</b> of its oil, and the share is rising. The war added about <b>US${M['extra_bill_usd_bn']:.0f} billion "
@@ -154,7 +155,7 @@ def build():
         "<b>Energy:</b> about a fifth of the world's oil passes Hormuz. Chokepoint risk is now a recurring cost, not a rare event.",
         "<b>Trade:</b> where a detour exists, conflict adds 10-14 days per Asia-Europe voyage and raises freight and insurance costs.",
         "<b>Safety at sea:</b> when most big ships are dark, collision avoidance, rescue and identification fail, and neutral ships risk being mistaken for targets.",
-        "<b>Shadow fleets:</b> ships registered in flags often linked to sanctions evasion are about three times over-represented in war zones.",
+        "<b>Shadow fleets:</b> flags often linked to sanctions evasion are about three times over-represented among visible ships in war zones, but the dark fleet is mainly mainstream shipping: the problem is the whole fleet's behaviour, not a rogue fleet.",
     ])
     d.add("<h3>For India</h3>")
     d.html_fig(IG.impact_cascade(M), "How the shock travels from the strait to India's import bill and the Armed Forces")

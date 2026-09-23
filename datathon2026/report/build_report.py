@@ -570,8 +570,9 @@ def build_body():
     d.p(f"The Red Sea shows a different effect: only {pct(M['redsea_large_dark'])} of large ships are dark, and just 54 detections were made in "
         "Bab-el-Mandeb in two weeks. In the Red Sea, ships do not go dark in the war zone. <b>They stay away</b>. "
         "The Gulf has no route around it, so ships that must load there go dark instead. The two chokepoints show the two responses of shipping to conflict: "
-        "diversion where a detour exists, blinding where it does not.")
-    d.html_fig(IG.blinding_vs_diversion(M), "Two responses of shipping to conflict: blinding versus diversion (infographic)")
+        "diversion where a detour exists, blinding where it does not. These are the two dominant responses; Section 7.10 shows they are two cells of "
+        "a fuller four-signature typology.")
+    d.html_fig(IG.blinding_vs_diversion(M), "The two dominant responses of shipping to conflict: blinding versus diversion (infographic; full typology in Figure 7.13)")
     d.fig("f7_3_size_zone", "AIS-dark share by vessel size class and zone")
     d.p("In peaceful waters darkness falls steadily with size, from 72 per cent of craft under 25 m to 8 per cent of ships over 200 m. In the Gulf war zone it "
         "hardly falls at all: ships over 200 m, which is VLCC and LNG-carrier size, are dark 60 per cent of the time. <b>In a war zone, size no longer predicts visibility.</b>")
@@ -777,8 +778,8 @@ def build_body():
         ("F4", "The Red Sea threat moved offshore: land strikes fell ~6-fold while at-sea violence rose ~30-fold; a land-based index would miss it.", "6.1"),
         ("F5", f"Disruptions are heavy-tailed: median {M['ep_median_wk']:.1f} wk, max {M['ep_max_wk']} wk; {pct(M['km_p_gt_spr'])} outlast the SPR, {pct(M['km_p_gt_74d'])} outlast 74 days; Hormuz stays elevated into Q3-2026 ({pct(M['fc_prob_above_thr'])} of simulated paths cross the threshold).", "6.2, 6.3"),
         ("F6", f"Large ships in war zones are {M['large_rr']:.1f}x more likely to be AIS-dark (Hormuz {pct(M['hormuz_large_dark'])}, Black Sea {pct(M['black_large_dark'])}); darkness in the Gulf rose over the first two weeks of the war.", "7.1, 7.4"),
-        ("F7", "Two responses to conflict: blinding where there is no detour (Gulf) and diversion where there is (Red Sea).", "7.1"),
-        ("F8", "Dark ships gather at the Dubai/Jebel Ali and Fujairah anchorages: the supply chain is held at anchor with AIS off; shadow-fleet registries are over-represented about 3x.", "7.3, 7.5"),
+        ("F7", "Blinding where there is no detour (Gulf) and diversion where there is (Red Sea): the two dominant cells of a four-signature typology (F14).", "7.1, 7.10"),
+        ("F8", "Dark ships gather at the Dubai/Jebel Ali and Fujairah anchorages: the supply chain is held at anchor with AIS off. Shadow-fleet registries are over-represented among visible ships (~3x), but the dark fleet is mainly mainstream tonnage.", "7.3, 7.5, 7.9"),
         ("F9", "India's near seas are dominated by thousands of small, non-AIS craft; large ships off India remain visible.", "7.6"),
         ("F10", f"Proximity to conflict predicts darkness in unseen regions (ROC-AUC {M['auc_gbt']:.2f}); AIS identity itself is unreliable (clones, placeholders, malformed IDs).", "7.7, 8"),
         ("F11", f"The Hormuz war sent Brent +{M['ev_war_peak']:.0f}% within 40 days and the rupee {M['fx_dep_pct']:+.1f}%; the Red Sea campaign barely moved oil. The war added ~US${M['extra_bill_usd_bn']:.0f} bn to India's oil bill.", "9.2-9.7"),
@@ -804,10 +805,11 @@ def build_body():
         "Before cargo stops moving, the cooperative maritime picture collapses: large, AIS-obligated ships vanish from it, and tankers "
         "wait at anchor with transponders off. The large-ship dark share is therefore a <i>leading</i> indicator of supply disruption. "
         "It can be measured from space before trade statistics show anything.",
-        "<b>I2 - Whether a detour exists decides how shipping responds (F4, F7).</b> Where there is an alternative route, as with the Red Sea and the Cape, "
+        "<b>I2 - Two conditions decide how shipping responds: whether identity is dangerous and whether a detour exists (F4, F7, F14).</b> Where there is an alternative route, as with the Red Sea and the Cape, "
         "conflict causes diversion: traffic thins and the cost appears as time and freight. Where there is none, as with the Gulf and Hormuz, "
-        "conflict causes blinding: ships keep sailing but go dark, and the cost appears as risk. Policy for the two chokepoints "
-        "must therefore differ.",
+        "conflict causes blinding: ships keep sailing but go dark, and the cost appears as risk. Where a credible authority enforces reporting "
+        "(East Med, Suez) identity is protective and ships stay visible; in a long war (Black Sea) a two-fleet pattern freezes in place. "
+        "Policy must follow the signature, not the headline.",
         "<b>I3 - Stand-off weapons have removed the distance between a land war and the sea lanes (F2, F3, F4).</b> With 84 per cent of "
         "war-period violence delivered by drones, missiles and artillery, any littoral actor can hold a chokepoint, a terminal or a "
         "logistics node at risk. Distance from the front line no longer protects rear areas.",
@@ -872,7 +874,7 @@ def build_body():
         ("KJ3", "It is <b>highly likely</b> that the Hormuz littoral stays above its disruption threshold at least intermittently through Q3-2026.", "Moderate", f"{pct(M['fc_prob_above_thr'])} of simulated paths breach; I&W status Red at end of data"),
         ("KJ4", f"A chokepoint disruption <b>likely</b> outlasts India's SPR (about {pct(M['km_p_gt_spr'])}); outlasting total national cover is <b>highly unlikely</b> (about {pct(M['km_p_gt_74d'])}) but not negligible.", "Moderate", "Kaplan-Meier on 32 episodes; wide intervals"),
         ("KJ5", "It is <b>almost certain</b> that stand-off weapons will remain the dominant threat to rear-area logistics and energy nodes in regional wars.", "High", "84% of war-period violence; consistent across 2024 and 2026 wars"),
-        ("KJ6", "It is <b>likely</b> that the large-ship dark share leads measurable trade disruption.", "Low", "Plausible and consistent with anchorage clustering; not yet tested against flow data"),
+        ("KJ6", "It is <b>likely</b> that the Strategic Dark Ratio (SDR) leads measurable trade disruption.", "Low", "Plausible and consistent with anchorage clustering; not yet tested against flow data"),
         ("KJ7", "It is <b>highly likely</b> that open conflict and satellite indicators give earlier warning than market prices.", "Moderate", f"Prices react only to events (Granger p &gt; 0.4); June call Red at US${M['brent_at_cut']:.0f}, then +{M['brent_oos_change']:.0f}%; one out-of-sample test"),
     ], columns=["#", "Judgement", "Confidence", "Basis"])
     d.table(KJ, "Key judgements")
@@ -904,11 +906,11 @@ def build_body():
         "and rescue, sanctions enforcement, insurance and port-state control depend fails for most large ships (F6, I1). Navigation safety "
         "deteriorates, and the chance of misidentifying and striking a neutral ship rises.",
         "<b>Sanctions and the shadow fleet.</b> Dark ships cluster at the Gulf and Black Sea anchorages, and shadow-fleet registries are "
-        "about three times over-represented (F8). The informal, poorly insured fleet grows exactly where oversight is weakest, raising the risk of "
+        "about three times over-represented among visible ships (F8), although the dark fleet itself is mainly mainstream tonnage. The informal, poorly insured fleet grows exactly where oversight is weakest, raising the risk of "
         "environmental disasters and unattributable incidents (I6).",
         "<b>Contagion of stand-off warfare.</b> Cheap drones and missiles have become the main tool of regional war (F2, I3). Any littoral "
         "actor can now hold a chokepoint at risk from the shore, and the model extends beyond the Middle East to other straits.",
-        "<b>A model for other chokepoints.</b> The two responses identified here, diversion and blinding (I2), offer a way to anticipate "
+        "<b>A model for other chokepoints.</b> The four signatures identified here (concealment, evacuation, attrition/frozen, compliance; I2) offer a way to anticipate "
         "what would happen in a crisis at Malacca, the Taiwan Strait or the Bosphorus, where the same data and methods can be applied.",
     ])
 
@@ -1030,7 +1032,7 @@ def build_body():
     R = pd.DataFrame([
         ("National", "R1", "Expand strategic crude and LPG reserves and set national cover from the disruption-survival curve rather than a fixed number of days, with a target at or beyond the ~35-45-day point where returns flatten, for the Hormuz-dependent share of imports.", "F5, I4"),
         ("National", "R2", "Diversify energy sources and routes: more non-Gulf crude and LNG, access to Hormuz-bypass export points (Yanbu, Fujairah), and long-term charters that include war-risk clauses.", "F3, F7, I2"),
-        ("National", "R3", "Build a national Chokepoint Early-Warning System that tracks the CCII, the stand-off strike share and the large-ship dark share weekly, with the thresholds from this study as triggers.", "F1, F2, F6, I1, I5"),
+        ("National", "R3", "Build a national Chokepoint Early-Warning System that tracks the CCII, the stand-off strike share and the Strategic Dark Ratio (SDR) weekly, with the thresholds from this study as triggers.", "F1, F2, F6, I1, I5"),
         ("Maritime / MDA", "R4", "Fuse SAR (NISAR, EOS-04, commercial SAR) with AIS at IFC-IOR and flag every dark large ship automatically, prioritising the hot-spot belt and the predicted dark-risk surface.", "F6, F8, I1"),
         ("Maritime / MDA", "R5", "Treat AIS identity as untrusted: build automated checks for impossible re-sightings, placeholder and malformed MMSIs and shadow-fleet registries, and share them with ports and insurers.", "F10, I6"),
         ("Maritime / MDA", "R6", "Extend coverage of small craft in India's seas (fishing-vessel transponders, coastal radar, SAR) so that the non-AIS population is known.", "F9, I6"),
@@ -1108,7 +1110,7 @@ def build_body():
     d.section("15.3", "AIS Dark Zones")
     d.bullets([
         f"Large ships were AIS-dark in {pct(M['hormuz_large_dark'])} of cases in the Strait of Hormuz and {pct(M['black_large_dark'])} in the Black Sea, against about 10 per cent in peacetime waters (relative risk {M['large_rr']:.1f}). The identification crisis named in the problem statement is real and measurable.",
-        "Conflict produces blinding where there is no detour and diversion where there is. Dark tankers gathered at the Gulf anchorages, and shadow-fleet registries were over-represented.",
+        "The same war produced four behaviours at sea: concealment in the Gulf, evacuation from the Red Sea, a frozen Black Sea and compliance in the East Med. Dark tankers were held at the Gulf anchorages; the dark fleet was mainly mainstream tonnage, not a rogue fleet.",
         f"Proximity to conflict predicts darkness in sea regions the model never saw (ROC-AUC {M['auc_gbt']:.2f}), which makes it possible to forecast where the maritime picture will fail.",
     ], "alpha")
     d.section("15.4", "Implications")
@@ -1252,7 +1254,7 @@ def front_html(body, pages, fp=None):
         "<p>The main inference is that the first measurable effect of war at a chokepoint is the <i>blinding</i> of the supply chain, "
         "followed by physical disruption that lasts longer than national buffers. The report then assesses the impact on the globe, on India "
         "and on the Indian Armed Forces (Navy, Air Force, Army and joint), gives a prescriptive stock-cover model (returns flatten at about "
-        f"{M['stock_knee_days']} days of cover), and sets out a way forward of thirteen traced recommendations, a phased roadmap and a Power BI "
+        f"{M['stock_knee_days']} days of cover), and sets out a way forward of fifteen staffed recommendations, a phased roadmap and a Power BI "
         "decision dashboard, before concluding.</p>"
         "<p><b>Keywords:</b> supply chain, chokepoints, AIS dark vessels, SAR, ACLED, change-point detection, Getis-Ord Gi*, DBSCAN, "
         "survival analysis, spatial cross-validation, Indian Armed Forces logistics.</p>")
