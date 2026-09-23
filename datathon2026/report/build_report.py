@@ -26,7 +26,7 @@ SERVICE_NO = "[Service No]"
 UNIT = "[Unit / Formation]"
 TITLE = "GLOBAL CONFLICTS AND THE BLINDING OF SUPPLY CHAINS"
 SUBTITLE = ("A Data-Analytics Study of Chokepoint Conflict, AIS Dark Zones and Disruption Survival, "
-            "with Implications for India and the Indian Army")
+            "with Implications for India and the Indian Armed Forces")
 
 
 def pct(x, d=0):
@@ -97,7 +97,7 @@ class Doc:
         self.add(f'<figure>{inner}<figcaption><span class="mk">@@{mid}@@ </span><b>Figure {label} :</b> {caption}</figcaption></figure>')
         return label
 
-    def table(self, df, caption, fmt=None, widths=None, small=False, note=None):
+    def table(self, df, caption, fmt=None, widths=None, small=False, note=None, breakable=False):
         self.tab_no += 1
         label = f"{self.pfx}.{self.tab_no}"
         mid = f"T{label.replace('.', '_')}"
@@ -119,7 +119,8 @@ class Doc:
             rows.append("<tr>" + "".join(cells) + "</tr>")
         cls = "tbl small" if small else "tbl"
         nt = f'<div class="src">{note}</div>' if note else ""
-        self.add(f'<div class="tblwrap"><div class="tcap"><span class="mk">@@{mid}@@ </span><b>Table {label} :</b> {caption}</div>'
+        brk = ' style="page-break-inside:auto"' if breakable else ""
+        self.add(f'<div class="tblwrap"{brk}><div class="tcap"><span class="mk">@@{mid}@@ </span><b>Table {label} :</b> {caption}</div>'
                  f'<table class="{cls}"><thead><tr>{head}</tr></thead><tbody>{"".join(rows)}</tbody></table>{nt}</div>')
         return label
 
@@ -152,6 +153,7 @@ figcaption { font-size: 10.5pt; margin-top: 4pt; text-align: center; }
 table.tbl { border-collapse: collapse; width: 100%; font-family: 'Liberation Sans', Arial, sans-serif; font-size: 8.8pt; line-height: 1.3; }
 table.tbl.small { font-size: 8pt; }
 table.tbl th { background: #1f3b5c; color: #fff; font-weight: bold; padding: 4pt 5pt; text-align: left; border: 0.5pt solid #1f3b5c; }
+table.tbl tr { page-break-inside: avoid; }
 table.tbl td { padding: 3pt 5pt; border: 0.5pt solid #c9c8c2; vertical-align: top; }
 table.tbl tr:nth-child(even) td { background: #f4f3ef; }
 .mk { color: #fff; font-size: 1pt; line-height: 0; }
@@ -203,8 +205,8 @@ def build_body():
         "This report takes up that problem with two unclassified datasets from the Datathon repository and a set of descriptive, "
         "diagnostic, predictive and prescriptive techniques. The first dataset is eleven and a half years of weekly Middle-East conflict "
         "events (ACLED). The second is 1-14 March 2026 of Sentinel-1 synthetic-aperture-radar (SAR) vessel detections matched against AIS. "
-        "The report works from the evidence to its impact on the globe, on India and on the Indian Army, and ends with "
-        "recommendations, a way forward and conclusions that are each traced back to a finding in the analysis.")
+        "The report works from the evidence to inferences, then to the impact on the globe, on India and on the Indian Armed "
+        "Forces, and ends with a way forward and a conclusion, each traced back to a finding in the analysis.")
     d.callout(
         "<b>Thesis.</b> Conflict near a maritime chokepoint shows up in the data first as the <i>blinding</i> of the "
         "supply chain: large, AIS-obligated ships vanish from the cooperative picture. Only after that does it show up as the "
@@ -219,10 +221,10 @@ def build_body():
     d.p("Can open conflict and satellite data be used to (i) measure how Middle-East conflict intensity near maritime "
         "chokepoints has changed, (ii) locate and explain AIS dark zones and relate them to that conflict, (iii) predict "
         "where AIS darkness will appear, and (iv) turn the results into quantified guidance for India's supply-chain security and "
-        "for the Indian Army's logistics and operational preparedness?")
+        "for the Indian Armed Forces' logistics and operational preparedness?")
     d.section("1.2", "Aim")
     d.p("To derive data-driven insights on the impact of global, and in particular Middle-East, conflicts on maritime supply "
-        "chains, with a focus on AIS dark zones and chokepoint disruption, and to recommend measures for India and the Indian Army.")
+        "chains, with a focus on AIS dark zones and chokepoint disruption, and to recommend measures for India and the Indian Armed Forces.")
     d.section("1.3", "Objectives")
     d.bullets([
         "Build a clean, reproducible data pipeline for the ACLED conflict and Sentinel-1 SAR/AIS datasets (Chapter 4).",
@@ -233,8 +235,8 @@ def build_body():
         "Map AIS darkness worldwide, test whether it is significantly higher in war zones, find statistically significant "
         "dark hot spots and dark-vessel clusters, and profile the identity and registry of ships in the war zone (Chapter 7).",
         "Train and validate a model that predicts AIS dark spots from conflict geography (Chapter 8).",
-        "Turn the findings into impact assessments for the globe, India and the Indian Army, plus a prescriptive stock-cover "
-        "model, recommendations and a way forward (Chapters 9-12).",
+        "Draw inferences from the findings and assess their impact on the globe, India and the Indian Armed Forces, with a "
+        "prescriptive stock-cover model, a way forward and a conclusion (Chapters 9-14).",
     ], "alpha")
     d.section("1.4", "Hypotheses")
     d.table(pd.DataFrame([
@@ -253,8 +255,8 @@ def build_body():
 <div class="bx">Feature engineering: region, size class, flag class, distance to chokepoint</div><div class="bx">Spatial join: conflict events within 500 km of each ship (BallTree, haversine)</div></div>
 <div class="col"><div class="hd">3. Analyse</div><div class="bx"><b>Descriptive:</b> trends, mixes, maps</div><div class="bx"><b>Diagnostic:</b> PELT change-points, chi-square, Gi* hot spots, DBSCAN</div>
 <div class="bx"><b>Predictive:</b> ARIMA forecast; logit and gradient-boosted trees with spatial CV</div><div class="bx"><b>Prescriptive:</b> Kaplan-Meier / Cox survival and expected-shortfall stock model</div></div>
-<div class="col"><div class="hd">4. Decide</div><div class="bx">Findings F1-F10</div><div class="bx">Impact: globe, India, Indian Army</div>
-<div class="bx">Recommendations traced to findings</div><div class="bx">Way forward and Power BI decision dashboard</div></div></div>"""
+<div class="col"><div class="hd">4. Decide</div><div class="bx">Findings F1-F10 and inferences I1-I6</div><div class="bx">Impact: globe, India, Indian Armed Forces</div>
+<div class="bx">Way forward: recommendations and roadmap</div><div class="bx">Conclusion; Power BI decision dashboard</div></div></div>"""
     d.html_fig(flow, "Analytical framework - from data to decision")
     d.p("The work was done in Python 3.11 (pandas, NumPy, SciPy, statsmodels, scikit-learn, ruptures, Matplotlib/Basemap). "
         "The cleaned star-schema tables are exported for the Power BI (.pbix) dashboard that accompanies the report (Appendix B). "
@@ -262,8 +264,8 @@ def build_body():
     d.section("1.6", "Organisation of the Report")
     d.p("Chapter 2 reviews the literature and Chapter 3 sets out the theory behind the techniques used. Chapter 4 covers data "
         "pre-processing. Chapters 5 to 8 present the analysis: the conflict landscape, chokepoint intensity and disruption survival, "
-        "AIS dark zones, and the predictive model. Chapter 9 brings the findings together and assesses their impact on the globe, "
-        "India and the Indian Army. Chapters 10, 11 and 12 give the recommendations, the way forward and the conclusion, followed by the references and appendices.")
+        "AIS dark zones, and the predictive model. Chapter 9 draws the inferences. Chapters 10, 11 and 12 assess the impact on the globe, "
+        "on India and on the Indian Armed Forces. Chapter 13 sets out the way forward and Chapter 14 concludes, followed by the references and appendices.")
 
     # ================================================================== 2 LITERATURE REVIEW
     d.chapter("Literature Review")
@@ -367,7 +369,7 @@ def build_body():
     d.section("3.3.8", "Expected shortfall of a stock policy", 3)
     d.p("If a disruption lasts T days and stock covers S days, the uncovered days are (T - S)<sup>+</sup>. With the Kaplan-Meier curve,")
     d.eq("E[ (T - S)<sup>+</sup> ] = &int;<sub>S</sub><sup>&infin;</sup> S&#770;(t) dt", "3.6")
-    d.p("This turns the disruption-duration distribution into a stock-holding decision curve (Section 9.4).")
+    d.p("This turns the disruption-duration distribution into a stock-holding decision curve (Section 12.5).")
 
     # ================================================================== 4 DATA PREPROCESSING
     d.chapter("Data Preprocessing")
@@ -614,9 +616,11 @@ def build_body():
         "Chabahar or the Makran coast, the same model can be re-run to predict where the cooperative maritime picture will fail "
         "before any satellite pass confirms it.")
 
-    # ================================================================== 9 FINDINGS & IMPACT
-    d.chapter("Key Findings and Impact Assessment")
-    d.section("9.1", "Synthesis of Findings")
+    # ================================================================== 9 INFERENCE
+    d.chapter("Inference")
+    d.p("This chapter brings together the results of Chapters 5 to 8, gives the verdict on each hypothesis and states the "
+        "inferences that the impact assessments (Chapters 10-12) and the way forward (Chapter 13) are built on.")
+    d.section("9.1", "Key Findings")
     kp = [(f"{M['pv_war_ratio']:.1f}x", "weekly political violence in the 2026 war regime vs the prior year"),
           (f"{M['gcc_multiplier']:.0f}x", "rise in violence inside GCC energy states"),
           (pct(M['hormuz_large_dark']), "large ships AIS-dark in the Strait of Hormuz"),
@@ -636,72 +640,40 @@ def build_body():
         ("F10", f"Proximity to conflict predicts darkness in unseen regions (ROC-AUC {M['auc_gbt']:.2f}); AIS identity itself is unreliable (clones, placeholders, malformed IDs).", "7.7, 8"),
     ], columns=["#", "Finding", "Section"])
     d.table(F, "Key findings of the study")
-
-    d.section("9.2", "Impact on the Globe")
+    d.section("9.2", "Verdict on the Hypotheses")
+    d.table(pd.DataFrame([
+        ("H1", "Regime shifts coincide with the 2023 and 2026 wars", f"Supported - change-points on 7 Oct 2023 and 28 Feb 2026; war regime {M['pv_war_ratio']:.1f}x, p = {M['mw_p']:.1e}"),
+        ("H2", "War moved to the energy littoral; Red Sea threat moved offshore", f"Supported - GCC {M['gcc_multiplier']:.0f}x, Hormuz littoral {M['hormuz_war_mult']:.0f}x; Yemen land strikes down, at-sea events up"),
+        ("H3", "Large ships are more often dark in war zones", f"Strongly supported - RR {M['large_rr']:.1f}, OR {M['large_or']:.1f}, chi-square p &lt; 10<sup>-300</sup>"),
+        ("H4", "Darkness forms significant hot spots at conflict chokepoints", f"Supported - {M['gulf_hot_cells']} Gi* hot-spot cells in one belt from Qatar to the Gulf of Oman; largest DBSCAN clusters at Gulf anchorages"),
+        ("H5", "Proximity to conflict predicts darkness out-of-region", f"Supported, with moderate skill - ROC-AUC {M['auc_gbt']:.2f}, PR-AUC {M['prauc_gbt']:.2f} against a base rate of {M['model_base_rate']:.2f}"),
+        ("H6", "Disruptions are heavy-tailed and outlast India's oil cover", f"Supported - {pct(M['km_p_gt_spr'])} outlast the SPR, {pct(M['km_p_gt_74d'])} outlast 74 days; post-2023 episodes more persistent (HR {M['cox_post2023_hr']:.2f}, not significant)"),
+    ], columns=["#", "Hypothesis", "Verdict and evidence"]), "Verdict on the hypotheses")
+    d.section("9.3", "Inferences Drawn")
+    d.p("Read together, the findings support six inferences. Each is stated with the findings it rests on.")
     d.bullets([
-        "<b>Energy security.</b> About a fifth of the world's oil liquids and a large share of its LNG pass through Hormuz [2]. "
-        "F3 and F5 show the strait's shoreline became an active front and stayed above its disruption threshold for most of "
-        "February to June 2026. The world energy market now has to price chokepoint risk as a recurring condition, not a rare event.",
-        "<b>Freight, time and cost.</b> F4 and F7 show that where a detour exists, as in the Red Sea, conflict produces diversion. Cape routing "
-        "adds 10-14 days to Asia-Europe voyages, absorbs fleet capacity and raises freight and insurance costs worldwide [1]. The survival "
-        "curves (F5) show these episodes last weeks to months, not days.",
-        "<b>Loss of the common maritime picture.</b> F6 and F10 show that in war zones the cooperative identity system on which "
-        "collision avoidance, search and rescue, sanctions enforcement, insurance and port-state control depend fails for "
-        "most large ships. Navigation safety deteriorates, and the chance of misidentifying and striking a neutral ship rises.",
-        "<b>Sanctions and the shadow fleet.</b> F8 shows dark ships clustering at the Gulf and Black Sea anchorages and "
-        "shadow-fleet registries about three times over-represented. The informal, poorly insured fleet grows exactly where oversight "
-        "is weakest, raising the risk of environmental disasters and unattributable incidents.",
-        "<b>Contagion of stand-off warfare.</b> F2 shows that cheap drones and missiles have become the main tool of regional war. "
-        "Any littoral actor can now hold a chokepoint at risk from the shore.",
+        "<b>I1 - Conflict at a chokepoint first shows up as a loss of information, and only then as a loss of flow (F6, F8).</b> "
+        "Before cargo stops moving, the cooperative maritime picture collapses: large, AIS-obligated ships vanish from it, and tankers "
+        "wait at anchor with transponders off. The large-ship dark share is therefore a <i>leading</i> indicator of supply disruption. "
+        "It can be measured from space before trade statistics show anything.",
+        "<b>I2 - Whether a detour exists decides how shipping responds (F4, F7).</b> Where there is an alternative route, as with the Red Sea and the Cape, "
+        "conflict causes diversion: traffic thins and the cost appears as time and freight. Where there is none, as with the Gulf and Hormuz, "
+        "conflict causes blinding: ships keep sailing but go dark, and the cost appears as risk. Policy for the two chokepoints "
+        "must therefore differ.",
+        "<b>I3 - Stand-off weapons have removed the distance between a land war and the sea lanes (F2, F3, F4).</b> With 84 per cent of "
+        "war-period violence delivered by drones, missiles and artillery, any littoral actor can hold a chokepoint, a terminal or a "
+        "logistics node at risk. Distance from the front line no longer protects rear areas.",
+        "<b>I4 - Supply disruption is a question of duration, not of spikes (F5).</b> Most episodes are short, but the tail is long and "
+        "persistent. Planning for the median episode leaves the force and the nation exposed for most of the expected shortfall. Buffers must be "
+        "sized against the survival curve, and the prescriptive model (Chapter 12) shows the point at which extra stock stops paying off.",
+        "<b>I5 - Darkness is predictable, so early warning is feasible (F1, F10).</b> Change-points in the conflict series match "
+        "real-world turning points, and conflict geography predicts darkness in sea regions the model has never seen. Open "
+        "conflict data combined with satellite radar can therefore give warning of where and when the maritime picture will fail.",
+        "<b>I6 - AIS identity is necessary but not sufficient (F8, F9, F10).</b> Cloned, placeholder and malformed identities, "
+        "shadow-fleet registries and thousands of non-AIS small craft in India's own seas mean that a trustworthy maritime "
+        "picture requires independent sensing (SAR, radar) and automated identity checks.",
     ])
-    d.section("9.3", "Impact on India")
-    d.bullets([
-        "<b>Energy import exposure.</b> India imports close to nine-tenths of its crude oil. Open-source estimates put a large share of that "
-        "crude (commonly 40-50 per cent), most of its LPG and much of its LNG as coming from the Gulf through Hormuz [2, 19]. "
-        f"The heavy-tailed disruption curve (F5) means that about {pct(M['km_p_gt_spr'])} of disruptions would outlast the strategic "
-        f"petroleum reserve (~9.5 days) and about {pct(M['km_p_gt_74d'])} would outlast the total national cover of about 74 days [19].",
-        "<b>Trade routes to Europe, Africa and the US East Coast.</b> The Red Sea diversion (F4, F7) lengthens India's westbound "
-        "container and product-tanker routes and raises their cost, eroding the competitiveness of exports such as refined products, engineering goods, "
-        "textiles and pharmaceuticals. The Houthi campaign episodes lasted a median of four weeks and up to 19 weeks.",
-        "<b>Connectivity projects.</b> The International North-South Transport Corridor through Chabahar and the India-Middle East-Europe "
-        "Economic Corridor (IMEC) both pass through the theatres analysed. The predicted dark-risk at Chabahar "
-        "(Table 8.3) and the violence in Sistan-Baluchestan and Hormozgan (Chapter 5) point to delays and higher risk premia for both.",
-        "<b>Diaspora and remittances.</b> About nine million Indians live in the GCC, which sends India a large share of its remittances [20]. "
-        f"The {M['gcc_multiplier']:.0f}-fold rise in violence inside the GCC (F3) makes large-scale non-combatant evacuation a planning case, "
-        "not a contingency.",
-        "<b>Maritime domain awareness at home.</b> F9 shows that India's own seas are dominated by thousands of small, non-AIS "
-        "craft. F10 shows that even AIS-visible identities can be cloned or spoofed. The national maritime picture cannot rely on AIS alone.",
-    ])
-    d.section("9.4", "Impact on the Indian Army")
-    d.p("The Army is not a maritime force, but its war-fighting ability depends on the same supply chains, and it faces the same "
-        "technology shift that this data records. The findings bear on the Army in six ways.")
-    d.bullets([
-        "<b>POL and war-wastage reserves.</b> Mechanised formations, Army Aviation and the logistics fleet run on imported crude refined in India. "
-        "A chokepoint disruption that outlasts national reserves (F5) would lead to rationing, in which defence consumption competes "
-        "with the civil economy. The prescriptive model below turns F5 into a stock-holding decision.",
-        "<b>Imported equipment, spares and ammunition.</b> Sea-lifted defence imports and the spares for imported platforms move on the same "
-        "routes. Longer, more variable lead-times (F4, F5, F7) mean that re-order points and safety stocks based on peacetime "
-        "lead-times will be too low.",
-        "<b>The stand-off threat to logistics nodes.</b> F2 shows that drones and missiles make up most of the violence in modern regional "
-        "war and that GCC energy infrastructure far from any front line was struck (F3). Army depots, railheads, POL points and "
-        "forward airfields need the same layered air defence, counter-UAS, dispersal and hardening as the Gulf's terminals needed.",
-        "<b>Navigation warfare and identity.</b> The AIS darkness and identity anomalies (F6, F10) are the maritime form of electronic warfare "
-        "that also denies and spoofs GNSS on land. Army drones, loitering munitions, precision artillery and timing networks need "
-        "NavIC/multi-constellation, anti-jam and GNSS-denied fallback capability.",
-        "<b>Western front and hybrid spill-over.</b> Violence in Sistan-Baluchestan (among Iran's most violent provinces over the decade), the Makran "
-        "littoral and a weakened Iranian periphery all border Pakistan's Balochistan. These affect the western-front threat picture and the security of connectivity projects.",
-        "<b>Out-of-area and HADR roles.</b> Large-scale evacuation of the Gulf diaspora (Section 9.3) would draw on Army transit, "
-        "medical and staging capacity in support of the Navy and Air Force. Earlier evacuations (Op Ganga 2022, Op Kaveri 2023, Op Ajay 2023) are the reference cases.",
-    ])
-    d.fig("f9_1_stock_cover", "Prescriptive stock-cover curve from observed Gulf and Red Sea disruption durations")
-    st = T("t9_1_stock_decision")
-    d.table(st, "Decision table: stock held against disruption risk and expected shortfall")
-    d.p(f"With no stock, an average Gulf or Red Sea disruption leaves {M['stock_es_0']:.0f} uncovered days. Holding "
-        f"<b>30 days</b> of stock cuts the expected shortfall to {M['stock_es_30']:.1f} days, and <b>45 days</b> to {M['stock_es_45']:.1f} days, "
-        f"avoiding 74 per cent of the shortfall. The returns flatten at about <b>{M['stock_knee_days']} days</b>: beyond this point each "
-        "additional day of stock removes less than a quarter of a day of expected shortfall. The same curve can be applied to "
-        "any disruption-sensitive commodity (POL, lubricants, critical imported spares) to set holdings on evidence rather than precedent.")
-    d.section("9.5", "Limitations")
+    d.section("9.4", "Confidence in the Inferences")
     d.bullets([
         "The SAR data cover only 14 days from a single satellite (Sentinel-1A), so the pre-war level of darkness in the same waters cannot be observed directly. "
         "Peacetime regions and the Black Sea serve as the comparison groups instead.",
@@ -713,70 +685,187 @@ def build_body():
         "Figures quoted from secondary sources (oil import shares, reserve days, diaspora) are indicative and cited, and they were not "
         "derived from the Datathon datasets.",
     ])
+    d.p("None of these limitations reverses the direction of the main inferences. The war-zone effect on large-ship darkness (I1) is "
+        "large, significant and reproduced in two unrelated wars. Inferences I4 and I5 should be read as well supported but moderate in precision.")
 
-    # ================================================================== 10 RECOMMENDATIONS
-    d.chapter("Recommendations")
-    d.p("Each recommendation is traced to the finding(s) that support it (Table 9.1).")
-    R = pd.DataFrame([
-        ("National (strategic)", "R1", "Expand strategic crude and LPG reserves and set national cover from the disruption-survival curve rather than a fixed number of days, with a target at or beyond the ~35-45-day point where returns flatten, for the Hormuz-dependent share of imports.", "F5"),
-        ("National (strategic)", "R2", "Diversify energy sources and routes: more non-Gulf crude and LNG, west-coast refinery access to Red Sea-bypass pipelines (Yanbu, Fujairah), and long-term charters that include war-risk clauses.", "F3, F5, F7"),
-        ("National (strategic)", "R3", "Build a national Chokepoint Early-Warning System that tracks the CCII, the stand-off strike share and the large-ship dark share weekly, with the thresholds from this study as triggers.", "F1, F2, F6"),
-        ("Maritime / MDA", "R4", "Fuse SAR (NISAR, EOS-04/RISAT, commercial SAR) with AIS at IFC-IOR and flag every dark large ship automatically, prioritising the hot-spot belt and the predicted dark-risk surface.", "F6, F8, F10"),
-        ("Maritime / MDA", "R5", "Treat AIS identity as untrusted: build automated checks for impossible re-sightings, placeholder and malformed MMSIs and shadow-fleet registries, and share them with ports and insurers.", "F8, F10"),
-        ("Maritime / MDA", "R6", "Extend coverage of small craft in India's seas (fishing-vessel transponders, coastal radar, SAR) so that the non-AIS population is known.", "F9"),
-        ("Indian Army", "R7", "Re-baseline POL, lubricant and critical-spares War Wastage Reserves using the expected-shortfall method (Eq. 3.6), and re-order points using lead-time distributions measured during crises.", "F4, F5"),
-        ("Indian Army", "R8", "Give priority to layered air defence, counter-UAS, dispersal and hardening of depots, POL points and railheads, because stand-off strikes now dominate regional war.", "F2, F3"),
-        ("Indian Army", "R9", "Make GNSS resilience mandatory for drones, loitering munitions, precision fires and timing: NavIC plus multi-GNSS, anti-jam antennas, inertial or vision fallback, and field training under jamming and spoofing.", "F6, F10"),
-        ("Indian Army", "R10", "Set up an Army Data Analytics Cell (DG Log / DGMO / DGIS) that runs this pipeline and its Power BI dashboard as a standing supply-chain and conflict early-warning product.", "All"),
-        ("Tri-service", "R11", "Pre-plan non-combatant evacuation from the GCC as a live case, with Army transit, medical and staging components rehearsed with the Navy and IAF.", "F3"),
-        ("Tri-service", "R12", "Use Indigenisation (Aatmanirbharta) priority lists weighted by route exposure, so that items that move through Hormuz or the Red Sea and have long lead-times are indigenised or dual-sourced first.", "F4, F5, F7"),
-    ], columns=["Level", "#", "Recommendation", "Based on"])
-    d.table(R, "Recommendations traced to findings")
+    # ================================================================== 10 IMPACT - GLOBE
+    d.chapter("Impact on the Globe")
+    d.bullets([
+        "<b>Energy security.</b> About a fifth of the world's oil liquids and a large share of its LNG pass through Hormuz [2]. "
+        "F3 and F5 show the strait's shoreline became an active front and stayed above its disruption threshold for most of "
+        "February to June 2026. The world energy market now has to price chokepoint risk as a recurring condition, not a rare event (I4).",
+        "<b>Freight, time and cost.</b> Where a detour exists, conflict produces diversion (I2). Cape routing adds 10-14 days to "
+        "Asia-Europe voyages, absorbs fleet capacity and raises freight and insurance costs worldwide [1]. The survival curves (F5) show "
+        "these episodes last weeks to months, not days.",
+        "<b>Loss of the common maritime picture.</b> In war zones the cooperative identity system on which collision avoidance, search "
+        "and rescue, sanctions enforcement, insurance and port-state control depend fails for most large ships (F6, I1). Navigation safety "
+        "deteriorates, and the chance of misidentifying and striking a neutral ship rises.",
+        "<b>Sanctions and the shadow fleet.</b> Dark ships cluster at the Gulf and Black Sea anchorages, and shadow-fleet registries are "
+        "about three times over-represented (F8). The informal, poorly insured fleet grows exactly where oversight is weakest, raising the risk of "
+        "environmental disasters and unattributable incidents (I6).",
+        "<b>Contagion of stand-off warfare.</b> Cheap drones and missiles have become the main tool of regional war (F2, I3). Any littoral "
+        "actor can now hold a chokepoint at risk from the shore, and the model extends beyond the Middle East to other straits.",
+        "<b>A model for other chokepoints.</b> The two responses identified here, diversion and blinding (I2), offer a way to anticipate "
+        "what would happen in a crisis at Malacca, the Taiwan Strait or the Bosphorus, where the same data and methods can be applied.",
+    ])
 
-    # ================================================================== 11 WAY FORWARD
+    # ================================================================== 11 IMPACT - INDIA
+    d.chapter("Impact on India")
+    d.bullets([
+        "<b>Energy import exposure.</b> India imports close to nine-tenths of its crude oil. Open-source estimates put a large share of that "
+        "crude (commonly 40-50 per cent), most of its LPG and much of its LNG as coming from the Gulf through Hormuz [2, 19]. "
+        f"The heavy-tailed disruption curve (F5, I4) means that about {pct(M['km_p_gt_spr'])} of disruptions would outlast the strategic "
+        f"petroleum reserve (~9.5 days) and about {pct(M['km_p_gt_74d'])} would outlast the total national cover of about 74 days [19]. "
+        "Hormuz is a no-detour chokepoint (I2), so for this share of India's energy there is no rerouting option, only buffers and "
+        "alternative suppliers.",
+        "<b>Trade routes to Europe, Africa and the US East Coast.</b> The Red Sea diversion (F4, F7) lengthens India's westbound "
+        "container and product-tanker routes and raises their cost, eroding the competitiveness of exports such as refined products, engineering goods, "
+        "textiles and pharmaceuticals. The Houthi campaign episodes lasted a median of four weeks and up to 19 weeks.",
+        "<b>Connectivity projects.</b> The International North-South Transport Corridor through Chabahar and the India-Middle East-Europe "
+        "Economic Corridor (IMEC) both pass through the theatres analysed. The predicted dark-risk at Chabahar "
+        "(Table 8.3) and the violence in Sistan-Baluchestan and Hormozgan (Chapter 5) point to delays and higher risk premia for both.",
+        "<b>Diaspora and remittances.</b> About nine million Indians live in the GCC, which sends India a large share of its remittances [20]. "
+        f"The {M['gcc_multiplier']:.0f}-fold rise in violence inside the GCC (F3) makes large-scale non-combatant evacuation a planning case, "
+        "not a contingency.",
+        "<b>Maritime domain awareness at home.</b> India's own seas are dominated by thousands of small, non-AIS craft (F9), and even "
+        "AIS-visible identities can be cloned or spoofed (F10). The national maritime picture cannot rely on AIS alone (I6).",
+        "<b>An opportunity.</b> The inferences also favour India. National SAR assets (EOS-04, NISAR), the Information Fusion Centre - "
+        "Indian Ocean Region, and a growing analytics culture give India the means to turn I1 and I5 into a regional early-warning "
+        "service for partners in the Indian Ocean, strengthening its role as a net security provider.",
+    ])
+
+    # ================================================================== 12 IMPACT - ARMED FORCES
+    d.chapter("Impact on the Indian Armed Forces")
+    d.p("The findings affect all three Services and the joint structures that link them. The common threads are fuel and "
+        "spares security (I4), the stand-off threat to bases and nodes (I3), and operating in an environment where navigation and "
+        "identity can no longer be taken for granted (I1, I6).")
+    d.section("12.1", "Joint and Tri-Service Impact")
+    d.bullets([
+        "<b>POL and war-wastage reserves.</b> Mechanised formations, ships and aircraft all run on imported crude refined in India. "
+        "A chokepoint disruption that outlasts national reserves (F5) would lead to rationing, in which defence consumption competes "
+        "with the civil economy. The prescriptive model in Section 12.5 turns F5 into a stock-holding decision.",
+        "<b>Imported equipment, spares and ammunition.</b> Sea-lifted defence imports and the spares for imported platforms move on the same "
+        "routes. Longer, more variable lead-times (F4, F5, F7) mean that re-order points and safety stocks based on peacetime "
+        "lead-times will be too low for all three Services.",
+        "<b>Non-combatant evacuation.</b> The rise in GCC violence (F3) makes a large-scale evacuation of the Gulf diaspora a joint "
+        "operation to plan now: Navy sealift, IAF airlift and Army reception, transit and medical support. Op Ganga (2022), Op Kaveri (2023) and Op Ajay (2023) are the reference cases.",
+        "<b>Space-based surveillance.</b> The study shows what SAR can reveal in a war zone (F6, F8). The Defence Space Agency and "
+        "the national SAR constellation are the natural owners of a standing dark-ship and chokepoint watch.",
+    ])
+    d.section("12.2", "Indian Navy")
+    d.bullets([
+        "<b>Escort and presence operations.</b> The belt of darkness from Qatar to the Gulf of Oman (F6, H4) is the area in which Indian-flag "
+        "tankers and gas carriers would be escorted, as in Op Sankalp. Positive identification of contacts in a picture where 60-74 per cent "
+        "of large ships are dark is harder, raising the risk of surprise and of mistaken engagement.",
+        "<b>Stand-off threat at sea.</b> The anti-shipping campaign (F4) and the dominance of drones and missiles (F2) call for "
+        "ship air defence, counter-drone systems and magazine depth sized for long campaigns (F5), not single incidents.",
+        "<b>Coastal security.</b> The thousands of non-AIS small craft in India's near seas (F9) are the population in which a "
+        "26/11-type threat hides. Coastal radar, SAR cueing and fishing-vessel transponders are needed alongside AIS.",
+        "<b>Shadow fleet in the Indian EEZ.</b> Poorly insured, shadow-registered tankers (F8) crossing India's waters raise the risk of oil "
+        "spills and incidents that the Navy and Coast Guard would have to respond to.",
+    ])
+    d.section("12.3", "Indian Air Force")
+    d.bullets([
+        "<b>Air-base survivability.</b> GCC energy infrastructure far from any front line was struck directly (F3), and stand-off weapons dominate (F2, I3). "
+        "Forward and depth air bases, fuel farms and radars need layered air defence, hardened shelters, dispersal and rapid runway repair.",
+        "<b>Air routes and airlift.</b> Violence across the GCC and Iran closes or restricts air corridors to West Asia, Africa and Europe. That "
+        "lengthens ferry and airlift routes, including those needed for evacuation and for urgent sustainment of imported spares.",
+        "<b>Navigation warfare.</b> The spoofing and identity anomalies seen at sea (F10) are the maritime face of the GNSS "
+        "interference that also affects aircraft. Avionics and weapons need multi-constellation (NavIC), anti-jam and inertial fallback.",
+    ])
+    d.section("12.4", "Indian Army")
+    d.bullets([
+        "<b>Logistics nodes under stand-off threat.</b> Army depots, railheads, POL points and ammunition storage need the same "
+        "layered air defence, counter-UAS, dispersal and hardening that the Gulf's terminals lacked (F2, F3, I3).",
+        "<b>GNSS-dependent weapons.</b> Army drones, loitering munitions, precision artillery and timing networks need "
+        "NavIC/multi-constellation, anti-jam and GNSS-denied fallback capability, and troops should train under jamming and spoofing (F6, F10).",
+        "<b>Western front and hybrid spill-over.</b> Violence in Sistan-Baluchestan (among Iran's most violent provinces over the decade), the Makran "
+        "littoral and a weakened Iranian periphery all border Pakistan's Balochistan. These affect the western-front threat picture and the security of connectivity projects.",
+        "<b>Sustainment of imported fleets.</b> Armoured, artillery and aviation fleets with imported sub-systems face longer spares "
+        "lead-times (F5). Predictive maintenance and survival-based spares forecasting of the kind the author developed for armoured vehicles [13] become more valuable.",
+    ])
+    d.section("12.5", "Prescriptive Model: How Much Stock Is Enough?")
+    d.fig("f9_1_stock_cover", "Prescriptive stock-cover curve from observed Gulf and Red Sea disruption durations")
+    st = T("t9_1_stock_decision")
+    d.table(st, "Decision table: stock held against disruption risk and expected shortfall",
+            fmt={c: (lambda v: f"{v:.1f}") for c in st.columns[1:]})
+    d.p(f"With no stock, an average Gulf or Red Sea disruption leaves {M['stock_es_0']:.0f} uncovered days. Holding "
+        f"<b>30 days</b> of stock cuts the expected shortfall to {M['stock_es_30']:.1f} days, and <b>45 days</b> to {M['stock_es_45']:.1f} days, "
+        f"avoiding 74 per cent of the shortfall. The returns flatten at about <b>{M['stock_knee_days']} days</b>: beyond this point each "
+        "additional day of stock removes less than a quarter of a day of expected shortfall. The same curve can be applied to "
+        "any disruption-sensitive commodity held by any Service (POL, lubricants, aviation fuel, critical imported spares) to set holdings on evidence rather than precedent.")
+
+    # ================================================================== 13 WAY FORWARD
     d.chapter("Way Forward")
-    d.p("The recommendations can be implemented in three phases, each building on the data products already produced by this study.")
+    d.p("The way forward has three parts: recommendations traced to the findings and inferences, a phased roadmap to implement "
+        "them, and the research that would strengthen the evidence.")
+    d.section("13.1", "Recommendations")
+    R = pd.DataFrame([
+        ("National", "R1", "Expand strategic crude and LPG reserves and set national cover from the disruption-survival curve rather than a fixed number of days, with a target at or beyond the ~35-45-day point where returns flatten, for the Hormuz-dependent share of imports.", "F5, I4"),
+        ("National", "R2", "Diversify energy sources and routes: more non-Gulf crude and LNG, access to Hormuz-bypass export points (Yanbu, Fujairah), and long-term charters that include war-risk clauses.", "F3, F7, I2"),
+        ("National", "R3", "Build a national Chokepoint Early-Warning System that tracks the CCII, the stand-off strike share and the large-ship dark share weekly, with the thresholds from this study as triggers.", "F1, F2, F6, I1, I5"),
+        ("Maritime / MDA", "R4", "Fuse SAR (NISAR, EOS-04, commercial SAR) with AIS at IFC-IOR and flag every dark large ship automatically, prioritising the hot-spot belt and the predicted dark-risk surface.", "F6, F8, I1"),
+        ("Maritime / MDA", "R5", "Treat AIS identity as untrusted: build automated checks for impossible re-sightings, placeholder and malformed MMSIs and shadow-fleet registries, and share them with ports and insurers.", "F10, I6"),
+        ("Maritime / MDA", "R6", "Extend coverage of small craft in India's seas (fishing-vessel transponders, coastal radar, SAR) so that the non-AIS population is known.", "F9, I6"),
+        ("Joint (HQ IDS)", "R7", "Re-baseline POL, lubricant, aviation-fuel and critical-spares War Wastage Reserves for all three Services using the expected-shortfall method (Eq. 3.6), and re-order points using lead-time distributions measured during crises.", "F4, F5, I4"),
+        ("Joint (HQ IDS)", "R8", "Set up a tri-service Data Analytics Cell under HQ IDS, with Service nodes (DG Log, DGMO, Naval Operations, Air Operations), that runs this pipeline and its Power BI dashboard as a standing supply-chain and conflict early-warning product.", "All"),
+        ("Joint (HQ IDS)", "R9", "Pre-plan non-combatant evacuation from the GCC as a live case and rehearse Navy sealift, IAF airlift and Army reception, transit and medical components together.", "F3"),
+        ("Indian Navy", "R10", "Use SAR dark-ship cueing and the predicted dark-risk surface for escort and presence operations in the Gulf and Arabian Sea; plan ship air defence and counter-drone magazines for long campaigns.", "F2, F4, F6"),
+        ("Indian Air Force", "R11", "Harden and disperse air bases and fuel farms against stand-off strikes, and make multi-GNSS/NavIC, anti-jam and inertial fallback standard for avionics and weapons.", "F2, F3, F10, I3"),
+        ("Indian Army", "R12", "Give priority to layered air defence, counter-UAS, dispersal and hardening of depots, POL points and railheads, and make GNSS resilience mandatory for drones, loitering munitions and precision fires.", "F2, F3, F10, I3"),
+        ("All Services", "R13", "Weight indigenisation (Aatmanirbharta) priority lists by route exposure, so that items that move through Hormuz or the Red Sea and have long lead-times are indigenised or dual-sourced first.", "F4, F5, F7"),
+    ], columns=["Level", "#", "Recommendation", "Based on"])
+    d.table(R, "Recommendations traced to findings (F) and inferences (I)", breakable=True)
+    d.section("13.2", "Phased Roadmap")
     W = pd.DataFrame([
-        ("Phase 1 (0-6 months)", "Institutionalise the pipeline. Host the Power BI dashboard (Appendix B) at Army HQ; run the weekly CCII and "
-         "stand-off-share refresh from ACLED; set alert thresholds; start the POL and spares WWR review using Eq. 3.6.",
+        ("Phase 1 (0-6 months)", "Institutionalise the pipeline. Host the Power BI dashboard (Appendix B) at HQ IDS and Service HQs; run the weekly CCII and "
+         "stand-off-share refresh from ACLED; set alert thresholds; start the tri-service WWR review using Eq. 3.6.",
          "Weekly early-warning brief; revised stock norms for trial"),
         ("Phase 2 (6-18 months)", "Fuse sensors and automate. Ingest national SAR (NISAR, EOS-04) and commercial SAR with AIS; run automated "
          "dark-ship and identity-anomaly detection; retrain the dark-spot model monthly; add freight-rate, insurance and port-call data "
          "to measure physical impact directly.", "Near-real-time dark-ship alerts; validated dark-risk maps"),
         ("Phase 3 (18-36 months)", "Move to prescriptive, joint decision support. Integrate with the tri-service logistics and inventory systems; "
          "simulate stock, route and evacuation decisions under scenarios; extend the same methods to the South China Sea "
-         "and Malacca theatres; train staff in data-driven logistics through CDM and the Army's own analytics courses.",
+         "and Malacca theatres; train staff in data-driven logistics through CDM and Service analytics courses.",
          "Joint supply-chain resilience system; trained analytics cadre"),
     ], columns=["Phase", "Actions", "Deliverable"])
-    d.table(W, "Phased way forward")
-    d.p("<b>Future research.</b> Several extensions would strengthen the results: (a) extend the SAR window to a pre-war baseline for the same "
+    d.table(W, "Phased roadmap")
+    d.section("13.3", "Future Research")
+    d.p("Several extensions would strengthen the results: (a) extend the SAR window to a pre-war baseline for the same "
         "waters, which would give a true difference-in-differences estimate of war-induced darkness; (b) add ship-level AIS gap "
         "events and port calls to measure turnaround and diversion directly; (c) model GNSS-interference zones explicitly to separate "
         "spoofing from deliberate switch-off; (d) move from ADMIN1 centroids to event-level ACLED coordinates.")
 
-    # ================================================================== 12 CONCLUSION
+    # ================================================================== 14 CONCLUSION
     d.chapter("Conclusion")
-    d.section("12.1", "Conflict Analytics")
+    d.p("This study set out to measure how global, and in particular Middle-East, conflicts affect maritime supply chains, to locate and "
+        "predict AIS dark zones, and to turn the results into guidance for India and its Armed Forces. All six hypotheses are supported by the data.")
+    d.section("14.1", "Conflict Analytics")
     d.bullets([
         f"Middle-East political violence moved through distinct regimes, and change-point detection dated the shifts to 7 October 2023 and 28 February 2026 without being given them. The war regime ran at {M['pv_war_ratio']:.1f} times the preceding year.",
         f"The 2026 war was fought mainly with stand-off weapons (84 per cent of violence), reached the GCC energy coast ({M['gcc_multiplier']:.0f}-fold rise) and put the Hormuz littoral at {M['hormuz_war_mult']:.0f} times its baseline.",
         "In the Red Sea the threat moved offshore. Chokepoint risk must be measured at sea, not only on land.",
     ], "alpha")
-    d.section("12.2", "Disruption Survival")
+    d.section("14.2", "Disruption Survival")
     d.bullets([
         f"Disruption episodes are heavy-tailed (median {M['ep_median_wk']:.1f} weeks, longest {M['ep_max_wk']} weeks). {pct(M['km_p_gt_spr'])} outlast India's strategic reserve and {pct(M['km_p_gt_74d'])} outlast total national cover.",
         f"Holding about 35-45 days of stock covers most of the expected shortfall. Beyond about {M['stock_knee_days']} days each extra day of stock adds little protection.",
     ], "alpha")
-    d.section("12.3", "AIS Dark Zones")
+    d.section("14.3", "AIS Dark Zones")
     d.bullets([
         f"Large ships were AIS-dark in {pct(M['hormuz_large_dark'])} of cases in the Strait of Hormuz and {pct(M['black_large_dark'])} in the Black Sea, against about 10 per cent in peacetime waters (relative risk {M['large_rr']:.1f}). The identification crisis named in the problem statement is real and measurable.",
         "Conflict produces blinding where there is no detour and diversion where there is. Dark tankers gathered at the Gulf anchorages, and shadow-fleet registries were over-represented.",
         f"Proximity to conflict predicts darkness in sea regions the model never saw (ROC-AUC {M['auc_gbt']:.2f}), which makes it possible to forecast where the maritime picture will fail.",
     ], "alpha")
+    d.section("14.4", "Implications")
+    d.p("For the globe, chokepoint risk has become a recurring cost of trade and a hazard to navigation. For India, the exposure is "
+        "concentrated in Gulf energy, westbound trade, connectivity projects and the Gulf diaspora. For the Indian Armed Forces, the "
+        "same evidence calls for fuel and spares reserves sized on the survival curve, bases and nodes hardened against stand-off "
+        "attack, navigation that does not depend on GNSS alone, and a joint data cell that watches the chokepoints every week.")
     d.p("<b>Closing statement.</b> The first casualty of war at a chokepoint is <i>visibility</i>. Physical disruption follows it, lasts "
-        "longer than intuition suggests, and reaches India's energy, trade, diaspora and military logistics. The same data and methods "
+        "longer than intuition suggests, and reaches India's energy, trade, diaspora and military sustainment. The same data and methods "
         "that measured this can warn of it. By turning the pipeline, index, dark-spot model and stock-cover curve built here into standing tools, "
-        "India and the Indian Army can base these decisions on data rather than on precedent, which is the aim of the Datathon.")
+        "India and the Indian Armed Forces can base these decisions on data rather than on precedent, which is the aim of the Datathon.")
 
     # ================================================================== REFERENCES
     d.chapter("References")
@@ -815,7 +904,7 @@ def build_body():
           '  analysis/03_chokepoint_index.py Chapter 6: CCII, thresholds, ARIMA back-test and forecast, Kaplan-Meier, Cox\n'
           '  analysis/04_sar.py              Chapter 7: dark shares, chi-square, Gi* hot spots, DBSCAN, flags, identity\n'
           '  analysis/05_model.py            Chapter 8: logit, gradient-boosted trees, spatial CV, risk surface\n'
-          '  analysis/06_decision.py         Section 9.4: expected-shortfall stock-cover model\n'
+          '  analysis/06_decision.py         Section 12.5: expected-shortfall stock-cover model\n'
           '  analysis/07_powerbi_export.py   star-schema tables for the Power BI dashboard\n'
           '  figures/  tables/  powerbi/  data/metrics.json  report/build_report.py</div>')
     d.table(pd.DataFrame([
@@ -893,12 +982,13 @@ def front_html(body, pages):
         "Getis-Ord hot spots and DBSCAN clusters locate fleets of dark tankers waiting at the Dubai and Fujairah anchorages. A "
         f"gradient-boosted model validated on unseen sea regions (ROC-AUC {M['auc_gbt']:.2f}) predicts AIS dark spots from "
         "conflict geography.</p>"
-        "<p>The report concludes that the first measurable effect of war at a chokepoint is the <i>blinding</i> of the supply chain, "
-        "followed by physical disruption that lasts longer than national buffers. It assesses the impact on the globe, India "
-        "and the Indian Army, gives a prescriptive stock-cover model (returns flatten at about "
-        f"{M['stock_knee_days']} days of cover), and makes twelve recommendations, a phased way forward and a Power BI decision dashboard.</p>"
+        "<p>The main inference is that the first measurable effect of war at a chokepoint is the <i>blinding</i> of the supply chain, "
+        "followed by physical disruption that lasts longer than national buffers. The report then assesses the impact on the globe, on India "
+        "and on the Indian Armed Forces (Navy, Air Force, Army and joint), gives a prescriptive stock-cover model (returns flatten at about "
+        f"{M['stock_knee_days']} days of cover), and sets out a way forward of thirteen traced recommendations, a phased roadmap and a Power BI "
+        "decision dashboard, before concluding.</p>"
         "<p><b>Keywords:</b> supply chain, chokepoints, AIS dark vessels, SAR, ACLED, change-point detection, Getis-Ord Gi*, DBSCAN, "
-        "survival analysis, spatial cross-validation, Indian Army logistics.</p>")
+        "survival analysis, spatial cross-validation, Indian Armed Forces logistics.</p>")
     return f"""<div class="titlepage">
 <div class="t3">COLLEGE OF DEFENCE MANAGEMENT &middot; DATATHON - 2026</div>
 <div class="t3" style="margin-bottom:34pt">Theme: Global Conflicts &ndash; Impact on Supply Chains</div>

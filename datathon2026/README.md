@@ -1,11 +1,12 @@
 # CDM Datathon-2026 - Global Conflicts: Impact on Supply Chains
 
-**Report:** `report/Datathon2026_Global_Conflicts_Supply_Chains_Report.pdf` (55 pages, formatted in the
+**Report:** `report/Datathon2026_Global_Conflicts_Supply_Chains_Report.pdf` (60 pages, formatted in the
 style of an M.Tech thesis: declaration, abstract, lists, TOC, numbered chapters, references, appendices).
 
 **Thesis:** conflict at a maritime chokepoint first *blinds* the supply chain (large ships go AIS-dark), and the
-physical disruption that follows lasts longer than national buffers. The report ends with the impact on the globe,
-India and the Indian Army, then recommendations, a way forward and a conclusion, each traced to a numbered finding.
+physical disruption that follows lasts longer than national buffers. The report closes with: 9 Inference (findings,
+hypothesis verdicts, inferences I1-I6) -> 10 Impact on the Globe -> 11 Impact on India -> 12 Impact on the Indian Armed
+Forces (joint, Navy, Air Force, Army, stock-cover model) -> 13 Way Forward (13 traced recommendations, roadmap) -> 14 Conclusion.
 
 ## Headline results
 | | |
