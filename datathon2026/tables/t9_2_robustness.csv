@@ -1,0 +1,9 @@
+Specification,Ships,Dark % war zones,Dark % elsewhere,RR,RR 95% CI low,RR 95% CI high
+"Baseline: >=100 m, 'unmatched' = dark",40179,52.1,10.1,5.17,3.72,6.51
+Size threshold >=60 m,54698,50.6,13.1,3.87,2.88,4.86
+Size threshold >=150 m,25807,53.8,8.5,6.36,4.54,8.25
+Size threshold >=200 m (VLCC/LNG class),11873,54.7,8.7,6.28,4.47,8.06
+Strict dark: no candidate MMSI at all,40179,38.6,7.2,5.4,3.67,7.4
+High-confidence detections only (presence >=0.99),37208,52.6,9.7,5.4,3.93,6.82
+Excluding likely fishing (score >=0.5),40121,52.1,10.1,5.17,3.85,6.61
+Gulf only vs rest (Black Sea excluded),38297,60.9,10.1,6.04,4.14,7.76

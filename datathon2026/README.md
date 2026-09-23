@@ -1,12 +1,21 @@
 # CDM Datathon-2026 - Global Conflicts: Impact on Supply Chains
 
-**Report:** `report/Datathon2026_Global_Conflicts_Supply_Chains_Report.pdf` (60 pages, formatted in the
+**Report:** `report/Datathon2026_Global_Conflicts_Supply_Chains_Report.pdf` (69 pages, formatted in the
 style of an M.Tech thesis: declaration, abstract, lists, TOC, numbered chapters, references, appendices).
 
 **Thesis:** conflict at a maritime chokepoint first *blinds* the supply chain (large ships go AIS-dark), and the
 physical disruption that follows lasts longer than national buffers. The report closes with: 9 Inference (findings,
 hypothesis verdicts, inferences I1-I6) -> 10 Impact on the Globe -> 11 Impact on India -> 12 Impact on the Indian Armed
 Forces (joint, Navy, Air Force, Army, stock-cover model) -> 13 Way Forward (13 traced recommendations, roadmap) -> 14 Conclusion.
+
+## Intelligence-grade layer (analysis/08_intel.py)
+- One-page **Executive Summary / BLUF** with key judgements in estimative-probability language and confidence levels.
+- **Robustness**: war-zone darkness effect re-estimated under 8 specifications with a scene-cluster bootstrap (RR 3.9-6.4).
+- **Dose-response** inside the Gulf: 76% dark within 50 km of fighting -> 43% at 150-200 km (p ~ 1e-27).
+- **Analysis of Competing Hypotheses**: deliberate switch-off 0 inconsistencies vs reception gap 5, artefact 6.
+- **Own-asset exposure**: 33 Indian-flagged ships visible inside the Gulf war zone in two weeks.
+- **Indicators & Warnings matrix** (6 indicators, Amber/Red thresholds, action on Red): 4 Red, 2 Amber at 27 Jun 2026.
+- **Scenario matrix** (2/6/12/26-week disruptions) against SPR, national and Service stock holdings.
 
 ## Headline results
 | | |

@@ -1,0 +1,6 @@
+Zone,Detections,Distinct Indian-flag ships,Detections >=100 m,Median length (m)
+Gulf war zone,35,33,19,140.0
+Red Sea zone,6,5,2,27.0
+Arabian Sea,584,502,91,29.0
+Bay of Bengal,236,208,42,25.0
+Rest of world,58,40,54,207.0

@@ -180,6 +180,10 @@ table.tbl tr:nth-child(even) td { background: #f4f3ef; }
 .titlepage .t3 { font-size: 12pt; margin: 4pt 0; }
 .sig { margin-top: 40pt; display: flex; justify-content: space-between; }
 .pb { page-break-before: always; }
+.rag { font-weight: bold; padding: 1pt 5pt; border-radius: 2pt; color: #fff; }
+.rag.red { background: #c62828; } .rag.amber { background: #e08a00; } .rag.green { background: #2e7d32; }
+.bluf { border: 1.2pt solid #1f3b5c; padding: 8pt 10pt; margin-bottom: 8pt; background: #eef2f7; font-size: 11pt; text-align: justify; }
+.es h2 { font-size: 11.5pt; margin: 8pt 0 3pt 0; } .es p, .es li { font-size: 10.5pt; line-height: 1.38; margin-bottom: 3pt; }
 .code { font-family: 'Liberation Mono', monospace; font-size: 8pt; line-height: 1.3; background: #f6f6f4; border: 0.5pt solid #ddd; padding: 6pt; white-space: pre-wrap; text-align: left; }
 """
 
@@ -673,7 +677,53 @@ def build_body():
         "shadow-fleet registries and thousands of non-AIS small craft in India's own seas mean that a trustworthy maritime "
         "picture requires independent sensing (SAR, radar) and automated identity checks.",
     ])
-    d.section("9.4", "Confidence in the Inferences")
+    d.section("9.4", "Stress-Testing the Central Inference: Robustness")
+    d.p("A judgement that rests on one definition or one threshold is fragile. The war-zone effect on large-ship darkness "
+        "was re-estimated under eight alternative specifications: different size cut-offs, a stricter definition of darkness, "
+        "high-confidence detections only, fishing vessels removed, and the Black Sea excluded. Detections from the same satellite image "
+        "are not independent, so confidence intervals were obtained by a <b>scene-cluster bootstrap</b> "
+        "(2,000 resamples of whole Sentinel-1 scenes). Here 'war zones' means the Gulf and the Black Sea, where the fighting "
+        "reached the coast. This is why the baseline relative risk differs slightly from Chapter 7, which also counted the Red Sea zone.")
+    d.fig("f9_2_robustness", "Relative risk of AIS darkness under alternative specifications (scene-cluster bootstrap 95% CI)")
+    rb = T("t9_2_robustness")
+    d.table(rb, "Robustness of the war-zone darkness effect", small=True)
+    d.p(f"Across all eight specifications the relative risk lies between <b>{M['rob_min_rr']:.1f} and {M['rob_max_rr']:.1f}</b>, and the lowest "
+        f"lower confidence bound is {M['rob_min_lo']:.1f}. No reasonable choice of definition makes the effect go away.")
+    d.section("9.5", "Dose-Response Inside the Gulf")
+    d.fig("f9_3_dose_response", "AIS-dark share of large ships by distance from the nearest province with active fighting, Gulf war zone")
+    d.table(T("t9_3_dose_response"), "Dose-response of darkness to proximity of fighting (Gulf war zone, ships &ge; 100 m)", small=True)
+    d.p(f"Within the Gulf itself, where sensor, season and traffic mix are held constant, darkness falls steadily with distance from the fighting: "
+        f"{pct(M['dose_0_50'])} within 50 km, {pct(M['dose_100_150'])} at 100-150 km, and 43 per cent at 150-200 km. Each unit increase in log-distance "
+        f"multiplies the odds of darkness by {M['dose_or_per_log']:.2f} (p = {M['dose_p']:.0e}). A graded response to the strength of "
+        "exposure is one of the classic criteria for inferring cause rather than coincidence.")
+    d.section("9.6", "Analysis of Competing Hypotheses")
+    d.p("Following intelligence tradecraft (the Analysis of Competing Hypotheses method), each alternative explanation of the Gulf darkness is scored "
+        "against every item of evidence as Consistent (C), Inconsistent (I) or Neutral (N). The hypothesis with the <i>fewest "
+        "inconsistencies</i> is preferred, rather than the one with the most support.")
+    d.table(T("t9_4_ach"), "Analysis of competing hypotheses for AIS darkness in the Gulf (C = consistent, I = inconsistent, N = neutral)", small=True)
+    ai = M["ach_inconsistent"]
+    d.p(f"Inconsistencies: <b>deliberate switch-off {ai['H-A Deliberate switch-off']}</b>, GNSS spoofing/jamming "
+        f"{ai['H-B GNSS spoofing / jamming']}, AIS reception gap {ai['H-C AIS reception gap']}, matching artefact "
+        f"{ai['H-D Matching artefact']}. Reception gaps and algorithm artefacts are effectively ruled out, because they cannot "
+        "produce size-selective, distance-graded, war-specific darkness. Deliberate switch-off is the best-supported explanation. "
+        "GNSS interference is not ruled out and probably contributes, but the absence of any excess in 'noisy' tracks argues against it "
+        "being the main mechanism.")
+    d.section("9.7", "Key Judgements and Confidence")
+    d.p("Judgements are expressed in the standard language of estimative probability, with a separate statement of analytic "
+        "confidence that reflects the quality and quantity of the evidence.")
+    d.table(pd.DataFrame([
+        ("Almost certain", "&gt; 95%"), ("Highly likely", "80-95%"), ("Likely", "55-80%"), ("Roughly even chance", "45-55%"),
+        ("Unlikely", "20-45%"), ("Highly unlikely", "5-20%")], columns=["Term", "Probability"]), "Scale of estimative probability used", small=True)
+    KJ = pd.DataFrame([
+        ("KJ1", "It is <b>almost certain</b> that the war caused the excess AIS darkness of large ships in the Gulf.", "High", "RR 3.9-6.4 under all specifications; dose-response; replicated in the Black Sea"),
+        ("KJ2", "It is <b>highly likely</b> that deliberate switch-off is the main mechanism; GNSS interference <b>likely</b> contributes.", "Moderate", "ACH: 0 inconsistencies for switch-off; cannot observe intent directly"),
+        ("KJ3", "It is <b>highly likely</b> that the Hormuz littoral stays above its disruption threshold at least intermittently through Q3-2026.", "Moderate", f"{pct(M['fc_prob_above_thr'])} of simulated paths breach; I&W status Red at end of data"),
+        ("KJ4", f"A chokepoint disruption <b>likely</b> outlasts India's SPR (about {pct(M['km_p_gt_spr'])}); outlasting total national cover is <b>highly unlikely</b> (about {pct(M['km_p_gt_74d'])}) but not negligible.", "Moderate", "Kaplan-Meier on 32 episodes; wide intervals"),
+        ("KJ5", "It is <b>almost certain</b> that stand-off weapons will remain the dominant threat to rear-area logistics and energy nodes in regional wars.", "High", "84% of war-period violence; consistent across 2024 and 2026 wars"),
+        ("KJ6", "It is <b>likely</b> that the large-ship dark share leads measurable trade disruption.", "Low", "Plausible and consistent with anchorage clustering; not yet tested against flow data"),
+    ], columns=["#", "Judgement", "Confidence", "Basis"])
+    d.table(KJ, "Key judgements")
+    d.section("9.8", "Limitations")
     d.bullets([
         "The SAR data cover only 14 days from a single satellite (Sentinel-1A), so the pre-war level of darkness in the same waters cannot be observed directly. "
         "Peacetime regions and the Black Sea serve as the comparison groups instead.",
@@ -733,6 +783,13 @@ def build_body():
         "Indian Ocean Region, and a growing analytics culture give India the means to turn I1 and I5 into a regional early-warning "
         "service for partners in the Indian Ocean, strengthening its role as a net security provider.",
     ])
+
+    d.p("<b>Own-asset exposure.</b> Decoding the flag of every AIS-visible ship shows how many Indian-flagged vessels were inside the "
+        "theatres during the first two weeks of the war. These are only the ships still transmitting; any that went dark are not counted.")
+    d.table(T("t9_5_indian_flag"), "Indian-flagged ships detected by Sentinel-1, 1-14 March 2026", small=True)
+    d.p(f"At least <b>{M['ind_gulf_ships']} distinct Indian-flagged ships</b> ({M['ind_gulf_large']} detections of ships of 100 m or more) were "
+        "operating inside the Gulf war zone in two weeks. This is a lower bound, since Indian-owned tonnage under foreign flags is not identified by the flag decode. "
+        "It is the minimum population for which escort, evacuation of crews, and war-risk insurance support would have to be planned.")
 
     # ================================================================== 12 IMPACT - ARMED FORCES
     d.chapter("Impact on the Indian Armed Forces")
@@ -795,6 +852,15 @@ def build_body():
         "additional day of stock removes less than a quarter of a day of expected shortfall. The same curve can be applied to "
         "any disruption-sensitive commodity held by any Service (POL, lubricants, aviation fuel, critical imported spares) to set holdings on evidence rather than precedent.")
 
+    d.section("12.6", "Scenario Matrix for Force Planning")
+    d.p("Joining the survival curve (how long disruptions last) to the stock levels (how long the nation and the Services can hold out) "
+        "gives a scenario matrix of the kind used in force planning.")
+    d.table(T("t9_7_scenarios"), "Hormuz / Red Sea disruption scenarios: likelihood and uncovered days", small=True)
+    d.p(f"<b>S2 (six weeks) is the planning case.</b> It is roughly a one-in-five event on the historical record "
+        f"({pct(M['sc_p6'])}). It is fully covered at national level but leaves a 30-day Service holding 12 days short. A 45-day holding covers it completely. "
+        f"S3 (twelve weeks, about {pct(M['sc_p12'])}) exceeds every buffer and is the case for which rationing priorities, alternative supply "
+        "and the national reserve release order must be prepared in advance.")
+
     # ================================================================== 13 WAY FORWARD
     d.chapter("Way Forward")
     d.p("The way forward has three parts: recommendations traced to the findings and inferences, a phased roadmap to implement "
@@ -816,7 +882,18 @@ def build_body():
         ("All Services", "R13", "Weight indigenisation (Aatmanirbharta) priority lists by route exposure, so that items that move through Hormuz or the Red Sea and have long lead-times are indigenised or dual-sourced first.", "F4, F5, F7"),
     ], columns=["Level", "#", "Recommendation", "Based on"])
     d.table(R, "Recommendations traced to findings (F) and inferences (I)", breakable=True)
-    d.section("13.2", "Phased Roadmap")
+    d.section("13.2", "Indicators and Warnings (I&W) Matrix")
+    d.p("The findings are turned into a watch-list of six indicators. Each is measurable every week from open data and has "
+        "Amber and Red thresholds and a pre-agreed action. The status shown is at the end of the data (week of 27 June 2026). "
+        "This matrix is the core of the recommended weekly early-warning brief (R3, R8) and of page 2 of the Power BI dashboard.")
+    iwt = T("t9_6_iw_matrix")
+    d.table(iwt, "Indicators and warnings matrix - status at 27 June 2026", small=True,
+            fmt={"Status": lambda v: f'<span class="rag {v.lower()}">{v}</span>'})
+    d.p(f"<b>Status: {M['iw_red']} Red, {M['iw_amber']} Amber, 0 Green.</b> Four months after the war began and ten weeks after the "
+        "de-escalation break, the Hormuz littoral is still at three to four times its disruption threshold and the Red Sea at-sea index remains above its "
+        f"threshold. Stand-off strikes are {pct(M['iw_standoff'])} of all violence, against {pct(M['iw_standoff_base'])} in the pre-war year. The situation is "
+        "not one of recovery. It is a sustained, lower-intensity disruption, and the buffers recommended in Chapter 12 should be held, not released.")
+    d.section("13.3", "Phased Roadmap")
     W = pd.DataFrame([
         ("Phase 1 (0-6 months)", "Institutionalise the pipeline. Host the Power BI dashboard (Appendix B) at HQ IDS and Service HQs; run the weekly CCII and "
          "stand-off-share refresh from ACLED; set alert thresholds; start the tri-service WWR review using Eq. 3.6.",
@@ -830,7 +907,7 @@ def build_body():
          "Joint supply-chain resilience system; trained analytics cadre"),
     ], columns=["Phase", "Actions", "Deliverable"])
     d.table(W, "Phased roadmap")
-    d.section("13.3", "Future Research")
+    d.section("13.4", "Future Research")
     d.p("Several extensions would strengthen the results: (a) extend the SAR window to a pre-war baseline for the same "
         "waters, which would give a true difference-in-differences estimate of war-induced darkness; (b) add ship-level AIS gap "
         "events and port calls to measure turnaround and diversion directly; (c) model GNSS-interference zones explicitly to separate "
@@ -862,6 +939,10 @@ def build_body():
         "concentrated in Gulf energy, westbound trade, connectivity projects and the Gulf diaspora. For the Indian Armed Forces, the "
         "same evidence calls for fuel and spares reserves sized on the survival curve, bases and nodes hardened against stand-off "
         "attack, navigation that does not depend on GNSS alone, and a joint data cell that watches the chokepoints every week.")
+    d.p(f"The central inference was stress-tested the way an intelligence judgement should be. It survives eight alternative specifications "
+        f"(relative risk {M['rob_min_rr']:.1f}-{M['rob_max_rr']:.1f}) and shows a clear dose-response with distance from the fighting. "
+        "Of the competing explanations, only deliberate switch-off is consistent with all the evidence. At the end of the data, the I&W matrix "
+        f"stands at {M['iw_red']} Red and {M['iw_amber']} Amber: the disruption has not ended.")
     d.p("<b>Closing statement.</b> The first casualty of war at a chokepoint is <i>visibility</i>. Physical disruption follows it, lasts "
         "longer than intuition suggests, and reaches India's energy, trade, diaspora and military sustainment. The same data and methods "
         "that measured this can warn of it. By turning the pipeline, index, dark-spot model and stock-cover curve built here into standing tools, "
@@ -944,7 +1025,8 @@ def build_body():
     return d
 
 
-def front_html(body, pages):
+def front_html(body, pages, fp=None):
+    fp = fp or {}
     toc = []
     for mid, lvl, lab, title in body.sec:
         if lvl > 2 and not title.startswith(("Proportions", "Change-point")):
@@ -1011,13 +1093,44 @@ their encouragement, and to the open-data communities (ACLED, Global Fishing Wat
 The analytical grounding I received during my M.Tech at IIT Kharagpur, where I applied survival analysis to predictive maintenance
 of armoured vehicles, shaped much of the method used here.</p></div>
 <div class="front pb"><h1>ABSTRACT</h1>{abstract}</div>
+<div class="front pb es"><h1>EXECUTIVE SUMMARY</h1>{exec_summary()}</div>
 <div class="front pb"><h1>LIST OF ABBREVIATIONS</h1><table class="toc">{ab}</table></div>
 <div class="front pb"><h1>LIST OF FIGURES</h1><table class="toc">{lof}</table></div>
 <div class="front pb"><h1>LIST OF TABLES</h1><table class="toc">{lot}</table></div>
 <div class="front pb"><h1>TABLE OF CONTENTS</h1><table class="toc">
-<tr class="l1"><td class="t">Abstract</td><td class="pg">iv</td></tr>
-<tr class="l1"><td class="t">List of Abbreviations, Figures and Tables</td><td class="pg">v</td></tr>
+<tr class="l1"><td class="t">Abstract</td><td class="pg">{fp.get("ABSTRACT", "")}</td></tr>
+<tr class="l1"><td class="t">Executive Summary</td><td class="pg">{fp.get("EXECUTIVE SUMMARY", "")}</td></tr>
+<tr class="l1"><td class="t">List of Abbreviations</td><td class="pg">{fp.get("LIST OF ABBREVIATIONS", "")}</td></tr>
+<tr class="l1"><td class="t">List of Figures</td><td class="pg">{fp.get("LIST OF FIGURES", "")}</td></tr>
+<tr class="l1"><td class="t">List of Tables</td><td class="pg">{fp.get("LIST OF TABLES", "")}</td></tr>
 {''.join(toc)}</table></div>"""
+
+
+def exec_summary():
+    a_ = M["ach_inconsistent"]
+    return f"""
+<div class="bluf"><b>BOTTOM LINE UP FRONT.</b> War at a chokepoint first <b>blinds</b> the supply chain and then <b>outlasts</b> the buffers.
+In the first fortnight of the 2026 war, {pct(M['hormuz_large_dark'])} of large ships in the Strait of Hormuz were AIS-dark, against about 10% in peacetime waters.
+Chokepoint disruptions are heavy-tailed: {pct(M['km_p_gt_spr'])} outlast India's strategic petroleum reserve. At the end of the data (27 Jun 2026)
+the early-warning matrix stands at <b>{M['iw_red']} Red / {M['iw_amber']} Amber</b>. Hold buffers at <b>35-45 days</b>, harden rear areas against stand-off strikes,
+and stand up a joint data cell to watch the chokepoints weekly.</div>
+<h2>Key judgements</h2><ul>
+<li><b>Almost certain (High confidence):</b> the war caused the excess darkness of large ships. The effect holds under 8 specifications (RR {M['rob_min_rr']:.1f}-{M['rob_max_rr']:.1f}),
+falls with distance from the fighting ({pct(M['dose_0_50'])} at 0-50 km vs 43% at 150-200 km) and is replicated in the Black Sea (38%).</li>
+<li><b>Highly likely (Moderate):</b> ships are switching off deliberately. Competing hypotheses: switch-off {a_['H-A Deliberate switch-off']} inconsistencies,
+reception gap {a_['H-C AIS reception gap']}, algorithm artefact {a_['H-D Matching artefact']}. Dark tankers are waiting at the Dubai and Fujairah anchorages.</li>
+<li><b>Highly likely (Moderate):</b> the Hormuz littoral stays above its disruption threshold at least intermittently through Q3-2026 ({pct(M['fc_prob_above_thr'])} of simulated paths).</li>
+<li><b>Likely (Moderate):</b> a disruption outlasts the SPR ({pct(M['km_p_gt_spr'])}). A six-week disruption, about 1 in 5, leaves a 30-day holding 12 days short.
+Holding 45 days covers it.</li>
+<li><b>Almost certain (High):</b> stand-off weapons (84% of war violence) now define the threat to depots, air bases, ports and POL nodes far from the front.</li></ul>
+<h2>Exposure</h2><p>At least <b>{M['ind_gulf_ships']} Indian-flagged ships</b> were operating inside the Gulf war zone in two weeks, together with India's Gulf energy imports,
+westbound trade, the Chabahar and IMEC corridors and about nine million citizens in the GCC.</p>
+<h2>Actions for decision</h2><ul>
+<li><b>Joint (HQ IDS):</b> re-baseline POL, aviation fuel and critical-spares War Wastage Reserves on the survival curve, with a 35-45 day target (R7).</li>
+<li><b>All Services:</b> give priority to layered air defence, counter-UAS, dispersal and hardening of rear-area nodes, and make GNSS resilience mandatory (R10-R12).</li>
+<li><b>Joint / MDA:</b> fuse national SAR with AIS at IFC-IOR for automatic dark-ship cueing, and treat AIS identity as untrusted (R4, R5).</li>
+<li><b>Joint:</b> keep the GCC non-combatant evacuation plan at execution readiness while indicator I4 is Amber or Red (R9).</li>
+<li><b>Institutional:</b> set up a tri-service Data Analytics Cell to run the I&amp;W matrix and dashboard weekly (R3, R8).</li></ul>"""
 
 
 def page(html_body):
@@ -1061,6 +1174,13 @@ def main():
             if hits:
                 pg_.apply_redactions(images=fitz.PDF_REDACT_IMAGE_NONE, graphics=fitz.PDF_REDACT_LINE_ART_NONE)
         front = page(front_html(body, pages))
+        render(br, front, OUT / "_front.pdf")
+        fp = {}
+        for i, pg_ in enumerate(fitz.open(OUT / "_front.pdf")):
+            head = pg_.get_text().strip().split("\n")[0].strip()
+            if head in ("ABSTRACT", "EXECUTIVE SUMMARY", "LIST OF ABBREVIATIONS", "LIST OF FIGURES", "LIST OF TABLES"):
+                fp.setdefault(head, roman(i + 1))
+        front = page(front_html(body, pages, fp))
         render(br, front, OUT / "_front.pdf")
         br.close()
     fr = fitz.open(OUT / "_front.pdf")

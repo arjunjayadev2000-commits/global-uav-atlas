@@ -1,0 +1,7 @@
+Indicator,Source / cadence,Latest value,Amber at,Red at,Status,Action on Red
+I1 Hormuz littoral CCII / threshold (4-wk mean),ACLED weekly,3.6,>= 0.5,>= 1.0,RED,Red: activate POL stock drawdown plan; raise Gulf escort posture
+I2 Red Sea at-sea CCII / threshold (4-wk mean),ACLED weekly,1.4,>= 0.5,>= 1.0,RED,Red: add Cape-route lead-time to defence import re-order points
+I3 Stand-off strike share of political violence (4-wk),ACLED weekly,58%,>= 53%,>= 65%,AMBER,"Red: raise AD / counter-UAS state at depots, air bases, POL nodes"
+"I4 GCC political violence (events / week, 4-wk)",ACLED weekly,4.5,>= 2,>= 10,AMBER,Red: move NEO plan to execution readiness
+"I5 Large-ship AIS-dark share, Gulf (latest SAR window)",SAR + AIS,61%,>= 20%,>= 40%,RED,Red: treat Gulf maritime picture as unreliable; task national SAR
+"I6 P(Hormuz threshold breach in next 13 wks), model",ARIMA simulation,99%,>= 30%,>= 60%,RED,Red: hold reserves at >= 35-45 days; do not release strategic stock

@@ -1,0 +1,5 @@
+Scenario,Duration,P(disruption lasts at least this long),Days beyond SPR (9.5 d),Days beyond national cover (74 d),Days beyond 30 d / 45 d Service holdings
+S1 Short disruption,2 weeks,71%,4,0,0 / 0
+S2 Sustained disruption,6 weeks,21%,32,0,12 / 0
+S3 Prolonged disruption,12 weeks,9%,74,10,54 / 39
+S4 Campaign-length disruption,26 weeks,< 5% (beyond the longest observed episode),172,108,152 / 137

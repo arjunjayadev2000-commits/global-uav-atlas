@@ -1,0 +1,8 @@
+Evidence (from this study),H-A Deliberate switch-off,H-B GNSS spoofing / jamming,H-C AIS reception gap,H-D Matching artefact
+E1  Darkness rises steeply for large ships only in war zones (>200 m: Gulf 60% vs 8% elsewhere),C,C,I,I
+"E2  Dose-response: 76% dark within 50 km of fighting, 54% at 100-150 km",C,C,I,I
+E3  Same signature in an unrelated war (Black Sea 38%) under the same sensor and algorithm,C,C,I,I
+E4  Dark share rose through the first two weeks of the war (35% -> 73%),C,C,N,I
+"E5  Dark ships cluster at anchorages (Dubai 97% dark, Fujairah 85%) rather than spread evenly",C,N,I,I
+E6  'Noisy' AIS tracks are NOT elevated in the Gulf (1.2% vs 2.1% worldwide),C,I,N,N
+"E7  Large ships off India's west coast, same satellite pass geometry, remain visible (Arabian Sea 7%)",C,C,I,I
