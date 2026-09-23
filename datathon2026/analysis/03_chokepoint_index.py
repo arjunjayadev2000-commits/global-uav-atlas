@@ -111,7 +111,7 @@ put_metrics(fc_best_model=best, fc_end_mean=round(float(mean.iloc[-1]), 1),
             fc_prob_above_thr=None)
 
 # probability that a forecast week exceeds the disruption threshold (simulation from the fitted model)
-sims = final.simulate(nsimulations=13, repetitions=4000, anchor="end")
+sims = final.simulate(nsimulations=13, repetitions=4000, anchor="end", rng=np.random.default_rng(0))
 sims = np.expm1(np.asarray(sims).reshape(13, -1))
 p_any = float((sims > THR[HZ]).any(axis=0).mean())
 put_metrics(fc_prob_above_thr=round(p_any, 3))

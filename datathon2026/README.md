@@ -1,7 +1,9 @@
 # CDM Datathon-2026 - Global Conflicts: Impact on Supply Chains
 
-**Commander's Edition (lead document, 18 pages):** `report/Datathon2026_Commanders_Edition.pdf`, built by `report/build_commander.py`:
-the whole story in ten short chapters for a commander or senior leader, same numbers and charts.
+**Commander's Edition - THE SUBMISSION (20 pages):** `report/Datathon2026_Commanders_Edition.pdf`, built by `report/build_commander.py`:
+the whole story in ten short chapters for a commander or senior leader, plus Annex A (plain-words glossary), Annex B
+(technical summary for assessors), Annex C (software used and screenshots; two Power BI screenshot slots to fill) and
+Annex D (references).
 
 **Full technical report (78 pages):** `report/Datathon2026_Global_Conflicts_Supply_Chains_Report.pdf`, formatted in the
 style of an M.Tech thesis: declaration, abstract, lists, TOC, numbered chapters, references, appendices).
@@ -66,7 +68,8 @@ pip install pandas numpy scipy statsmodels scikit-learn ruptures matplotlib base
 # put the two CDM files in data/raw/
 python analysis/run_all.py          # ~1 min: figures, tables, metrics, Power BI tables
 python report/build_report.py       # full technical report (headless Chromium)
-python report/build_commander.py    # 18-page Commander's Edition
+python report/make_screens.py       # software screenshots (pipeline run, code)
+python report/build_commander.py    # 20-page Commander's Edition (submission)
 ```
 
 Placeholders to fill before submission: `[Rank]`, `[Service No]`, `[Unit / Formation]` (top of `report/build_report.py`).

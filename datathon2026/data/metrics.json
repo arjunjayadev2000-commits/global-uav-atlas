@@ -61,7 +61,7 @@
   "fc_end_lo": 0.8,
   "fc_end_hi": 11.8,
   "hormuz_thr": 4.7,
-  "fc_prob_above_thr": 0.994,
+  "fc_prob_above_thr": 0.991,
   "ep_n": 32,
   "ep_median_wk": 2.5,
   "ep_mean_wk": 4.0,

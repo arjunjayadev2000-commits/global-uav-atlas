@@ -202,8 +202,70 @@ def build():
           f'regenerated from the raw data with one command.</div>')
 
     # glossary (short)
-    d.chapter("Annex - Data Analytics in Plain Words", letter="A")
+    d.chapter("Annex A - Data Analytics in Plain Words", letter="A")
     d.add(ST.glossary_html())
+
+    # technical summary for assessors
+    d.chapter("Annex B - Technical Summary for Assessors", letter="B")
+    d.p("For assessors: every technique used, the plain question it answers, the key result, and where the full method, tests and "
+        "tables appear in the accompanying technical report. All results are regenerated from raw data by one command, and the pipeline "
+        "is deterministic (two consecutive runs give identical outputs).")
+    TS = pd.DataFrame([
+        ("Validation, cleaning, feature engineering; BallTree haversine spatial join", "Is the evidence sound?",
+         f"{M['acled_rows']:,} conflict rows; {M['sar_rows']:,} ships; {M['sar_low_conf_dropped']} low-confidence detections dropped", "Ch 4"),
+        ("Change-point detection (PELT, L2 cost); Mann-Whitney U", "When did the battle rhythm change?",
+         f"7 Oct 2023, 28 Feb 2026, 11 Apr 2026; war regime {M['pv_war_ratio']:.1f}x (p = {M['mw_p']:.0e})", "5.1"),
+        ("Chokepoint Conflict Intensity Index; ARIMA with 12-week back-test and 4,000 simulations", "Is the sea lane under stress, and will it stay so?",
+         f"Hormuz littoral {M['hormuz_war_mult']:.0f}x baseline; {pct(M['fc_prob_above_thr'])} of simulated paths breach by Sep 2026", "6.1-6.2"),
+        ("Survival analysis: Kaplan-Meier, Cox proportional hazards, log-rank", "How long do crises last?",
+         f"Median {M['ep_median_wk']:.1f} wk; {pct(M['km_p_gt_spr'])} exceed SPR; {pct(M['km_p_gt_74d'])} exceed 74 days", "6.3"),
+        ("Wilson intervals, chi-square, relative risk, odds ratio", "Are war-zone ships really darker?",
+         f"RR {M['large_rr']:.1f}, OR {M['large_or']:.1f}, p &lt; 10<sup>-300</sup>", "7.1"),
+        ("Getis-Ord Gi* local hot-spot statistic", "Where do dark ships cluster?", f"{M['gulf_hot_cells']} significant cells, Qatar-Hormuz belt", "7.2"),
+        ("DBSCAN density clustering (haversine)", "Where do they wait?", f"{M['n_clusters']} clusters; Dubai {pct(M['top_cluster_share'])} dark", "7.3"),
+        ("Logistic regression; gradient-boosted trees with monotonic constraints; leave-one-region-out CV", "Can we forecast darkness?",
+         f"ROC-AUC {M['auc_gbt']:.2f} on unseen seas (random CV {M['auc_gbt_random']:.2f}, reported as leakage)", "Ch 8"),
+        ("Event study; Granger causality; pass-through regression; import-bill model", "What did it cost, and do prices warn?",
+         f"Brent +{M['ev_war_peak']:.0f}% peak; no price lead (p &gt; 0.4); ~US${M['extra_bill_usd_bn']:.0f} bn to India", "9.2-9.7"),
+        ("Scene-cluster bootstrap (8 specifications); dose-response logit; Analysis of Competing Hypotheses", "How sure are we?",
+         f"RR {M['rob_min_rr']:.1f}-{M['rob_max_rr']:.1f}; {pct(M['dose_0_50'])} to 43% with distance; switch-off 0 inconsistencies", "10.4-10.6"),
+        ("Expected shortfall from the survival curve; scenario matrix", "How much stock is enough?",
+         f"Returns flatten at ~{M['stock_knee_days']} days; 45 days covers the 6-week case", "13.5-13.6"),
+        ("Indicators & warnings matrix; out-of-sample test", "Would we have been warned?",
+         f"{M['iw_red']} Red / {M['iw_amber']} Amber at ${M['brent_at_cut']:.0f} Brent; oil then {M['brent_oos_change']:+.0f}%", "9.8, 14.2"),
+    ], columns=["Technique", "Commander's question", "Key result", "Full report"])
+    d.table(TS, "Techniques, questions and results", small=True)
+
+    # software and screenshots
+    d.chapter("Annex C - Software Used and Screenshots", letter="C")
+    d.p("<b>Stack:</b> Python 3.11 (pandas, NumPy, SciPy, statsmodels, scikit-learn, ruptures, Matplotlib/Basemap) for analysis; "
+        "headless Chromium for the report; Microsoft Power BI Desktop for the dashboard (.pbix) built on the exported star schema "
+        "(FactConflictWeekly, FactVesselDetections, DimAdmin1, DimDate and the analysis tables).")
+    d.fig("screen_pipeline", "Screenshot: the complete pipeline run, raw data to every chart, table and dashboard table", width=100)
+    d.fig("screen_code", "Screenshot: code excerpt, scene-cluster bootstrap behind the robustness test", width=100)
+    slot = ('<div style="border:1.5pt dashed #9aa5ae;border-radius:4pt;height:150pt;display:flex;align-items:center;justify-content:center;'
+            'color:#6b6a66;font-family:Liberation Sans,sans-serif;font-size:10pt;text-align:center">{t}</div>')
+    d.html_fig(slot.format(t="[ Insert screenshot: Power BI page 1 - Conflict Pulse / page 2 - Chokepoint Watch ]"),
+               "Screenshot: Power BI dashboard, conflict and chokepoint pages")
+    d.html_fig(slot.format(t="[ Insert screenshot: Power BI page 3 - Dark Ships / page 4 - Decision ]"),
+               "Screenshot: Power BI dashboard, dark-ship and decision pages")
+
+    # references
+    d.chapter("Annex D - Key References and Data Sources", letter="D")
+    refs = [
+        "College of Defence Management (2026). Datathon-2026 General Instructions and theme datasets (ACLED Middle-East weekly aggregates; Sentinel-1 SAR vessel detections).",
+        "Raleigh, C. et al. (2010). Introducing ACLED. <i>Journal of Peace Research</i> 47(5), 651-660.",
+        "Paolo, F.S. et al. (2024). Satellite mapping reveals extensive industrial activity at sea. <i>Nature</i> 625, 85-91.",
+        "UNCTAD (2024). <i>Review of Maritime Transport 2024</i>. U.S. EIA (2024). <i>World Oil Transit Chokepoints</i>.",
+        "Killick, R., Fearnhead, P., Eckley, I.A. (2012). Optimal detection of changepoints with a linear computational cost. <i>JASA</i> 107, 1590-1598.",
+        "Getis, A., Ord, J.K. (1992); Ord, J.K., Getis, A. (1995). Local spatial statistics. <i>Geographical Analysis</i> 24(3); 27(4).",
+        "Ester, M. et al. (1996). DBSCAN. <i>Proc. KDD-96</i>, 226-231. Kaplan, E.L., Meier, P. (1958). <i>JASA</i> 53, 457-481. Cox, D.R. (1972). <i>JRSS-B</i> 34, 187-220.",
+        "Roberts, D.R. et al. (2017). Cross-validation strategies for structured data. <i>Ecography</i> 40, 913-929.",
+        "Open data: EIA Brent/WTI spot prices (github.com/datasets/oil-prices); Federal Reserve H.10 INR/US$ (github.com/datasets/exchange-rates); "
+        "Energy Institute Statistical Review via Our World in Data (github.com/owid/energy-data); Natural Earth ports. Icons: Font Awesome Free (CC BY 4.0).",
+        "Jayadev, A. (2021). <i>Predictive Maintenance in Armed Forces: A Machine Learning Based Decision Support System</i>. M.Tech report, IIT Kharagpur.",
+    ]
+    d.add('<ol style="font-size:9.5pt;line-height:1.35;padding-left:18pt">' + "".join(f"<li style='margin-bottom:3pt;text-align:left'>{r}</li>" for r in refs) + "</ol>")
     return d
 
 
