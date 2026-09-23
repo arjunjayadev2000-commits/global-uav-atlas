@@ -42,3 +42,9 @@ logs/*.jsonl.*
 output/seed_snapshot.sqlite
 
 .DS_Store
+
+# Datathon 2026 - raw CDM data, regenerable intermediates
+datathon2026/data/raw/
+datathon2026/data/clean/
+datathon2026/powerbi/*.csv
+datathon2026/report/report_body.html

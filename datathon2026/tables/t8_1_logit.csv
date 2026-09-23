@@ -1,0 +1,6 @@
+Feature,Coef (per 1 SD),Odds ratio,OR 95% CI,p-value
+Hull length (log m),-0.627,0.534,0.52 - 0.55,<0.001
+Fishing-vessel score,-0.215,0.807,0.78 - 0.83,<0.001
+Distance to nearest conflict ADMIN1 (log km),-0.503,0.605,0.58 - 0.63,<0.001
+Conflict events within 500 km (log),-0.03,0.97,0.94 - 1.01,0.092
+Distance to chokepoint (log km),0.005,1.005,0.98 - 1.03,0.703

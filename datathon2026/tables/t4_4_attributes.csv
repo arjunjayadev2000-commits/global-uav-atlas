@@ -1,0 +1,16 @@
+Attribute,Dataset,Description
+scene_id,SAR,Sentinel-1A scene identifier (image footprint)
+timestamp,SAR,Image acquisition time (UTC)
+lat / lon,SAR,Detected hull position
+presence_score,SAR,CNN confidence that the object is a vessel (0-1)
+length_m,SAR,Estimated hull length from SAR backscatter
+mmsi,SAR,AIS identity of the matched track (blank when none)
+matching_score,SAR,Confidence of the SAR-AIS association
+fishing_score,SAR,Model probability that the hull is a fishing vessel
+matched_category,SAR,"AIS vessel class, or 'unmatched' (AIS-dark)"
+WEEK,ACLED,Week (Saturday start) of aggregation
+COUNTRY / ADMIN1,ACLED,"Location of events (incl. 'Indian Ocean', 'Mediterranean Sea')"
+EVENT_TYPE / SUB_EVENT_TYPE,ACLED,"6 event types, 25 sub-event types"
+EVENTS / FATALITIES,ACLED,Counts per week-location-type
+POPULATION_EXPOSURE,ACLED,Population within reach of events
+CENTROID_LAT/LON,ACLED,ADMIN1 centroid used for geo-joins

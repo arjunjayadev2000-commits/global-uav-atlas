@@ -1,0 +1,5 @@
+Model,ROC-AUC,PR-AUC,Brier,F1 @0.5,Accuracy
+Logistic regression,0.625,0.281,0.155,0.089,0.798
+Gradient-boosted trees,0.686,0.374,0.145,0.205,0.809
+Baseline (always 'not dark'),0.5,0.196,0.158,0.0,0.804
+"GBT, random 5-fold CV (leaky, for contrast)",0.743,0.479,0.132,0.324,0.825

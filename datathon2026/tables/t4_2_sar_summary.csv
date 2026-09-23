@@ -1,0 +1,10 @@
+Parameter,Value
+Observation window,01 Mar 2026 - 14 Mar 2026
+Sentinel-1 scenes,"2,833"
+Vessel detections,"106,533"
+Detections matched to AIS,"64,543 (60.6%)"
+Detections with no AIS match ('dark'),"41,990 (39.4%)"
+Median vessel length (m),64
+Large vessels (>=100 m),"40,179"
+Distinct MMSIs,"53,479"
+Sea regions defined,17

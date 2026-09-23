@@ -1,0 +1,5 @@
+Indicator,Global,Gulf war zone
+Malformed MMSI (MID outside 2xx-7xx),1565,17
+Placeholder MMSI (xxx000000),94,6
+Physically impossible re-sighting (>50 kn over >20 km),15,1
+'noisy_vessel' AIS tracks,2187,73

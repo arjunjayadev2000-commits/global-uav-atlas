@@ -1,0 +1,18 @@
+Region,Detections,Dark share (all),Large vessels,Dark share (large),CI low,CI high
+Strait of Hormuz,723,0.736,467,0.741,0.699,0.779
+Persian Gulf,4829,0.582,2183,0.602,0.582,0.623
+Gulf of Oman,539,0.557,355,0.473,0.422,0.525
+Black Sea,3386,0.462,1882,0.381,0.359,0.403
+Bay of Bengal,3192,0.672,1019,0.175,0.153,0.199
+Gulf of Aden,123,0.447,65,0.169,0.097,0.278
+Strait of Malacca,3067,0.439,1294,0.135,0.118,0.155
+South China Sea,10295,0.456,3088,0.132,0.12,0.144
+Southern Indian Ocean,5867,0.425,2231,0.126,0.113,0.141
+Red Sea,984,0.359,583,0.111,0.088,0.14
+Pacific & Americas (other),16188,0.508,4707,0.103,0.095,0.112
+Mediterranean,12738,0.317,6171,0.098,0.091,0.106
+Atlantic (other),11569,0.336,5457,0.087,0.08,0.094
+East Asia Seas,12171,0.284,3949,0.087,0.078,0.096
+NW Europe & North Sea,17596,0.215,6075,0.08,0.073,0.087
+Arabian Sea,3212,0.715,610,0.072,0.054,0.095
+Bab-el-Mandeb,54,0.204,43,0.047,0.013,0.155

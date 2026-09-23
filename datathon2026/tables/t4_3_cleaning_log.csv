@@ -1,0 +1,13 @@
+Dataset,Step,Count
+ACLED,Rows loaded,149825
+ACLED,Exact duplicate rows removed,0
+ACLED,Pre-2015 partial-coverage rows dropped,11
+ACLED,Negative counts found,0
+ACLED,"Population exposure NaNs imputed (ADMIN1 median, else 0)",30965
+ACLED,Rows after cleaning,149814
+SAR,Rows loaded,107257
+SAR,Duplicate detections (same scene & position) removed,0
+SAR,Invalid coordinates,0
+SAR,Low-confidence detections dropped (presence < 0.80),724
+SAR,Malformed MMSI values flagged (outside 2xx-7xx MID range),1565
+SAR,Rows after cleaning,106533

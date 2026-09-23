@@ -1,0 +1,4 @@
+Model,MAE (weighted events/wk),RMSE
+Naive (last value),112.1,112.5
+Holt damped-trend ETS,92.8,93.3
+"ARIMA(1,0,1)",56.9,60.0
