@@ -70,17 +70,18 @@ def at_a_glance(M):
     src = [("database", "ACLED", "149,814 rows<br>2015 - Jun 2026"), ("satellite", "Sentinel-1 SAR", f"{M['sar_rows']:,} ships<br>1-14 Mar 2026"),
            ("tower-broadcast", "AIS match", f"{M['sar_distinct_mmsi']:,} identities"),
            ("oil-well", "Brent (EIA)", f"daily to {M['brent_last_date']}"), ("indian-rupee-sign", "INR/US$ (Fed)", "daily to Sep 2026"),
-           ("industry", "Energy Institute", "India oil balance<br>1990-2024")]
+           ("industry", "Energy Institute", "India oil balance<br>1990-2024"),
+           ("route", "IMF PortWatch", f"28 chokepoints<br>daily to {M['pw_end']}")]
     tiles = [("eye-slash", pct(M["hormuz_large_dark"]), "large ships AIS-dark in the Strait of Hormuz", True),
              ("scale-balanced", f"{M['large_rr']:.1f}x", "risk of darkness in war zones", False),
              ("explosion", "84%", "of war violence was stand-off strikes", True),
-             ("hourglass-half", pct(M["km_p_gt_spr"]), "disruptions outlast India's SPR", True),
+             ("hourglass-half", f"{M['ship_ep_median']:.0f} days", "median shipping disruption at world chokepoints", True),
              ("arrow-trend-up", f"+{M['ev_war_peak']:.0f}%", "Brent peak within 40 days of the war", True),
              ("sack-dollar", f"${M['extra_bill_usd_bn']:.0f} bn", "extra import bill for India (199 days)", False),
              ("ship", f"{M['ind_gulf_ships']}", "Indian-flag ships in the Gulf war zone", False),
              ("traffic-light", f"{M['iw_red']} Red", f"I&amp;W status at 27 Jun; Brent then {M['brent_oos_change']:+.0f}%", True)]
     meth = ["Change-points (PELT)", "Conflict index + ARIMA", "Kaplan-Meier / Cox", "Chi-square, bootstrap", "Getis-Ord Gi*",
-            "DBSCAN", "Gradient boosting, spatial CV", "Event study, Granger", "Expected shortfall"]
+            "DBSCAN", "Gradient boosting, spatial CV", "Event study, Granger", "Expected shortfall", "Transit survival, effective cover"]
     out = ['<div class="ig">']
     out.append('<div class="ig-band">PROJECT DARKWATER &middot; Global Conflicts and the Blinding of Supply Chains<small>CDM Datathon-2026 &middot; '
                'Theme: Global Conflicts - Impact on Supply Chains &middot; the study on one page</small></div>')
@@ -206,7 +207,7 @@ def roadmap():
 
 
 def methodology():
-    st = [("database", "1. DATA", "ACLED conflict &middot; Sentinel-1 SAR + AIS &middot; Brent, INR, energy (open data)", "#1f3b5c"),
+    st = [("database", "1. DATA", "ACLED conflict &middot; Sentinel-1 SAR + AIS &middot; IMF PortWatch transits &middot; Brent, INR, energy, news (open sources)", "#1f3b5c"),
           ("filter", "2. PREPARE", "Clean, validate, engineer features, spatial joins (BallTree)", "#2a5a8a"),
           ("magnifying-glass-chart", "3. ANALYSE", "Descriptive &rarr; diagnostic &rarr; predictive &rarr; prescriptive", "#2a78d6"),
           ("scale-balanced", "4. TEST", "Robustness, dose-response, competing hypotheses, out-of-sample check", "#3d8bd9"),
@@ -218,7 +219,7 @@ def methodology():
 def takeaways(M):
     tk = [("eye-slash", f"<b>Visibility is the first casualty.</b> {pct(M['hormuz_large_dark'])} of large ships dark at Hormuz; the effect is robust, graded and replicated."),
           ("route", "<b>Four signatures, not one.</b> No detour means concealment and a price shock; a detour means evacuation and higher freight; enforced reporting keeps a sea visible."),
-          ("hourglass-half", f"<b>Disruption is a duration problem.</b> {pct(M['km_p_gt_spr'])} outlast the SPR; returns to stock flatten at ~35-45 days."),
+          ("hourglass-half", f"<b>Disruption is a duration problem.</b> Fighting flares for weeks; shipping disruption lasts months (median {M['ship_ep_median']:.0f} days). Stocks bridge; diversification carries."),
           ("explosion", "<b>Stand-off weapons erase the rear area.</b> 84% of war violence; energy and logistics nodes far from the front were hit."),
           ("traffic-light", f"<b>Data beats the market as a warning.</b> The June I&amp;W call was Red at $70 Brent; oil then rose {M['brent_oos_change']:.0f}%.")]
     return '<div class="ig">' + "".join(f'<div class="ig-tk"><div class="i">{icon(i, 14, "#fff")}</div><div>{t}</div></div>' for i, t in tk) + "</div>"

@@ -40,8 +40,11 @@ What-if parameter: *Modeling > New parameter* `Stock days` (0-120, step 5) and a
    map: bubbles at `DimAdmin1` LAT/LON sized by `Events`; slicers: COUNTRY, GCC, date range; card: `Stand-off share`.
 2. **Chokepoint Watch** - line: the four CCII theatre columns from `t6_ccii_weekly` by WEEK; table: `t6_2_episodes`;
    cards: episodes, median weeks.
+   Add bar: `Change %` by `Chokepoint` from `t12_1_chokepoint_change` (Hormuz -93% vs the rest); table: `t12_2_shipping_disruptions`
+   (shipping disruptions, median 104 days).
 3. **Dark Ships** - map: `FactVesselDetections` lat/lon, legend `AIS_DARK`; bar: `Dark share large` by REGION;
    clustered column: `Dark share` by `size_class` x ZONE; table: `t7_4_dark_clusters`; card: `Dark RR vs world`.
 4. **Decision** - table/line: `t9_1_stock_decision`; bar: `t8_3_poi_risk`; the `Stock days` what-if card.
+   Add line: `t12_3_effective_cover` (days of cover by `Exposure`, one line per stock level) - stocks bridge; diversification carries.
 
 Save as `Datathon2026_Global_Conflicts_Supply_Chains.pbix`, then take screenshots of each page for the submission.

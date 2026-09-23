@@ -6,6 +6,6 @@ from common import METRICS
 
 HERE = Path(__file__).parent
 METRICS.unlink(missing_ok=True)
-for stage in ["01_preprocess", "02_conflict", "03_chokepoint_index", "04_sar", "05_model", "06_decision", "08_intel", "09_opendata", "10_infographic_assets", "11_darkwater",
+for stage in ["01_preprocess", "02_conflict", "03_chokepoint_index", "04_sar", "05_model", "06_decision", "08_intel", "09_opendata", "10_infographic_assets", "11_darkwater", "12_portwatch",
               "07_powerbi_export"]:
     runpy.run_path(str(HERE / f"{stage}.py"), run_name="__main__")

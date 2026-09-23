@@ -3,6 +3,19 @@ Stage 1: preprocessing
   tab -> t4_2_sar_summary
   tab -> t4_3_cleaning_log
   tab -> t4_4_attributes
+        0                                                  1       2
+0   ACLED                                        Rows loaded  149825
+1   ACLED                       Exact duplicate rows removed       0
+2   ACLED             Pre-2015 partial-coverage rows dropped      11
+3   ACLED                              Negative counts found       0
+4   ACLED  Population exposure NaNs imputed (ADMIN1 media...   30965
+5   ACLED                                Rows after cleaning  149814
+6     SAR                                        Rows loaded  107257
+7     SAR  Duplicate detections (same scene & position) r...       0
+8     SAR                                Invalid coordinates       0
+9     SAR  Low-confidence detections dropped (presence < ...     724
+10    SAR  Malformed MMSI values flagged (outside 2xx-7xx...    1565
+11    SAR                                Rows after cleaning  106533
 Stage 2: conflict analytics
   fig -> f5_1_annual
   fig -> f5_2_eventmix
@@ -15,6 +28,18 @@ Stage 2: conflict analytics
   fig -> f5_7_war_map
   tab -> t5_3_top_admin1_war
   fig -> f5_8_maritime
+          From           To  Weeks  Mean events/wk     SD
+0  03 Jan 2015  26 Dec 2015     52           155.0   69.0
+1  02 Jan 2016  24 Dec 2016     52           427.0   62.0
+2  31 Dec 2016  21 Apr 2018     69           909.0  131.0
+3  28 Apr 2018  29 Feb 2020     97           667.0   90.0
+4  07 Mar 2020  30 Sep 2023    187           531.0   95.0
+5  07 Oct 2023  14 Sep 2024     50          1067.0  129.0
+6  21 Sep 2024  23 Nov 2024     10          1635.0  131.0
+7  30 Nov 2024  21 Feb 2026     65           597.0  145.0
+8  28 Feb 2026  04 Apr 2026      6          1658.0  102.0
+9  11 Apr 2026  27 Jun 2026     12           727.0  230.0
+MW p 3.587122781058805e-05 ratio 2.9197060516780113
 Stage 3: chokepoint index
   tab -> t6_ccii_weekly
   fig -> f6_1_ccii
@@ -25,6 +50,25 @@ Stage 3: chokepoint index
   fig -> f6_4_km
   tab -> t6_3_km_summary
   tab -> t6_4_cox
+                   Model  MAE (weighted events/wk)   RMSE
+0     Naive (last value)                     112.1  112.5
+1  Holt damped-trend ETS                      92.8   93.3
+2           ARIMA(1,0,1)                      56.9   60.0 
+                        Chokepoint  Episodes  ...  Median weeks  Longest weeks
+0               Hormuz (littoral)        16  ...           2.0             12
+1  Red Sea / Arabian Sea (at sea)        12  ...           4.0             19
+2               East Med (at sea)         2  ...           1.0              1
+3              Black Sea (at sea)         2  ...           1.0              1
+
+[4 rows x 5 columns] 
+                                    Covariate   coef  ...  p-value     HR 95% CI
+0               chokepoint_East Med (at sea)  0.848  ...    0.455  0.25 - 21.63
+1               chokepoint_Hormuz (littoral) -0.660  ...    0.427   0.10 - 2.64
+2  chokepoint_Red Sea / Arabian Sea (at sea) -0.765  ...    0.424   0.07 - 3.03
+3                                   post2023 -0.848  ...    0.115   0.15 - 1.23
+
+[4 rows x 5 columns] 
+logrank 8.522833127439396 0.03635619609587648
   fig -> f6_5_offshore
 Stage 4: SAR / AIS-dark analytics
   fig -> f7_1_global_map
@@ -43,6 +87,74 @@ Stage 4: SAR / AIS-dark analytics
   tab -> t7_6_top_flags_gulf
   tab -> t7_7_identity
   fig -> f7_10_india_seas
+                       Detections  Dark share (all)  ...    CI low   CI high
+region                                               ...                    
+Strait of Hormuz              723          0.735823  ...  0.699310  0.778558
+Persian Gulf                 4829          0.582108  ...  0.581689  0.622715
+Gulf of Oman                  539          0.556586  ...  0.421866  0.525185
+Black Sea                    3386          0.461902  ...  0.359301  0.403139
+Bay of Bengal                3192          0.671992  ...  0.152602  0.199204
+Gulf of Aden                  123          0.447154  ...  0.097212  0.278164
+Strait of Malacca            3067          0.438539  ...  0.117683  0.154956
+South China Sea             10295          0.455658  ...  0.120326  0.144190
+Southern Indian Ocean        5867          0.425260  ...  0.113251  0.140835
+Red Sea                       984          0.358740  ...  0.088444  0.139627
+
+[10 rows x 6 columns]
+                              nearest_ref  ...     med_len
+11                      Dubai / Jebel Ali  ...  183.588455
+25       Fujairah / Khor Fakkan anchorage  ...  170.980355
+6           Novorossiysk / Kerch (Russia)  ...  174.350418
+26  Strait of Hormuz (Bandar Abbas-Qeshm)  ...  178.820572
+12              Ras Laffan / Doha (Qatar)  ...  173.923203
+20          Novorossiysk / Kerch (Russia)  ...  148.792244
+19          Novorossiysk / Kerch (Russia)  ...  123.222602
+22                           35.5N 139.9E  ...  126.645313
+21                                  Malta  ...  167.433411
+5           Novorossiysk / Kerch (Russia)  ...  129.462188
+30          Singapore Strait / EOPL Johor  ...  254.538712
+7           Novorossiysk / Kerch (Russia)  ...  163.634415
+
+[12 rows x 5 columns]
+flag_class          National flag  ...  Other/undecoded
+zone                               ...                 
+Gulf war zone                37.5  ...              4.6
+Black Sea war zone           33.9  ...              2.7
+Red Sea zone                 28.4  ...              3.7
+India's seas                 41.4  ...              1.8
+Rest of world                47.3  ...              1.6
+
+[5 rows x 4 columns]
+                  Gulf war zone %  Rest of world %
+flag                                              
+Panama                       17.4             11.7
+Liberia                       9.9             12.8
+Marshall Islands              9.2              9.5
+Iran                          6.9              0.1
+UAE                           6.0              0.0
+Other/undecoded               4.6              1.6
+Singapore                     3.7              5.0
+Comoros                       3.6              0.2
+Malta                         3.2              5.7
+Saudi Arabia                  3.2              0.1
+                                           Indicator  Global  Gulf war zone
+0               Malformed MMSI (MID outside 2xx-7xx)    1565             17
+1                       Placeholder MMSI (xxx000000)      94              6
+2  Physically impossible re-sighting (>50 kn over...      15              1
+3                          'noisy_vessel' AIS tracks    2187             73
+region
+Pacific & Americas (other)    54
+South China Sea               41
+Southern Indian Ocean         35
+Mediterranean                 22
+Persian Gulf                  21
+Black Sea                     20
+Atlantic (other)              19
+East Asia Seas                18
+Strait of Malacca              9
+Gulf of Oman                   6
+dtype: int64
+rr 4.681330255792483 odds 7.9514083164558125 chi2 5101.388161793658 0.0 trend SignificanceResult(statistic=np.float64(0.6783216783216784), pvalue=np.float64(0.015317329053281715))
 Stage 5: predictive model
   tab -> t8_1_logit
   tab -> t8_2_model_cv
@@ -50,9 +162,54 @@ Stage 5: predictive model
   fig -> f8_2_pdp
   fig -> f8_3_risk_surface
   tab -> t8_3_poi_risk
+                                                        Feature  ...  p-value
+log_len                                     Hull length (log m)  ...   <0.001
+fishing_score                              Fishing-vessel score  ...   <0.001
+log_dist_conflict  Distance to nearest conflict ADMIN1 (log km)  ...   <0.001
+log_conflict_500            Conflict events within 500 km (log)  ...    0.092
+log_dist_choke                  Distance to chokepoint (log km)  ...    0.703
+
+[5 rows x 5 columns] 
+                                          Model  ROC-AUC  ...  F1 @0.5  Accuracy
+0                          Logistic regression    0.625  ...    0.089     0.798
+1                       Gradient-boosted trees    0.686  ...    0.205     0.809
+2                 Baseline (always 'not dark')    0.500  ...    0.000     0.804
+3  GBT, random 5-fold CV (leaky, for contrast)    0.743  ...    0.324     0.825
+
+[4 rows x 6 columns] 
+ Conflict events within 500 km (log)             0.002256
+Distance to chokepoint (log km)                 0.023483
+Fishing-vessel score                            0.045716
+Distance to nearest conflict ADMIN1 (log km)    0.113996
+Hull length (log m)                             0.161962
+dtype: float64 
+                    Location  Predicted P(dark), 180 m ship
+0          Strait of Hormuz                           0.86
+1        Fujairah anchorage                           0.60
+3              Gulf of Aden                           0.32
+2                Ras Tanura                           0.25
+6                  Chabahar                           0.17
+5  Kandla/Mundra approaches                           0.15
+4         Mumbai approaches                           0.13
+7          Kochi approaches                           0.12
+8                   Colombo                           0.07 
+ [[49148  1178]
+ [10758  1540]]
 Stage 6: decision model
   fig -> f9_1_stock_cover
   tab -> t9_1_stock_decision
+   Stock (days)  ...  Shortfall avoided vs zero stock %
+0             0  ...                                0.0
+1            10  ...                               28.3
+2            15  ...                               39.0
+3            30  ...                               61.9
+4            45  ...                               74.1
+5            60  ...                               83.5
+6            74  ...                               90.4
+7            90  ...                               94.3
+
+[8 rows x 4 columns] 
+knee 35
 Stage 8: intelligence layer
   tab -> t9_2_robustness
   fig -> f9_2_robustness
@@ -62,6 +219,43 @@ Stage 8: intelligence layer
   tab -> t9_5_indian_flag
   tab -> t9_6_iw_matrix
   tab -> t9_7_scenarios
+                                       Specification  Ships  Dark % war zones  Dark % elsewhere    RR  RR 95% CI low  RR 95% CI high
+0              Baseline: >=100 m, 'unmatched' = dark  40179              52.1              10.1  5.17           3.72            6.51
+1                              Size threshold >=60 m  54698              50.6              13.1  3.87           2.88            4.86
+2                             Size threshold >=150 m  25807              53.8               8.5  6.36           4.54            8.25
+3            Size threshold >=200 m (VLCC/LNG class)  11873              54.7               8.7  6.28           4.47            8.06
+4              Strict dark: no candidate MMSI at all  40179              38.6               7.2  5.40           3.67            7.40
+5  High-confidence detections only (presence >=0.99)  37208              52.6               9.7  5.40           3.93            6.82
+6             Excluding likely fishing (score >=0.5)  40121              52.1              10.1  5.17           3.85            6.61
+7             Gulf only vs rest (Black Sea excluded)  38297              60.9              10.1  6.04           4.14            7.76 
+          sum  count     share        lo        hi
+band                                             
+0-50     499    655  0.761832  0.727744  0.792867
+50-100   708   1129  0.627104  0.598510  0.654836
+100-150  454    838  0.541766  0.507917  0.575234
+150-200  147    342  0.429825  0.378424  0.482784
+200-400   21     41  0.512195  0.364845  0.657456 
+ OR per log-km 0.45291130001619306 8.765092521032868e-28 
+ {'H-A Deliberate switch-off': 0, 'H-B GNSS spoofing / jamming': 1, 'H-C AIS reception gap': 5, 'H-D Matching artefact': 6} 
+                detections  distinct_ships  large  median_len
+zone                                                        
+Gulf war zone          35              33     19       140.0
+Red Sea zone            6               5      2        27.0
+Arabian Sea           584             502     91        29.0
+Bay of Bengal         236             208     42        25.0
+Rest of world          58              40     54       207.0 
+                                                 Indicator Latest value Status
+0         I1 Hormuz littoral CCII / threshold (4-wk mean)          3.6    RED
+1          I2 Red Sea at-sea CCII / threshold (4-wk mean)          1.4    RED
+2  I3 Stand-off strike share of political violence (4-wk)          58%  AMBER
+3         I4 GCC political violence (events / week, 4-wk)          4.5  AMBER
+4  I5 Large-ship AIS-dark share, Gulf (latest SAR window)          61%    RED
+5     I6 P(Hormuz threshold breach in next 13 wks), model          99%    RED 
+                         Scenario  Duration      P(disruption lasts at least this long) Days beyond SPR (9.5 d) Days beyond national cover (74 d) Days beyond 30 d / 45 d Service holdings
+0            S1 Short disruption   2 weeks                                         71%                       4                                 0                                    0 / 0
+1        S2 Sustained disruption   6 weeks                                         21%                      32                                 0                                   12 / 0
+2        S3 Prolonged disruption  12 weeks                                          9%                      74                                10                                  54 / 39
+3  S4 Campaign-length disruption  26 weeks  < 5% (beyond the longest observed episode)                     172                               108                                152 / 137
 Stage 9: open-source economic transmission
   fig -> f9o_1_brent_timeline
   fig -> f9o_2_event_study
@@ -70,8 +264,140 @@ Stage 9: open-source economic transmission
   fig -> f9o_3_rupee
   fig -> f9o_4_india_dependence
   tab -> t9o_3_war_premium
+                               Event        Day 0  Brent day 0 ($)  +5 days %  +20 days %  Peak within 40 days %
+0              7 Oct 2023 (Gaza war)  06 Oct 2023             87.9        7.4        -0.4                    7.4
+1     19 Nov 2023 (Red Sea campaign)  17 Nov 2023             81.2       -1.7        -5.4                    2.5
+2  13 Jun 2025 (Israel-Iran strikes)  12 Jun 2025             70.8       13.5        -0.6                   13.5
+3         28 Feb 2026 (regional war)  27 Feb 2026             71.3       34.2        70.3                   93.8 
+                                                Direction  Lags (weeks)     F p-value
+0            Hormuz littoral CCII -> Brent weekly return             1  0.03  0.8716
+1            Hormuz littoral CCII -> Brent weekly return             2  0.70  0.4985
+2            Hormuz littoral CCII -> Brent weekly return             4  0.60  0.6638
+3  Brent weekly return -> Hormuz littoral CCII (reverse)             2  1.31  0.2710
+4             Red Sea at-sea CCII -> Brent weekly return             1  0.20  0.6548
+5             Red Sea at-sea CCII -> Brent weekly return             2  0.80  0.4489
+6             Red Sea at-sea CCII -> Brent weekly return             4  0.83  0.5081
+7   Brent weekly return -> Red Sea at-sea CCII (reverse)             2  3.45  0.0323 
+ [(0, np.float64(0.05655774861514845)), (1, np.float64(0.020428436604342393)), (2, np.float64(-0.026216659057132524)), (3, np.float64(-0.03272241964328282)), (4, np.float64(0.0027249012895170007))] 
+                                              Quantity                   Value
+0    India net oil import volume (2024, OWID-derived)    4.26 million bbl/day
+1                  India oil import dependence (2024)                   87.4%
+2  Brent, pre-war baseline (1 Dec 2025 - 27 Feb 2026)            US$ 66.6/bbl
+3             Brent, war period (1 Mar - 15 Sep 2026)     US$ 98.4/bbl (+48%)
+4                      INR/US$, pre-war vs war period  90.54 -> 94.72 (+4.6%)
+5       Extra import bill, war period (199 days), US$         ~US$ 27 billion
+6           Extra import bill incl. rupee effect, INR      ~Rs 2.8 lakh crore
+7   Sensitivity: every US$10/bbl sustained for a year       ~US$ 15.6 billion 
+vol 31.757937857925505 87.63280040940852 
+beta 0.001052125455193397 0.7949236193534048 
+dep {2022: 86.30583377606943, 2023: 87.11960765301176, 2024: 87.37215822796513} {'China': 72.0, 'India': 87.0, 'Japan': 100.0, 'South Korea': 100.0} 
+OOS 70.16 130.8 130.8
 Stage 10: infographic assets
   fig -> base_theatre
+Stage 11: DARKWATER evidence
+  tab -> t11_1_presence_identity
+  fig -> f11_1_presence_identity
+  tab -> t11_2_stasis
+  tab -> t11_3_pass_robustness
+  tab -> t11_4_did
+  tab -> t11_5_flag_shift
+  fig -> f11_2_flag_shift
+  tab -> t11_6_signatures
+  tab -> t11_7_defence_budget
+          Pass  Big hulls seen by radar  Transmitting AIS  Dark  Small craft
+0   4 Mar 2026                      337               145   192          157
+1  12 Mar 2026                      226                24   202          101 
+                      Sea    Population  ...  Crowding null %  z vs null
+0  Hormuz + Persian Gulf          dark  ...             10.6        5.3
+1  Hormuz + Persian Gulf  transmitting  ...              8.0        2.7
+2      Strait of Malacca          dark  ...              0.8        0.7
+3      Strait of Malacca  transmitting  ...              2.0        1.9
+4  NW Europe & North Sea          dark  ...              0.4        0.4
+5  NW Europe & North Sea  transmitting  ...              2.7       -3.9
+6          Mediterranean          dark  ...              6.1        1.5
+7          Mediterranean  transmitting  ...              4.8        3.8
+8              Black Sea          dark  ...              5.6        2.3
+9              Black Sea  transmitting  ...              1.1        0.9
+
+[10 rows x 6 columns] 
+                                                Check  ...  War-zone relative risk
+0                                         All passes  ...                    5.17
+1  Excluding 67 passes that were 100% dark (possi...  ...                    7.54
+2                               Daylight passes only  ...                    5.08
+3                                  Night passes only  ...                    5.33
+
+[4 rows x 4 columns] 
+                                         Quantity Value (percentage points per day)
+0                             Control seas trend                             -0.22
+1  Gulf excess trend (difference-in-differences)                              5.67
+2     Permutation p-value (5,000 label shuffles)                            0.0082
+3            Scene-sea units (treated / control)                         47 / 1483 
+ wk                       Week 1 (1-7 Mar)  Week 2 (8-14 Mar) n week 1 / week 2
+grp                                                                           
+Gulf-littoral flags                  11.2               19.9           94 / 66
+Major open registries                42.6               39.3         359 / 130
+Other flags                          34.9               30.2         294 / 100
+Shadow-fleet-associated              11.4               10.6           96 / 35 0.0012589714587808857 
+                             Sea  ...                Signature
+0              Strait of Hormuz  ...              CONCEALMENT
+1                  Persian Gulf  ...              CONCEALMENT
+2                  Gulf of Oman  ...              CONCEALMENT
+3                     Black Sea  ...       ATTRITION / FROZEN
+4                       Red Sea  ...               EVACUATION
+5  Bab-el-Mandeb + Gulf of Aden  ...               EVACUATION
+6    East Med / Suez approaches  ...  DETERRENCE / COMPLIANCE
+7               Turkish Straits  ...                 BASELINE
+8             Strait of Malacca  ...                 BASELINE
+9         NW Europe & North Sea  ...                 BASELINE
+
+[10 rows x 6 columns] 
+                   Import volume basis  ... Share of monthly defence budget
+0  Net imports, Energy Institute 2024  ...                            0.59
+1  Net imports, Energy Institute 2024  ...                            0.86
+2     Crude imports ~5.0 mb/d (MoPNG)  ...                            0.70
+3     Crude imports ~5.0 mb/d (MoPNG)  ...                            1.00
+
+[4 rows x 5 columns] 
+held 691
+Stage 12: IMF PortWatch movement layer
+  fig -> f12_1_hormuz_transits
+  tab -> t12_1_chokepoint_change
+  fig -> f12_2_chokepoints
+  fig -> f12_3_evacuation
+  tab -> t12_2_shipping_disruptions
+  fig -> f12_4_duration
+  tab -> t12_3_effective_cover
+  fig -> f12_5_effective_cover
+          Chokepoint  Mar-Aug 2025 (per day)  Mar-Aug 2026 (per day)  Change %
+18  Strait of Hormuz                    83.9                     5.8     -93.1
+7       Kerch Strait                    12.4                     9.1     -26.8
+16    Oresund Strait                    47.4                    41.3     -12.8
+15      Ombai Strait                    10.4                     9.3     -10.7
+3    Bosporus Strait                    91.1                    82.0      -9.9
+22     Torres Strait                     9.8                     9.0      -7.8 
+          Chokepoint  Mar-Aug 2025 (per day)  Mar-Aug 2026 (per day)  Change %
+25  Yucatan Channel                    47.1                    53.4      13.4
+1    Balabac Strait                     9.3                    10.8      16.4
+10     Luzon Strait                    66.6                    79.5      19.4
+13   Mindoro Strait                    32.9                    46.7      41.8 
+ctrl -4.0 
+              Chokepoint       Start         End  Days  Ongoing at 16 Aug 2026  Pre-disruption transits/day
+0  Bab el-Mandeb Strait  2024-01-18  2025-11-19   672                       0                         73.0
+4          Kerch Strait  2023-05-24  2024-03-09   291                       0                         19.0
+1          Kerch Strait  2021-11-14  2022-06-29   228                       0                         51.0
+9      Strait of Hormuz  2026-03-04  2026-08-16   166                       1                         72.0
+8          Kerch Strait  2026-07-07  2026-08-16    41                       1                         13.0
+3          Kerch Strait  2023-04-02  2023-04-13    12                       0                         19.0
+7          Kerch Strait  2026-04-30  2026-05-08     9                       0                         14.0
+2          Kerch Strait  2022-12-02  2022-12-08     7                       0                         19.0 
+                                  SPR only (9.5 d)  ...  Parliamentary target (90 d)
+20% of crude via the chokepoint              48.0  ...                        450.0
+30% of crude via the chokepoint              32.0  ...                        300.0
+45% of crude via the chokepoint              21.0  ...                        200.0
+60% of crude via the chokepoint              16.0  ...                        150.0
+
+[4 rows x 3 columns] 
+sar win 2.642857142857143 73.49172576832152 bm 74.32565789473684 33.21897810218978 cape 48.80921052631579 88.9155370177268
 Stage 7: Power BI export
   DimAdmin1.csv: 243 rows
   FactConflictWeekly.csv: 149,814 rows

@@ -695,7 +695,7 @@ def build_body():
         "before any satellite pass confirms it.")
 
     # ================================================================== 9 ECONOMIC TRANSMISSION (OPEN DATA)
-    d.chapter("Economic Transmission: Evidence from Open-Source Data")
+    d.chapter("Economic and Shipping Transmission: Evidence from Open-Source Data")
     d.p("The Datathon datasets measure conflict and ship behaviour. To measure the <i>economic</i> impact on supply chains, and to test "
         "the study's early-warning indicators against events after the data ended, four open-source datasets were added, as the General "
         "Instructions encourage [3]. The questions are simple: did the conflicts move the oil price and the rupee, does conflict intensity "
@@ -706,6 +706,8 @@ def build_body():
         ("INR per US$ (daily)", "U.S. Federal Reserve H.10, via 'datasets/exchange-rates' [22]", "1973 - 18 Sep 2026", "Rupee pass-through"),
         ("Oil consumption and production by country (annual)", "Energy Institute Statistical Review, via Our World in Data [23]", "1965 - 2024", "India's import dependence and volume"),
         ("World ports (point layer)", "Natural Earth 10 m cultural vectors [24]", "current", "Theatre infographic"),
+        ("Daily transits at 28 world chokepoints (AIS-based)", "IMF PortWatch [26]", "2019 - 16 Aug 2026", "Movement layer, shipping-disruption durations"),
+        ("News and official statements (verified)", "PIB, AIR, The National, Al Jazeera, CNBC [27-31]", "Mar - Sep 2026", "Chronology, cross-checks"),
     ], columns=["Dataset", "Source", "Coverage", "Used for"]), "Open-source datasets added to the study", small=True)
     d.section("9.2", "Oil Price and Chokepoint Conflict")
     d.fig("f9o_1_brent_timeline", "Brent crude (daily) against the chokepoint conflict indices, 2022 - September 2026")
@@ -758,7 +760,53 @@ def build_body():
         f"<b>US${M['brent_at_cut']:.0f}</b>, its pre-war level. After the data ended, Brent rose <b>{M['brent_oos_change']:+.0f}%</b> to "
         f"<b>US${M['brent_last']:.0f}</b> by {M['brent_last_date']}. The indicators built in this study, from open conflict and satellite data, "
         "called a continuing crisis that the market price did not. This is a single test, but a demanding one, because the outcome was not "
-        "available to the analysis.")
+        "available to the analysis. IMF PortWatch shows why the market was fooled: in late June Hormuz transits briefly recovered to about "
+        "a third of normal (a false dawn), then fell back to about 5% of normal by August [26].")
+    d.section("9.9", "Movement: Chokepoint Transits (IMF PortWatch)")
+    d.p("The CDM satellite data cover a fortnight. IMF PortWatch counts ships crossing each of 28 world chokepoints every day from AIS, "
+        "and extends the picture to mid-August 2026. It measures the third layer the study needs: <b>movement</b>.")
+    d.fig("f12_1_hormuz_transits", "Strait of Hormuz daily transits, September 2025 - August 2026 (IMF PortWatch)")
+    d.p(f"Transits fell from a 2025 baseline of <b>{M['pw_base']:.0f} a day</b> to <b>{M['pw_post']:.1f}</b> after 1 March, a fall of "
+        f"<b>{M['pw_drop']:.0f}%</b> (tankers {M['pw_tank_drop']:.0f}%). During the satellite window (1-14 March) the average was {M['pw_sar_win']:.1f} a day "
+        f"and on 4 March it was <b>{M['pw_zero_4mar']}</b>. In the last 30 days of the record traffic was {M['pw_last30_pct']:.0f}% of normal.")
+    d.fig("f12_2_chokepoints", "Change in transits at 28 world chokepoints, March-August 2026 against March-August 2025")
+    d.p(f"Only Hormuz stopped: {M['pw_hormuz_change']:.0f}% against an average of {M['pw_ctrl_change']:+.0f}% at seven control chokepoints "
+        "(Malacca, Panama, Taiwan, Korea, Bosporus, Dover, Gibraltar).")
+    d.section("9.10", "Presence, Identity and Movement Together")
+    d.p(f"On <b>4 March 2026</b> PortWatch recorded <b>{M['pw_zero_4mar']} transits</b> through Hormuz. On the same day Sentinel-1 radar imaged "
+        f"<b>{M['pi_radar_1']} big hulls</b> in the strait and its approaches, {M['pi_lit_1']} of them still transmitting AIS. The ships were there "
+        "(presence), a growing share had stopped identifying themselves (identity), and almost none were crossing (movement). The stasis "
+        "index (Section 7.8) had already shown dark hulls held in place; the transit data confirm it from an independent source. "
+        "<b>Three layers, three sources, one conclusion: the fleet was held, silent, inside the Gulf.</b>")
+    d.table(pd.DataFrame([
+        ("Presence", "Is the hull physically there?", "Sentinel-1 SAR (CDM)", f"{M['pi_radar_1']} big hulls on 4 Mar; two-thirds still present on 12 Mar"),
+        ("Identity", "Does it say who it is?", "SAR matched to AIS (CDM)", f"SDR {M['hormuz_large_dark'] * 100:.0f}% at Hormuz vs {M['sdr_baseline']:.0f}% baseline"),
+        ("Movement", "Is it crossing, or held?", "IMF PortWatch transits; SAR revisits", f"{M['pw_zero_4mar']} transits on 4 Mar; stasis z = {M['stasis_dark_z']}"),
+        ("Throughput", "What cargo reaches India?", "Oil price, import bill (open data)", f"Brent +{M['ev_war_peak']:.0f}% peak; ~US${M['extra_bill_usd_bn']:.0f} bn extra"),
+    ], columns=["Layer", "Question", "Source", "Evidence"]), "The four layers of the maritime picture, each measured", small=True)
+    d.section("9.11", "Evacuation Confirmed at the Red Sea")
+    d.fig("f12_3_evacuation", "Bab-el-Mandeb, Suez and Cape of Good Hope transits, 2023-2026 (IMF PortWatch)")
+    d.p(f"The evacuation signature assigned to the Red Sea in Section 7.10 from radar alone is confirmed by movement data: Bab-el-Mandeb transits "
+        f"have run <b>{M['bm_drop']:.0f}% below</b> their 2023 level since January 2024, and Cape of Good Hope transits <b>{M['cape_rise']:.0f}% above</b>. "
+        "The tonnage left, the ships that remained kept transmitting, and two and a half years later it has not reversed.")
+    d.section("9.12", "How Long Do Shipping Disruptions Last?")
+    d.fig("f12_4_duration", "Survival of conflict flare-ups (ACLED) against shipping disruptions (IMF PortWatch) at chokepoints")
+    d.table(T("t12_2_shipping_disruptions"), "Shipping disruptions at world chokepoints, 2019-2026 (7-day transits below half of the prior-year median)", small=True)
+    d.p(f"This is the most important correction the open data make. Conflict flare-ups near chokepoints last a median of {M['ep_median_wk']:.1f} weeks "
+        f"(Chapter 6). The <b>shipping disruptions</b> they cause last a median of <b>{M['ship_ep_median']:.0f} days</b>, and <b>{M['ship_p_gt_74'] * 100:.0f}%</b> "
+        f"outlast India's 74-day national cover. The Red Sea disruption ran about 22 months; the Hormuz closure had lasted {M['closure_days']} days at the "
+        "end of the record and was still in force in September [31]. <b>Fighting flares for weeks; the shipping disruption it causes lasts months.</b>")
+    d.section("9.13", "Open-Source Chronology")
+    d.table(pd.DataFrame([
+        ("28 Feb 2026", "Regional war begins; weekly political violence triples", "ACLED (CDM data)"),
+        ("1-4 Mar", f"Hormuz transits collapse from ~{M['pw_base']:.0f}/day to {M['pw_zero_4mar']} on 4 Mar; SAR shows hulls present and going dark", "IMF PortWatch [26]; Sentinel-1 (CDM)"),
+        ("11 Mar", "Petroleum Ministry: 70% of India's crude now sourced outside Hormuz, up from 55%", "AIR News [28]"),
+        ("18 Mar", "Hundreds of tankers reported holding outside or stranded inside the Gulf", "CNBC [31]"),
+        ("23 Mar", "Indian Navy begins Op Urja Suraksha, escorting Indian-flagged energy carriers from the Gulf of Oman", "[29]"),
+        ("Late Jun", "Partial reopening: transits recover to about a third of normal; Brent falls to ~US$70", "IMF PortWatch [26]; EIA [21]"),
+        ("Jul", "War-risk premiums 3-10% of hull value (from ~0.25%); Bab-el-Mandeb shut again", "The National, Al Jazeera [30]"),
+        ("Aug-Sep", f"Hormuz transits ~{M['pw_last30_pct']:.0f}% of normal; strait still closed; Brent US${M['brent_last']:.0f} on {M['brent_last_date']}", "IMF PortWatch [26]; [31]; EIA [21]"),
+    ], columns=["Date", "Event", "Source"]), "Chronology of the crisis from open sources", small=True)
 
     # ================================================================== 10 INFERENCE
     d.chapter("Inference")
@@ -786,6 +834,8 @@ def build_body():
         ("F12", f"Weekly conflict intensity does not lead oil prices, yet the June I&W call (Red at US${M['brent_at_cut']:.0f} Brent) was followed by a {M['brent_oos_change']:.0f}% rise: the indicators warned where the market did not.", "9.4, 9.8"),
         ("F13", f"AIS counts said Hormuz shipping fell {abs(M['pi_lit_chg'])}%; radar saw the physical fleet fall only {abs(M['pi_radar_chg'])}% and the dark fleet not at all; many dark hulls were held in place (stasis z = {M['stasis_dark_z']}).", "7.8"),
         ("F14", "Four signatures, not one: concealment (Gulf), evacuation (Red Sea), attrition/frozen (Black Sea), compliance (East Med, near-zero darkness beside heavy conflict).", "7.9-7.10"),
+        ("F15", f"Movement (IMF PortWatch) confirms the picture: Hormuz transits -{M['pw_drop']:.0f}% with zero on 4 Mar while radar saw {M['pi_radar_1']} hulls; only Hormuz stopped among 28 chokepoints; the Red Sea evacuation has lasted over two years.", "9.9-9.11"),
+        ("F16", f"Shipping disruptions last far longer than the fighting: median {M['ship_ep_median']:.0f} days, {M['ship_p_gt_74'] * 100:.0f}% beyond 74 days; the Hormuz closure passed {M['closure_days']} days.", "9.12"),
     ], columns=["#", "Finding", "Section"])
     d.table(F, "Key findings of the study")
     d.section("10.2", "Verdict on the Hypotheses")
@@ -1015,6 +1065,13 @@ def build_body():
         "additional day of stock removes less than a quarter of a day of expected shortfall. The same curve can be applied to "
         "any disruption-sensitive commodity held by any Service (POL, lubricants, aviation fuel, critical imported spares) to set holdings on evidence rather than precedent.")
 
+    d.fig("f12_5_effective_cover", "Effective cover: how long a stock can replace the share of supply lost behind a closed chokepoint")
+    d.p(f"The open data change the question from 'how many days of stock?' to 'how many days of stock <i>per share exposed</i>?'. A full closure "
+        f"has already lasted {M['closure_days']}+ days, far beyond any stock. But a stock only has to replace the share of supply that is cut off. "
+        f"At India's pre-war exposure of about 45%, 74 days of national cover replaces the lost share for about <b>{M['cover_74_at45']} days</b>; after "
+        f"rerouting to about 30% exposure it lasts about <b>{M['cover_74_at30']} days</b>, longer than the closure so far. The SPR alone lasts only about "
+        f"{M['cover_spr_at30']} days even at 30%. <b>Stocks bridge; diversification carries.</b> The same arithmetic applies to Service holdings of "
+        "fuel and critical imported spares: 35-45 days bridges a flare-up, and dual sourcing is what carries a closure.")
     d.section("13.6", "Scenario Matrix for Force Planning")
     d.p("Joining the survival curve (how long disruptions last) to the stock levels (how long the nation and the Services can hold out) "
         "gives a scenario matrix of the kind used in force planning.")
@@ -1023,6 +1080,10 @@ def build_body():
         f"({pct(M['sc_p6'])}). It is fully covered at national level but leaves a 30-day Service holding 12 days short. A 45-day holding covers it completely. "
         f"S3 (twelve weeks, about {pct(M['sc_p12'])}) exceeds every buffer and is the case for which rationing priorities, alternative supply "
         "and the national reserve release order must be prepared in advance.")
+    d.p(f"<b>Two clocks, not one.</b> The likelihoods above come from conflict flare-ups (Chapter 6). The shipping record tells a harder story "
+        f"(Section 9.12): {pct(M['ship_p_gt_74'])} of chokepoint shipping disruptions outlasted the 74-day national cover, and the Hormuz closure "
+        f"had run {M['closure_days']} days by the end of the record. So S2 is the planning case for <i>stock holdings</i>, which must bridge the "
+        "first six weeks, while S3-S4 is the planning case for <i>supply</i>, which only diversification (effective cover, Figure 13.3) can carry.")
 
     # ================================================================== 13 WAY FORWARD
     d.chapter("Way Forward")
@@ -1030,7 +1091,7 @@ def build_body():
         "them, and the research that would strengthen the evidence.")
     d.section("14.1", "Recommendations")
     R = pd.DataFrame([
-        ("National", "R1", "Expand strategic crude and LPG reserves and set national cover from the disruption-survival curve rather than a fixed number of days, with a target at or beyond the ~35-45-day point where returns flatten, for the Hormuz-dependent share of imports.", "F5, I4"),
+        ("National", "R1", "Treat stocks as a bridge and diversification as the cure: hold 35-45 days to ride out flare-ups, and cut the share of crude exposed to any one chokepoint, because effective cover = stock days / share exposed (74 days lasts ~8 months at 30% exposure but only ~5 months at 45%).", "F5, F16, I4"),
         ("National", "R2", "Diversify energy sources and routes: more non-Gulf crude and LNG, access to Hormuz-bypass export points (Yanbu, Fujairah), and long-term charters that include war-risk clauses.", "F3, F7, I2"),
         ("National", "R3", "Build a national Chokepoint Early-Warning System that tracks the CCII, the stand-off strike share and the Strategic Dark Ratio (SDR) weekly, with the thresholds from this study as triggers.", "F1, F2, F6, I1, I5"),
         ("Maritime / MDA", "R4", "Fuse SAR (NISAR, EOS-04, commercial SAR) with AIS at IFC-IOR and flag every dark large ship automatically, prioritising the hot-spot belt and the predicted dark-risk surface.", "F6, F8, I1"),
@@ -1148,7 +1209,6 @@ def build_body():
         "Friedman, J.H. (2001). Greedy function approximation: a gradient boosting machine. <i>Annals of Statistics</i>, 29(5), 1189-1232.",
         "Hyndman, R.J. and Athanasopoulos, G. (2021). <i>Forecasting: Principles and Practice</i>, 3rd ed. OTexts, Melbourne.",
         "International Maritime Organization. <i>SOLAS Chapter V, Regulation 19</i> - Carriage requirements for shipborne navigational systems and equipment (AIS).",
-        "Strange, J. (1996). <i>Centers of Gravity &amp; Critical Vulnerabilities</i>. Perspectives on Warfighting No. 4, Marine Corps University, Quantico.",
         "Wilson, E.B. (1927). Probable inference, the law of succession, and statistical inference. <i>Journal of the American Statistical Association</i>, 22(158), 209-212.",
         "Ministry of Petroleum and Natural Gas / Petroleum Planning and Analysis Cell (PPAC), Government of India. Import dependence statistics; Indian Strategic Petroleum Reserves Ltd (ISPRL) capacity (5.33 MMT) and statements on national stock cover.",
         "Ministry of External Affairs, Government of India. Population of Overseas Indians; Reserve Bank of India, Survey on Cross-Border Inward Remittances.",
@@ -1156,6 +1216,13 @@ def build_body():
         "Board of Governors of the Federal Reserve System, H.10 Foreign Exchange Rates (INR per US$), via 'datasets/exchange-rates' (github.com/datasets/exchange-rates), accessed 23 Sep 2026.",
         "Energy Institute (2025). <i>Statistical Review of World Energy</i>; processed by Our World in Data, energy dataset (github.com/owid/energy-data).",
         "Natural Earth (public domain). 1:10m Cultural Vectors - Ports. naturalearthdata.com. Icons in the infographics: Font Awesome Free 6 (CC BY 4.0).",
+        "Strange, J. (1996). <i>Centers of Gravity &amp; Critical Vulnerabilities</i>. Perspectives on Warfighting No. 4, Marine Corps University, Quantico.",
+        "International Monetary Fund, <i>PortWatch</i>: Daily Chokepoint Transit Calls and Trade Volume Estimates (portwatch.imf.org), 2019 - 16 Aug 2026; raw extract via an MIT-licensed public mirror (github.com/ebiisharifi/hormuz-chokepoint-analytics).",
+        "Press Information Bureau (1 Feb 2026). Ministry of Defence allocated an all-time high of Rs 7.85 lakh crore in Union Budget 2026-27.",
+        "All India Radio News (11 Mar 2026). India secures 70% of crude oil imports outside Strait of Hormuz: Petroleum Ministry.",
+        "Operation Urja Suraksha (Indian Navy escort of Indian-flagged energy carriers, from 23 Mar 2026). Wikipedia and contemporary news reports.",
+        "The National (17 Jul 2026). War-risk shipping premium surges again as tensions escalate at Strait of Hormuz; Al Jazeera (23 Jul 2026). How shipping insurance rates are rising as Hormuz, Bab al-Mandeb shut down.",
+        "CNBC (18 Mar 2026). Traffic is trickling through Strait of Hormuz: who's moving and who's stranded; straits.live, Strait of Hormuz closure tracker (accessed 23 Sep 2026).",
     ]
     d.add('<ol style="font-size:10.5pt;line-height:1.4;padding-left:20pt">' + "".join(f"<li style='margin-bottom:4pt;text-align:left'>{r}</li>" for r in refs) + "</ol>")
 

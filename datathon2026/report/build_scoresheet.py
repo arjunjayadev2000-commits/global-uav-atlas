@@ -45,7 +45,7 @@ S = [  # (para, item, max, awarded, evidence, what would lift it)
     ("6.2", "Creative problem-solving techniques", 6, 6,
      "Satellite revisits used to detect held ships; survival curves turned into a 35-45 day stock rule; I&W tested out-of-sample.", "-"),
     ("6.3", "Innovative use of data and methods", 8, 7,
-     "Fuses CDM conflict + SAR/AIS data with open oil-price, rupee, energy and port data.",
+     "Fuses CDM conflict + SAR/AIS data with IMF PortWatch chokepoint transits, open oil-price, rupee, energy, port data and news.",
      "Future work: a longer SAR record with a pre-war baseline (not achievable before 30 Sep)."),
     ("7", "COMMUNICATION", 15, None, None, None),
     ("7.1", "Clarity and organization of the report / presentation", 5, 5,
@@ -76,7 +76,7 @@ for p, item, mx, aw, ev, lift in S:
 comp = [
     ("Theme chosen from Para 6", "Yes", "6.2 Global Conflicts - Impact on Supply Chains"),
     ("Theme datasets used (Para 5, 8.1)", "Yes", "ACLED Middle-East aggregates; Sentinel-1 SAR vessel detections"),
-    ("Other open-source datasets used, with citation (Para 5, 7)", "Yes", "EIA Brent/WTI, Fed H.10 INR/US$, Energy Institute via OWID, Natural Earth; cited in Annex D"),
+    ("Other open-source datasets used, with citation (Para 5, 7)", "Yes", "IMF PortWatch (28 chokepoints, daily), EIA Brent/WTI, Fed H.10 INR/US$, Energy Institute via OWID, Natural Earth, dated news chronology; cited in Annex D"),
     ("Theme text addressed: AIS dead zones, predict AIS dark spots, identification crisis (Para 6.2)", "Yes", "Ch 4 (dark zones, prediction), Annex B"),
     ("Insights and recommendations for India and the Armed Forces (Para 5, 6)", "Yes", "Ch 7-9; staffed actions"),
     ("Analysis submitted in PDF (Para 8.2)", "Yes", "Commander's Edition; full technical report as annex"),
@@ -105,7 +105,7 @@ tr.sec td {{ background: #e8edf3; }} .c {{ text-align: center; }} .ok {{ color: 
 <table class="info"><tr><td>1. Participant's Rank &amp; Name</td><td>: [Rank] Arjun Jayadev</td></tr>
 <tr><td>2. Theme</td><td>: 6.2 Global Conflicts - Impact on Supply Chains (Project DARKWATER)</td></tr>
 <tr><td>3. Date of Assessment</td><td>: 23 Sep 2026</td></tr>
-<tr><td>Documents assessed</td><td>: Commander's Edition (22 pp, main submission) with Full Technical Report (84 pp) as annex</td></tr></table>
+<tr><td>Documents assessed</td><td>: Commander's Edition (23 pp, main submission) with Full Technical Report (90 pp) as annex</td></tr></table>
 <h2>Scoring Criteria</h2>
 <table><tr><th style="width:4%">Para</th><th style="width:21%">Criterion</th><th style="width:5%">Max</th><th style="width:6%">Marks</th>
 <th style="width:38%">Evidence in the submission</th><th style="width:26%">What would lift the mark</th></tr>{rows}</table>

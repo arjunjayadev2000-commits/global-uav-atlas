@@ -86,10 +86,12 @@ def build():
     d.p(f"A 'thermometer' of violence was built for each sea route. Around Hormuz it reached <b>{M['hormuz_war_mult']:.0f} times</b> its normal level. "
         f"In the Red Sea the threat <b>moved offshore</b>: attacks at sea rose from {M['sea_2022']} (2022) to {M['sea_2024']} (2024) while the land war faded. "
         "A land-only measure would have shown the Red Sea getting safer just as it became the most dangerous waterway for merchant ships.")
-    d.fig("f6_4_km", "How long do sea-lane crises last? Share still going after each week (red lines = India's oil reserves)", width=80)
-    d.p(f"Most crises end within weeks (median {M['ep_median_wk']:.1f} weeks), but some run for months (longest {M['ep_max_wk']} weeks). "
-        f"<b>{pct(M['km_p_gt_spr'])} outlast India's strategic petroleum reserve</b> (about 9.5 days) and about {pct(M['km_p_gt_74d'])} outlast "
-        "total national cover (about 74 days). The danger is not the spike but its duration.")
+    d.fig("f12_4_duration", "Two clocks: fighting near a sea lane (orange) against the shipping disruption it causes (blue), 2019-2026", width=80)
+    d.p(f"<b>There are two clocks.</b> Flare-ups of fighting near a sea lane usually end within weeks (median {M['ep_median_wk']:.1f} weeks), although "
+        f"{pct(M['km_p_gt_spr'])} still outlast India's strategic petroleum reserve (about 9.5 days). The <b>shipping disruption they cause lasts months</b>: "
+        f"the IMF's daily transit counts for 28 world chokepoints show a median of {M['ship_ep_median']:.0f} days, and "
+        f"<b>{pct(M['ship_p_gt_74'])} outlasted India's total national cover</b> of about 74 days. The Red Sea disruption ran {M['ship_ep_max'] / 30.4:.0f} months; "
+        f"Hormuz had been shut {M['closure_days']} days when the record ended. The danger is not the spike but its duration.")
 
     # 4 ---------------------------------------------------------------- the ships go blind
     d.chapter("The Ships Go Blind")
@@ -103,6 +105,11 @@ def build():
         f"physical fleet fall only {abs(M['pi_radar_chg'])}%, and the dark fleet did not shrink at all. Many dark hulls were <b>held at anchor</b>: seen in "
         f"the same 100 m square on different days far more than chance allows (z = {M['stasis_dark_z']}). An AIS-based traffic count therefore "
         "overstated the collapse of shipping and hid the collapse of the maritime picture.")
+    d.fig("f12_1_hormuz_transits", "Third witness: ships crossing the Strait of Hormuz each day (IMF PortWatch), 2025-2026", width=80)
+    d.p(f"<b>A third, independent source settles it.</b> The IMF's daily count of ships crossing Hormuz fell from about {M['pw_base']:.0f} a day to "
+        f"{M['pw_post']:.0f} ({M['pw_drop']:.0f}% down); on <b>4 March it was {M['pw_zero_4mar']}</b>, the very day radar counted {M['pi_radar_1']} big hulls "
+        f"inside the Gulf. Ships were there (radar), a growing share hid who they were (AIS), and almost none crossed (transits). "
+        f"<b>The fleet was held, silent, inside the Gulf.</b> Other chokepoints barely moved ({M['pw_ctrl_change']:+.0f}%), so this was Hormuz, not the world.")
     d.html_fig(IG.signatures(M, T("t11_6_signatures")), "Four behaviours at sea: the same war produced concealment, evacuation, a frozen sea and compliance")
     d.fig("f7_6_dbscan", "Where dark ships gather: tanker queues off Dubai and Fujairah, and in the Black Sea", width=76)
     d.fig("f8_3_risk_surface", "Forecast: where a 180 m merchant ship is likely to go dark", width=76)
@@ -126,7 +133,8 @@ def build():
         f"monthly defence budget</b>; in April it reached {M['def_ratio_apr_hi'] * 100:.0f}%.")
     d.callout(f"<b>Could we have seen it coming?</b> On 26 June 2026, when the conflict data end, the oil market looked calm: Brent was back at "
               f"${M['brent_at_cut']:.0f}. The six warning signals built in this study all read Red or Amber and said <i>hold the buffers</i>. "
-              f"Oil then rose <b>{M['brent_oos_change']:.0f}%</b> to ${M['brent_last']:.0f} by {M['brent_last_date']}. The data saw what the market missed.")
+              f"Oil then rose <b>{M['brent_oos_change']:.0f}%</b> to ${M['brent_last']:.0f} by {M['brent_last_date']}. The dip had a cause the transit data show: in late June a few ships crossed and Hormuz traffic briefly climbed to about a third of normal, "
+              f"then fell back to {M['pw_last30_pct']:.0f}% of normal. The data saw what the market missed.")
 
     # 6 ---------------------------------------------------------------- inference
     d.chapter("Inference: What We Know and How Sure We Are")
@@ -176,9 +184,14 @@ def build():
     sc = T("t9_7_scenarios")
     d.table(sc[["Scenario", "Duration", "P(disruption lasts at least this long)", "Days beyond national cover (74 d)",
                 "Days beyond 30 d / 45 d Service holdings"]], "Planning scenarios for a Hormuz or Red Sea disruption", small=True)
-    d.p(f"<b>A six-week crisis is the planning case</b>: roughly 1 in 5 crises last that long. It leaves a 30-day holding 12 days short, while "
+    d.p(f"<b>For Service stocks, a six-week crisis is the planning case</b>: roughly 1 in 5 flare-ups last that long. It leaves a 30-day holding 12 days short, while "
         f"45 days covers it fully. Beyond about {M['stock_knee_days']} days each extra day of stock buys little. Hence 35-45 days for fuel, "
         "aviation fuel and critical spares.")
+    d.fig("f12_5_effective_cover", "Effective cover = days of stock / share of supply behind the closed chokepoint", width=76)
+    d.p(f"<b>For supply, the planning case is months, and stocks cannot carry it.</b> A stock only has to replace the share of supply that is cut off. "
+        f"At India's pre-war exposure of about 45% to Hormuz, 74 days of national cover lasts about {M['cover_74_at45']} days; cut the exposure to 30% "
+        f"and it lasts {M['cover_74_at30']} days, longer than the {M['closure_days']}-day closure so far. <b>Stocks bridge; diversification carries.</b> "
+        "For the Services this means 35-45 days of holdings plus a second source for every critical fuel and spare.")
 
     # 9 ---------------------------------------------------------------- way forward
     d.chapter("Way Forward")
@@ -247,6 +260,10 @@ def build():
          f"+{M['did_excess']:.1f} pts/day vs controls (p = {M['did_p']:.3f}); RR {M['rr_excl_alldark']:.1f} without all-dark passes", "10.4"),
         ("Flag-retention shift (chi-square); rule-based signature assignment", "Who kept transmitting; what kind of event is it?",
          f"Gulf flags {M['flag_littoral_1']:.0f}% to {M['flag_littoral_2']:.0f}% of lit fleet; four signatures", "7.9-7.10"),
+        ("Chokepoint transit series (IMF PortWatch, 28 chokepoints); frozen-baseline disruption episodes; survival", "Did ships stop crossing, and for how long?",
+         f"Hormuz {M['pw_drop']:.0f}% down, 0 transits on 4 Mar; median disruption {M['ship_ep_median']:.0f} d, {pct(M['ship_p_gt_74'])} &gt; 74 d", "9.9-9.12"),
+        ("Effective-cover model (stock days / share exposed)", "Can stocks carry a months-long closure?",
+         f"74 d lasts {M['cover_74_at45']} d at 45% exposure, {M['cover_74_at30']} d at 30%", "13.5"),
         ("Indicators & warnings matrix; out-of-sample test", "Would we have been warned?",
          f"{M['iw_red']} Red / {M['iw_amber']} Amber at ${M['brent_at_cut']:.0f} Brent; oil then {M['brent_oos_change']:+.0f}%", "9.8, 14.2"),
     ], columns=["Technique", "Commander's question", "Key result", "Full report"])
@@ -279,6 +296,9 @@ def build():
         "Roberts, D.R. et al. (2017). Cross-validation strategies for structured data. <i>Ecography</i> 40, 913-929.",
         "Open data: EIA Brent/WTI spot prices (github.com/datasets/oil-prices); Federal Reserve H.10 INR/US$ (github.com/datasets/exchange-rates); "
         "Energy Institute Statistical Review via Our World in Data (github.com/owid/energy-data); Natural Earth ports. Icons: Font Awesome Free (CC BY 4.0).",
+        "IMF PortWatch (2026). Daily chokepoint transit calls, 28 chokepoints, 2019-2026 (portwatch.imf.org; mirror github.com/ebiisharifi/hormuz-chokepoint-analytics).",
+        "Open-source reporting: Press Information Bureau (defence budget 2026-27); All India Radio News; Operation Urja Suraksha (from 23 Mar 2026); "
+        "The National and Al Jazeera (Hormuz and Red Sea shipping); CNBC and straits.live (Hormuz reopening, late June 2026).",
         "Jayadev, A. (2021). <i>Predictive Maintenance in Armed Forces: A Machine Learning Based Decision Support System</i>. M.Tech report, IIT Kharagpur.",
     ]
     d.add('<ol style="font-size:9.5pt;line-height:1.35;padding-left:18pt">' + "".join(f"<li style='margin-bottom:3pt;text-align:left'>{r}</li>" for r in refs) + "</ol>")

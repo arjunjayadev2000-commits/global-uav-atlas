@@ -1,11 +1,11 @@
 # PROJECT DARKWATER - CDM Datathon-2026, Global Conflicts: Impact on Supply Chains
 
-**Commander's Edition - THE SUBMISSION (22 pages):** `report/Datathon2026_Commanders_Edition.pdf`, built by `report/build_commander.py`:
+**Commander's Edition - THE SUBMISSION (23 pages):** `report/Datathon2026_Commanders_Edition.pdf`, built by `report/build_commander.py`:
 the whole story in ten short chapters for a commander or senior leader, plus Annex A (plain-words glossary), Annex B
 (technical summary for assessors), Annex C (software used and screenshots; two Power BI screenshot slots to fill) and
 Annex D (references).
 
-**Full technical report (84 pages):** `report/Datathon2026_Global_Conflicts_Supply_Chains_Report.pdf`, formatted in the
+**Full technical report (90 pages):** `report/Datathon2026_Global_Conflicts_Supply_Chains_Report.pdf`, formatted in the
 style of an M.Tech thesis: declaration, abstract, lists, TOC, numbered chapters, references, appendices).
 
 **Thesis:** conflict at a maritime chokepoint first *blinds* the supply chain (large ships go AIS-dark), and the
@@ -26,6 +26,15 @@ analysis; staffed recommendations and DARKWATCH.
 - New Chapter 9 *Economic Transmission*: event study (Hormuz war Brent +94% peak vs Red Sea campaign -5%), Granger tests
   (conflict does not lead prices), rupee, India import dependence 87.4%, war premium ~US$27 bn, and an out-of-sample test:
   the June I&W call was Red with Brent at $70; Brent then rose 86% to $131.
+
+## Movement layer and news (analysis/12_portwatch.py)
+- IMF PortWatch daily transit calls at 28 world chokepoints, 2019 to 16 Aug 2026 (`data/open/imf_portwatch_chokepoints_daily.csv`,
+  via the MIT-licensed mirror github.com/ebiisharifi/hormuz-chokepoint-analytics).
+- Hormuz transits -92% (73.5 -> 5.8/day), **zero on 4 Mar** when radar saw 337 big hulls inside the Gulf: presence, identity and
+  movement triangulated. Other chokepoints -4%. Red Sea evacuation confirmed (Bab-el-Mandeb -55%, Cape of Good Hope +82%).
+- Shipping-disruption episodes (frozen prior-year baseline): median 104 days, 62% outlast India's 74-day national cover, vs a
+  2.5-week median for conflict flare-ups. Effective cover = stock days / share exposed: stocks bridge; diversification carries.
+- Dated open-source chronology (PIB, AIR, Operation Urja Suraksha, The National, Al Jazeera, CNBC, straits.live), full report 9.13.
 
 ## Story layer for non-specialist readers (report/story.py)
 Written for a tactical commander or senior leader: every chapter carries a story kicker (Prologue, Part I ... Part X, Epilogue),

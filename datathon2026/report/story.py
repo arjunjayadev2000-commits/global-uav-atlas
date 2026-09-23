@@ -173,13 +173,14 @@ def exec_summary_story(M):
 identifying themselves, so AIS-based counts overstate how much shipping has gone and hide what is still there. The disruption then <b>outlasts our reserves</b>
 and cost India about <b>US${M['extra_bill_usd_bn']:.0f} billion</b> in six months. Our warning signals saw it coming when the market did not.</div>
 <h2>Situation</h2><p style="font-size:10.3pt">War reached the Strait of Hormuz on 28 February 2026. This study joins 11 years of conflict data, satellite radar of
-106,533 ships in the first fortnight, and open oil, rupee and energy data to September 2026.</p>
+106,533 ships in the first fortnight, IMF daily transit counts at 28 world chokepoints, and open oil, rupee, energy and news sources to September 2026.</p>
 <h2>Assessment</h2><ol style="font-size:10.3pt;line-height:1.36;padding-left:16pt;margin-bottom:4pt">
 <li><b>The storm.</b> Violence nearly tripled ({M['pv_war_ratio']:.1f}x); 84% by missiles and drones; the Gulf states were hit {M['gcc_multiplier']:.0f} times more than before.</li>
 <li><b>The picture failed.</b> {pct(M['hormuz_large_dark'])} of big ships at Hormuz were dark against {M['sdr_baseline']:.0f}% in peaceful seas. AIS counts fell
 {abs(M['pi_lit_chg'])}%, but radar saw most hulls still there, many of them held at anchor. The Gulf darkened {M['did_excess']:.1f} points a day faster than 11 control seas.</li>
 <li><b>Four behaviours, not one.</b> Concealment in the Gulf, evacuation from the Red Sea, a frozen Black Sea, and compliance in the East Med (8% dark beside heavy fighting).</li>
-<li><b>It lasts.</b> {pct(M['km_p_gt_spr'])} of sea-lane crises outlast India's ~10-day emergency oil reserve; about 1 in 10 outlasts total national cover.</li>
+<li><b>It lasts.</b> Fighting flares for weeks, but shipping disruption lasts months: Hormuz transits fell {M['pw_drop']:.0f}% (zero on 4 March) and at world
+chokepoints the median disruption ran {M['ship_ep_median']:.0f} days, {pct(M['ship_p_gt_74'])} outlasting India's 74-day national cover.</li>
 <li><b>The bill.</b> Brent ${M['brent_prewar']:.0f} to ${M['brent_war_peak']:.0f}; in March the extra oil bill equalled {M['def_ratio_mar_lo'] * 100:.0f}-{M['def_ratio_mar_hi'] * 100:.0f}%
 of the monthly defence budget.</li>
 <li><b>We saw it coming.</b> On 26 June the market relaxed (${M['brent_at_cut']:.0f}); our DARKWATCH signals stayed Red. Oil then rose {M['brent_oos_change']:.0f}%.</li></ol>
@@ -187,7 +188,7 @@ of the monthly defence budget.</li>
 evacuation, frozen, compliance), then act. Each needs a different response: escort and surveillance, rerouting, provenance checks, or sustained presence.</p>
 <h2>Recommendation</h2><ul style="font-size:10.3pt;margin-bottom:4pt">
 <li>Make <b>Maritime Picture Assurance</b> a named joint warning function under HQ IDS, run through IFC-IOR, with the SDR and DARKWATCH as standing products.</li>
-<li>Size fuel, aviation-fuel and critical-spares reserves for all three Services at <b>35-45 days</b>; harden rear areas against drones and missiles; GPS-resilient navigation.</li>
+<li>Size fuel, aviation-fuel and critical-spares reserves for all three Services at <b>35-45 days</b> as a bridge, and cut exposure to any one chokepoint, because <b>stocks bridge; diversification carries</b>; harden rear areas against drones and missiles; GPS-resilient navigation.</li>
 <li>Standing rule: <b>no AIS-derived traffic count</b> for a contested corridor without a radar cross-check.</li></ul>
 <h2>Decision sought</h2><p style="font-size:10.3pt">Approve a <b>four-month Phase 1 proof of concept</b> using existing establishment, free Copernicus
 Sentinel-1 imagery and the analysis pipeline already built. Continue only if a principal acts on a DARKWATCH warning in that period.</p>"""
@@ -198,7 +199,7 @@ def storyline(M):
     return [("burst", "1. The storm", f"War nearly triples violence ({M['pv_war_ratio']:.1f}x); 84% by missile and drone"),
             ("water", "2. Reaches the sea", f"Hormuz violence {M['hormuz_war_mult']:.0f}x normal; Red Sea attacks move offshore"),
             ("eye-slash", "3. Ships go blind", f"{pct(M['hormuz_large_dark'])} of big ships at Hormuz switch identity off"),
-            ("hourglass-half", "4. It lasts", f"{pct(M['km_p_gt_spr'])} of crises outlast the emergency oil reserve"),
+            ("hourglass-half", "4. It lasts", f"Shipping disruption lasts months (median {M['ship_ep_median']:.0f} days)"),
             ("sack-dollar", "5. The bill", f"Oil +{M['ev_war_peak']:.0f}%, rupee weaker, ~${M['extra_bill_usd_bn']:.0f} bn extra for India"),
             ("traffic-light", "6. We saw it coming", "Signals stayed Red when markets relaxed"),
             ("shield-halved", "7. What to do", "35-45 days of stock, defend rear areas, watch weekly")]
