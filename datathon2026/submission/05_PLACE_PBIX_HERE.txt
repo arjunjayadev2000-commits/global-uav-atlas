@@ -1,0 +1,3 @@
+Build the .pbix in Power BI Desktop (see Supporting/POWERBI_BUILD_GUIDE.md) and save it here as:
+05_Datathon2026_Global_Conflicts_Supply_Chains.pbix
+Then delete this note.

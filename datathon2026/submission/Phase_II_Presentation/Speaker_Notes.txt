@@ -1,0 +1,59 @@
+PROJECT DARKWATER - Phase II presentation: speaker notes
+(CDM Datathon-2026, presentation to the panel of experts, 02-07 Nov 2026; about 15 minutes + questions)
+
+Slide 01  Project Darkwater
+  Sir, good morning. My study asks one question: when a war reaches a sea lane India depends on, what happens to the ships, how long does it last, what does it cost, and what should the Armed Forces do about it. About 15 minutes, then questions.
+
+Slide 02  War at a chokepoint first blinds the supply chain, then outlasts the buffers
+  Three numbers carry the study. First, the picture fails: three in four big ships at Hormuz stopped identifying themselves. Second, it lasts: shipping disruption runs for months, far past our stocks. Third, it costs: 27 billion dollars in six and a half months. Everything that follows is the evidence for these three, and at the end one decision.
+
+Slide 03  The theme's task, and a commander's five questions
+  The theme gives the technical task: find and predict AIS dark spots and link them to conflict. I turned that into five questions a commander would ask, and each chapter answers one. That keeps the analysis tied to a decision rather than to a technique.
+
+Slide 04  Two CDM datasets, four open sources, one clean model
+  Two datasets from CDM, four from open sources, all cited. The radar data tell us which ships were physically there; AIS tells us which ones said who they were; PortWatch tells us which ones actually crossed. Cleaning is logged step by step, and the whole pipeline reruns from raw data with one command and gives identical numbers.
+
+Slide 05  From what happened to what to do, one method per question
+  The analysis climbs the four rungs the brochure asks for: descriptive, diagnostic, predictive and prescriptive. I will not dwell on techniques; each one appears where it answers a question.
+
+Slide 06  The storm: violence nearly tripled, mostly from a distance
+  Change-point detection found the dates on its own, without being told: 7 October 2023 and 28 February 2026. In the war weeks violence was 2.9 times the previous year, 84 percent of it stand-off strikes. That matters later: the rear area is no longer safe.
+
+Slide 07  Big ships went dark only where there was war
+  Small boats run without AIS everywhere, so the test that matters is ships of 100 metres and over, which must carry AIS by law. In peaceful seas about one in ten is dark. At Hormuz three in four. The Black Sea, a different war, shows the same pattern at 38 percent.
+
+Slide 08  They did not leave. They went silent.
+  Same patch of sea, imaged twice. If ships had simply left, both bars would fall together. AIS fell 83 percent, radar only 33, and the dark fleet did not shrink. An AIS-based traffic picture therefore overstated the collapse of shipping and hid the collapse of the maritime picture.
+
+Slide 09  A third witness: almost nobody crossed
+  IMF PortWatch is independent of the satellite data. On 4 March not a single ship crossed, the same day radar saw 337 big hulls in the Gulf. Presence, identity and movement together: the fleet was held, silent, inside the Gulf. The rest of the world carried on, so this was Hormuz, not a global slowdown.
+
+Slide 10  One war, four behaviours at sea
+  The same war produced four different behaviours, and each needs a different response. This is the classification a staff officer should make first, before choosing a response. It came out of the data, not from a template.
+
+Slide 11  Four independent tests, one answer
+  Before a commander acts, he asks how sure we are. Eight alternative definitions all keep the effect. It is stronger closer to the fighting. It beats 11 control seas in a difference-in-differences test. And of four explanations, deliberate switch-off is the only one with no contradicting evidence: GPS jamming has one, a reception gap five, a computer error six. Judgement: almost certain the war caused it; highly likely deliberate.
+
+Slide 12  Forecast: where a merchant ship will go dark
+  This answers the theme directly: predicted AIS dark spots. The model was always tested on whole seas it had not seen; an ordinary random test scores 0.74 but leaks, so I report the honest 0.69. The use is practical: point national radar satellites such as EOS-04 and NISAR at the waters most likely to go dark.
+
+Slide 13  Two clocks: weeks of fighting, months of disruption
+  This is the most important correction the open data made. The fighting clock runs in weeks. The shipping clock runs in months: a median of 104 days, and the Red Sea disruption ran 22 months. As of 23 September Hormuz is on day 206 of closure. Stocks alone cannot carry that.
+
+Slide 14  The bill: only the war that reached Hormuz moved oil
+  Four shocks, one chart. Only the war that reached Hormuz produced a lasting price shock; the Red Sea campaign, where ships could detour, did not. In defence terms, the extra oil bill in March equalled 59 to 70 percent of the whole monthly defence budget.
+
+Slide 15  The market relaxed in June. The data did not.
+  This is the test I value most because the analysis never saw these data. When the conflict data ended the oil market looked calm. Our six warning signals said hold the buffers. Oil then rose 86 percent. September added a pipeline shutdown and a Houthi grab at Bab-el-Mandeb: both escape routes are now under threat. Iran's reopening proposal is a scenario to watch, and the test is the same one that caught the June false dawn: do ships actually cross.
+
+Slide 16  For the Services: stocks bridge, diversification carries
+  Two conclusions for the Services. Hold 35 to 45 days as a bridge, because beyond about 35 days each extra day buys little. And cut the share of supply exposed to any one route, because stock only has to replace what is cut off. September showed bypass routes are targets too, so diversification must be across routes, not just suppliers. And with 84 percent of violence stand-off, depots and air bases need protecting far from the front.
+
+Slide 17  Five actions, each with a lead and a timeline
+  Five of the fifteen recommendations in the report, each with a lead and a timeline and a measure of success in the report. The first two cost almost nothing: a named function and a standing rule. The rest build on them.
+
+Slide 18  What was built: reproducible from raw data to decision
+  For the technical criteria: everything is code, not hand-made charts. One command rebuilds every figure, table and number in the reports, and the Power BI dashboard is built on the same tables. I can show the dashboard live if the panel wishes.
+
+Slide 19  The first casualty of war at a chokepoint is visibility.
+  To close: the war first blinded the picture, then outlasted the buffers, and cost us the equivalent of most of a month's defence budget in its first month. The ask is small and time-bound, with a clear stop test. Thank you, sir. I am ready for questions.

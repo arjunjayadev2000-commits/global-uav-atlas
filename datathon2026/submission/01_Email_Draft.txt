@@ -1,0 +1,26 @@
+To:       datathon.ids@gov.in
+Subject:  Datathon-2026 submission - Theme 6.2 Global Conflicts: Impact on Supply Chains - [Rank] Arjun Jayadev, [Service No]
+
+Sir / Ma'am,
+
+1.  Please find attached my submission for CDM Datathon-2026 under Theme 6.2, Global Conflicts - Impact on Supply
+    Chains, titled "Project Darkwater: Global Conflicts and the Blinding of Supply Chains", as per Para 8.2 of the
+    General Instructions:
+
+    (a) 03_Datathon2026_Commanders_Edition_(Main_Submission).pdf - analysis with insights and screenshots of the
+        data analytics software used (Annex C).
+    (b) 04_Datathon2026_Full_Technical_Report_(Annex).pdf - full methods, tests and tables.
+    (c) 05_Datathon2026_Global_Conflicts_Supply_Chains.pbix - Power BI output file.
+    (d) 02_Appendix_A_Individual_Details.docx - personal details as per Appendix A.
+
+2.  The analysis uses the CDM datasets (ACLED Middle-East aggregates; Sentinel-1 SAR vessel detections) together with
+    cited open-source data (IMF PortWatch, EIA, Federal Reserve H.10, Energy Institute). All results can be regenerated
+    from raw data; the source code can be provided if required.
+
+3.  Submitted for kind consideration, please.
+
+Regards,
+
+[Rank] Arjun Jayadev
+[Service No] | [Unit / Formation]
+[Mobile No]

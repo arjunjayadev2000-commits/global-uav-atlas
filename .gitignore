@@ -49,3 +49,6 @@ datathon2026/data/clean/
 datathon2026/powerbi/*.csv
 datathon2026/report/report_body.html
 datathon2026/report/_html/
+datathon2026/submission/*.pdf
+datathon2026/submission/Supporting/
+datathon2026/Datathon2026_Submission_Folder.zip
