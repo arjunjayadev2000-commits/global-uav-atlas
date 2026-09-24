@@ -12,7 +12,8 @@ const M = D.M;
 const NAVY = "0B1D3A", STEEL = "2F5D8C", GOLD = "D99A1E", RED = "C0392B", INK = "1B2433", MUTED = "5B6573",
   TINT = "EEF2F7", WHITE = "FFFFFF", GREEN = "2E7D32", AMBER = "E08A00", GREY = "9AA3AE";
 const HEAD = "Cambria", BODY = "Calibri";
-const TOTAL = 17;
+const TOTAL = 19;
+let PAGE = 1;                               // slide 1 (title) carries no footer
 const pct = (x, d = 0) => (x * 100).toFixed(d) + "%";
 const fmt = (n) => Number(n).toLocaleString("en-US");
 
@@ -88,7 +89,7 @@ async function icon(Comp, color) {
   s.addText([{ text: "Decision sought: ", options: { bold: true, color: NAVY } },
     { text: "a four-month ORBITWATCH proof of concept at the Defence Space Agency, using the open catalogue and the pipeline already built.", options: { color: INK } }],
     { x: 0.6, y: 5.6, w: 12.1, h: 0.8, fontFace: BODY, fontSize: 17, margin: 0, isTextBox: true });
-  footer(s, 2);
+  footer(s, ++PAGE);
   s.addNotes(`Three numbers carry the study. Working satellites rose ${M.active_mult.toFixed(0)}-fold in twelve years. Collision risk in low orbit is about ten times the 2014 level. And China operates about ${M.cn_isr_ops} state intelligence and military satellites to India's ${M.in_isr_ops}. India's share of working satellites has fallen to ${M.in_share_now.toFixed(1)} percent. Everything that follows is the evidence, and at the end one decision.`);
 
   // 3 ---------------------------------------------------------------- question and data
@@ -111,7 +112,7 @@ async function icon(Comp, color) {
     s.addText(t, { x: x + 0.7, y: y + 0.12, w: 2.0, h: 0.5, fontFace: BODY, fontSize: 12.5, bold: true, color: NAVY, margin: 0, isTextBox: true, valign: "middle" });
     s.addText(d, { x: x + 0.15, y: y + 0.7, w: 2.55, h: 0.5, fontFace: BODY, fontSize: 11.5, color: MUTED, margin: 0, isTextBox: true, valign: "top" });
   });
-  footer(s, 3);
+  footer(s, ++PAGE);
   s.addNotes("The theme asks for insights into satellite proliferation and a prediction of the trajectory. I turned that into five questions a commander would ask. The CDM data give the 2014 baseline, space weather and a real example of what satellites see. The open catalogue brings the picture to September 2026. Every number is regenerated from raw data by one command.");
 
   // 4 ---------------------------------------------------------------- the crowd
@@ -126,7 +127,7 @@ async function icon(Comp, color) {
       valAxisLabelFormatCode: "#,##0", title: "Satellites launched per year (2026 to 21 Sep)", ...axis });
   s.addText(`Growth changed gear in ${M.growth_cps[0]}: ${M.cagr_2000_2013.toFixed(0)}% a year before, ${M.cagr_2019_2025.toFixed(0)}% after. One constellation now holds ${pct(M.starlink_share)} of working satellites.`,
     { x: 5.4, y: 5.95, w: 7.3, h: 0.75, fontFace: BODY, fontSize: 14, color: INK, margin: 0, isTextBox: true });
-  footer(s, 4);
+  footer(s, ++PAGE);
   s.addNotes(`Three independent counts: the CDM census of 2014, the UCS database of 2020, and today's catalogue. From ${fmt(M.active_2014)} to ${fmt(M.active_now)}. A change-point test puts the break around ${M.growth_cps[0]}, when the mega-constellations began. Satellites launched a year went from ${M.pay_2013} in 2013 to ${fmt(M.pay_2025)} in 2025. UN registrations match the catalogue almost exactly, so the count is sound.`);
 
   // 5 ---------------------------------------------------------------- owners
@@ -140,7 +141,7 @@ async function icon(Comp, color) {
   stat(s, 8.5, 1.9, 4.2, `${M.us_share_now.toFixed(0)}%`, `of working satellites are US-operated (${M.us_share_2014.toFixed(0)}% in 2014)`, NAVY);
   stat(s, 8.5, 3.45, 4.2, `${fmt(M.hhi_country_now)}`, `concentration index (HHI); above 2,500 = highly concentrated. 2014: ${fmt(M.hhi_country_2014)}`, NAVY);
   stat(s, 8.5, 5.0, 4.2, `${M.in_share_now.toFixed(1)}%`, `India's share: ${M.in_2014} satellites (2.8%) in 2014, ${M.in_now} today`);
-  footer(s, 5);
+  footer(s, ++PAGE);
   s.addNotes(`Control of orbit is concentrating. The USA went from ${M.us_share_2014.toFixed(0)} to ${M.us_share_now.toFixed(0)} percent of working satellites, mostly one company. China grew thirteen-fold in numbers but held its share near ten percent. India grew from ${M.in_2014} to ${M.in_now} satellites, but its share fell from 2.8 to ${M.in_share_now.toFixed(1)} percent. The concentration index is more than double the 'highly concentrated' threshold.`);
 
   // 6 ---------------------------------------------------------------- congestion
@@ -154,7 +155,7 @@ async function icon(Comp, color) {
   stat(s, 9.2, 1.9, 3.6, fmt(M.band_now), `objects at 450-500 km, ${pct(M.band_active_share)} working (${M.band_2014} in 2014)`, STEEL);
   stat(s, 9.2, 3.45, 3.6, fmt(M.dead_now), `objects at 750-900 km, ${pct(M.dead_debris_share)} of them debris`, RED);
   stat(s, 9.2, 5.0, 3.6, `${M.geo_arc20}`, `GEO satellites in India's 40-110 E arc, ${pct(M.geo_arc_share20)} of the belt`, NAVY);
-  footer(s, 6);
+  footer(s, ++PAGE);
   s.addNotes(`Orbit is crowded in two places. The live crowd at 450 to 500 kilometres, almost all working satellites. The dead crowd at 750 to 900 kilometres, mostly debris from the 2007 Chinese test and the 2009 collision. Collisions grow with the square of the number of objects at each height, so the collision-risk index is about ${M.risk_ratio.toFixed(0)} times its 2014 level. Higher up, the geostationary arc India uses holds ${M.geo_arc20} satellites; China and the USA each have more there than India.`);
 
   // 7 ---------------------------------------------------------------- weapon debris
@@ -169,8 +170,27 @@ async function icon(Comp, color) {
   s.addTable(asatRows, { x: 8.5, y: 1.8, w: 4.2, colW: [2.5, 0.85, 0.85], fontFace: BODY, fontSize: 10.5, color: INK, border: { type: "solid", color: "D5DAE1", pt: 0.5 }, rowH: 0.36 });
   s.addText(`India's 2019 test at ~280 km: all ${M.shakti_pieces} pieces re-entered. China's 2007 test at ~865 km: ${M.fy1c_alive_pct.toFixed(0)}% still in orbit after 20 years.`,
     { x: 8.5, y: 4.85, w: 4.2, h: 1.4, fontFace: BODY, fontSize: 14, color: INK, margin: 0, isTextBox: true });
-  footer(s, 7);
+  footer(s, ++PAGE);
   s.addNotes("Six events, one lesson. China's 2007 test at high altitude made over three and a half thousand tracked pieces, and two thirds are still up nearly twenty years later. India's 2019 test was done low; every piece re-entered, most within half a year. Russia's 2021 test has almost cleared. A responsible test is a low one, and India can say so with data.");
+
+
+  // new --------------------------------------------------------------- close calls (SGP4 screening)
+  s = pres.addSlide();
+  s.background = { color: WHITE };
+  heading(s, "Finding 4b · close calls", "One day of screening: thousands of near misses");
+  const cjRows = D.cj.filter((r) => !String(r[1]).startsWith("Co-orbiting"));
+  s.addChart(pres.charts.BAR, [{ name: "Encounters < 5 km", labels: cjRows.map((r) => r[1]), values: cjRows.map((r) => r[2]) }],
+    { x: 0.6, y: 1.7, w: 6.2, h: 3.4, barDir: "bar", chartColors: [STEEL], showValue: true, dataLabelPosition: "outEnd", dataLabelFontSize: 12,
+      dataLabelColor: INK, dataLabelFormatCode: "#,##0", valAxisLabelFormatCode: "#,##0", showLegend: false, catAxisLabelFontSize: 11,
+      title: "Close approaches under 5 km in 24 hours (SGP4 screening)", ...axis });
+  stat(s, 0.6, 5.3, 6.2, `${M.cj_B_india} Indian satellites`, "passed within 5 km of weapon-test or collision debris in a single day", RED);
+  const ind = [["Indian satellite", "Debris", "Miss (km)", "km/s"].map((h) => ({ text: h, options: { bold: true, color: WHITE, fill: { color: NAVY } } }))]
+    .concat(D.india_deb.map((r) => [r[0], r[1], String(r[2]), String(r[3])]));
+  s.addTable(ind, { x: 7.2, y: 1.8, w: 5.5, colW: [1.9, 1.9, 0.9, 0.8], fontFace: BODY, fontSize: 12, color: INK, border: { type: "solid", color: "D5DAE1", pt: 0.5 }, rowH: 0.42 });
+  s.addText("Every active satellite propagated every 10 s for 24 h; every pair checked. Public elements are good to about 1 km: this is screening, the daily watch ORBITWATCH would run.",
+    { x: 7.2, y: 5.0, w: 5.5, h: 1.5, fontFace: BODY, fontSize: 13, italic: true, color: MUTED, margin: 0, isTextBox: true, valign: "top" });
+  footer(s, ++PAGE);
+  s.addNotes(`To see congestion directly, I screened current orbits. Every active satellite in low orbit, ${fmt(M.cj_A_n)} of them, was propagated with SGP4 every ten seconds for a day and every pair checked. Result: ${fmt(M.cj_cross_total)} passes closer than 5 km, most involving Starlink. A second screening against the big debris clouds found ${M.cj_B_total} encounters, and ${M.cj_B_india} Indian satellites among them, including EMISAT and SARAL. This is exactly the watch ORBITWATCH would run every day.`);
 
   // 8 ---------------------------------------------------------------- the contest
   s = pres.addSlide();
@@ -183,8 +203,25 @@ async function icon(Comp, color) {
   stat(s, 8.5, 1.9, 4.2, `${M.cn_isr_rate_2023_25.toFixed(0)} a year`, "Chinese state-ISR satellites launched, 2023-25 average (India: under one)");
   stat(s, 8.5, 3.45, 4.2, `${pct(M.sbs3_close)}`, "of today's China-India gap closed by SBS-III's 52 satellites (due 2029)");
   stat(s, 8.5, 5.0, 4.2, `${M.us_nnn_2024_26}`, "US national-security payloads launched since 2024", NAVY);
-  footer(s, 8);
+  footer(s, ++PAGE);
   s.addNotes(`Grouping satellites by official programme names gives a transparent lower bound. China operates about ${M.cn_isr_ops}, including ${M.yaogan_ops} Yaogan reconnaissance satellites, and adds about ${M.cn_isr_rate_2023_25.toFixed(0)} a year. India operates about ${M.in_isr_ops}. SBS-III is the right answer but closes only about ${pct(M.sbs3_close)} of today's gap. During Operation Sindoor ten Indian satellites worked round the clock: the need is proven, the capacity is thin.`);
+
+
+  // new --------------------------------------------------------------- machine learning
+  s = pres.addSlide();
+  s.background = { color: WHITE };
+  heading(s, "Finding 5b · machine learning", "Physics alone gives a military satellite away");
+  const mlLab = D.ml.map((r) => `${r[0] === "Physics only" ? "Physics" : "Physics + country"}, ${r[1].startsWith("Logistic") ? "logistic" : "trees"}`);
+  s.addChart(pres.charts.BAR, [{ name: "Cross-validation 2014", labels: mlLab, values: D.ml.map((r) => r[2]) },
+    { name: "Out-of-time (2014-2020 launches)", labels: mlLab, values: D.ml.map((r) => r[4]) }],
+    { x: 0.6, y: 1.7, w: 7.0, h: 4.9, barDir: "col", barGrouping: "clustered", chartColors: [GREY, NAVY], showValue: true, dataLabelPosition: "outEnd",
+      dataLabelFontSize: 11, dataLabelColor: INK, dataLabelFormatCode: "0.00", valAxisMinVal: 0.5, valAxisMaxVal: 1, showLegend: true, legendPos: "t",
+      legendFontSize: 11, title: "ROC-AUC (0.5 = coin toss): the honest out-of-time test picks the simpler model", ...axis });
+  stat(s, 8.1, 1.9, 4.6, `${M.ml_ext_auc.toFixed(2)}`, `ROC-AUC on ${fmt(M.ml_n_test)} satellites launched after the 2014 census`, NAVY);
+  stat(s, 8.1, 3.45, 4.6, `${M.ml_cv_auc_gbt.toFixed(2)} → ${M.ml_ext_auc_gbt.toFixed(2)}`, "trees looked best in cross-validation, then failed on later launches");
+  stat(s, 8.1, 5.0, 4.6, `${M.ml_dual_n} (${pct(M.ml_dual_share)})`, "'civil' or 'commercial' satellites that look military: the dual-use blur", NAVY);
+  footer(s, ++PAGE);
+  s.addNotes(`Names can hide a military satellite; physics cannot. Trained on the CDM census using only orbit, mass, power and design life, the model scores ${M.ml_ext_auc.toFixed(2)} on satellites launched after 2014. The honest test changed the answer: trees looked best in ordinary cross-validation, ${M.ml_cv_auc_gbt.toFixed(2)}, but fell to ${M.ml_ext_auc_gbt.toFixed(2)} on later satellites, so the simpler model was chosen. Launch mass and apogee give a satellite away most. It flags ${M.ml_dual_n} registered civil or commercial satellites as military-like, led by navigation satellites with encrypted government services.`);
 
   // 9 ---------------------------------------------------------------- space weather
   s = pres.addSlide();
@@ -200,7 +237,7 @@ async function icon(Comp, color) {
   s.addText([{ text: `${pct(M.p_intense_hi)} vs ${pct(M.p_intense_lo)}`, options: { bold: true, color: RED, breakLine: true } },
     { text: "chance of an intense storm in any 30 days, active vs quiet Sun. Storms killed 38 new Starlink satellites (Feb 2022); solar cycle 25 peaked in Oct 2024.", options: { color: INK } }],
     { x: 5.8, y: 5.2, w: 6.9, h: 1.5, fontFace: BODY, fontSize: 14, margin: 0, isTextBox: true, paraSpaceAfter: 4 });
-  footer(s, 9);
+  footer(s, ++PAGE);
   s.addNotes(`The Sun is the adversary nobody can deter. In the CDM records, when sunspots are high, the chance of an intense magnetic storm in a month is ${pct(M.p_intense_hi)}; when quiet, ${pct(M.p_intense_lo)}. A Poisson model gives ${M.storm_irr50} times the rate per 50 sunspots. A periodogram of debris re-entries finds a ${M.reentry_period.toFixed(0)}-year cycle on its own: the solar cycle heats the upper atmosphere and drags objects down.`);
 
   // 10 --------------------------------------------------------------- what eyes buy
@@ -216,7 +253,7 @@ async function icon(Comp, color) {
   stat(s, 0.6, 5.1, 3.8, pct(M.prem_single), "of fire-days seen by only one of the two satellites");
   stat(s, 4.6, 5.1, 3.8, pct(M.night_share), "of detections at night: thermal sensors see in the dark", NAVY);
   stat(s, 8.6, 5.1, 4.1, `${M.industrial_cells}`, "persistent industrial heat sources found (steel mills, smelters)", NAVY);
-  footer(s, 10);
+  footer(s, ++PAGE);
   s.addNotes(`Why take all this risk? Because of what satellites see. Terra passes in the morning, Aqua in the afternoon. On a ten-kilometre grid, ${pct(M.prem_single)} of fire-days were seen by only one of them: a single satellite would have missed nearly half. For the Services the lesson is direct: persistence comes from numbers, and revisit decides whether a mobilisation or a launcher is caught in time.`);
 
   // 11 --------------------------------------------------------------- trajectory
@@ -233,7 +270,7 @@ async function icon(Comp, color) {
   const sc = [[{ text: "Scenario 2030", options: { bold: true, color: WHITE, fill: { color: NAVY } } }, ...["Starlink", "Kuiper", "Guowang", "Qianfan", "Others", "Total"].map((h) => ({ text: h, options: { bold: true, color: WHITE, fill: { color: NAVY } } }))]]
     .concat(D.scen.map((r) => r.map((v, i) => (i === 0 ? v : fmt(v)))));
   s.addTable(sc, { x: 0.6, y: 5.45, w: 12.1, fontFace: BODY, fontSize: 11, color: INK, border: { type: "solid", color: "D5DAE1", pt: 0.5 }, rowH: 0.3, align: "center" });
-  footer(s, 11);
+  footer(s, ++PAGE);
   s.addNotes(`Two routes agree. A damped-trend forecast reaches about ${fmt(M.fc_2030_mid)} satellites in orbit by 2030; tested on held-back years it erred by ${M.fc_bt_mape} percent. A bottom-up build from the announced constellations gives ${fmt(M.sc_low)}, ${fmt(M.sc_base)} or ${fmt(M.sc_high)} working satellites. The collision-risk index rises to about ${M.risk_2030_base.toFixed(0)} times the 2014 level in the base case. China's planned shells at 1,050 to 1,200 kilometres are the concern: debris there stays for centuries.`);
 
   // 12 --------------------------------------------------------------- how sure
@@ -244,7 +281,7 @@ async function icon(Comp, color) {
     { text: "Independent check", options: { bold: true, color: WHITE, fill: { color: NAVY } } }, { text: "Verdict", options: { bold: true, color: WHITE, fill: { color: NAVY } } }]]
     .concat(D.rob.map((r) => [r[0], r[1], r[2], { text: r[3], options: { bold: true, color: GREEN } }]));
   s.addTable(rob, { x: 0.6, y: 1.8, w: 12.1, colW: [2.0, 3.2, 5.1, 1.8], fontFace: BODY, fontSize: 12, color: INK, border: { type: "solid", color: "D5DAE1", pt: 0.5 }, valign: "middle" });
-  footer(s, 12);
+  footer(s, ++PAGE);
   s.addNotes("Before a commander acts, he asks how sure we are. Each headline was checked by a second source or a second method: UN registrations for growth, a second shell size for congestion, a sensitivity test for the intelligence count, two statistical tests for storms, and a back-test for the forecast. The intelligence count is a lower bound: covert satellites would only widen the gap.");
 
   // 13 --------------------------------------------------------------- impact
@@ -266,7 +303,7 @@ async function icon(Comp, color) {
   });
   s.addText(`Access to space is the bottleneck: China averaged about ${M.launch_ratio.toFixed(0)} times India's launch rate over 2021-25.`,
     { x: 0.6, y: 5.0, w: 6.2, h: 0.9, fontFace: BODY, fontSize: 14, color: INK, margin: 0, isTextBox: true });
-  footer(s, 13);
+  footer(s, ++PAGE);
   s.addNotes("For India the problem is structural: rising dependence on space for banking, navigation, communications and warning, a falling share of working satellites, and a launch rate far behind China's. For the Services: plan on being watched, and plan on losing some space services in war.");
 
   // 14 --------------------------------------------------------------- ORBITWATCH
@@ -283,7 +320,7 @@ async function icon(Comp, color) {
     s.addText(r[0].slice(3), { x: x + 0.2, y: y + 1.2, w: 2.5, h: 0.9, fontFace: BODY, fontSize: 11, color: INK, margin: 0, isTextBox: true, valign: "top" });
   });
   s.addText("Each indicator has Amber and Red thresholds and an action on Red, updated from open data.", { x: 9.75, y: 4.3, w: 2.85, h: 2.2, fontFace: BODY, fontSize: 14, italic: true, color: MUTED, margin: 0, isTextBox: true, valign: "middle" });
-  footer(s, 14);
+  footer(s, ++PAGE);
   s.addNotes("The study becomes a standing monitor. Seven indicators, each with thresholds and an action on Red. Today six are Red: collision risk, growth rate, Chinese ISR build rate, India's share, storm odds, and crowding of our geostationary arc. The anti-satellite test indicator is Amber.");
 
   // 15 --------------------------------------------------------------- way forward
@@ -299,17 +336,17 @@ async function icon(Comp, color) {
     ["Concealment and deception doctrine against persistent ISR", "Army, HQ IDS", "12 months"]];
   const hdr = ["Action", "Lead", "When"].map((h) => ({ text: h, options: { bold: true, color: WHITE, fill: { color: NAVY } } }));
   s.addTable([hdr].concat(acts), { x: 0.6, y: 1.8, w: 12.1, colW: [7.6, 2.8, 1.7], fontFace: BODY, fontSize: 14, color: INK, border: { type: "solid", color: "D5DAE1", pt: 0.5 }, rowH: 0.58, valign: "middle" });
-  footer(s, 15);
+  footer(s, ++PAGE);
   s.addNotes("Seven actions from the booklet, each with a lead, a timeline and a measure of success. The first costs almost nothing: the open catalogue and the pipeline already exist. The others build capacity and resilience.");
 
   // 16 --------------------------------------------------------------- technical build
   s = pres.addSlide();
   s.background = { color: WHITE };
   heading(s, "Technical skills", "Reproducible from raw data to decision");
-  const tb = [["db", "Python pipeline", "10 stages, one command, deterministic: two runs give identical results for all headline numbers."],
-    ["chart", "Methods", "Change-points, concentration index, kinetic-gas risk index, survival curves, Poisson regression, periodogram, damped-trend forecast with back-test."],
+  const tb = [["db", "Python pipeline", "12 stages, one command, deterministic: two runs give identical results for all headline numbers."],
+    ["chart", "Methods", "Change-points, concentration index, collision-risk index, SGP4 close-approach screening, survival curves, Poisson regression, periodogram, classifier with out-of-time test, damped-trend forecast."],
     ["dish", "Power BI", "Star schema: catalogue, 2014 census, storms, fires, calendar, plus the analysis tables; four dashboard pages."],
-    ["rocket", "Outputs", "Booklet (PDF and Word), this deck, Power BI tables, annotated code."]];
+    ["rocket", "Outputs", "Booklet and Technical Annex (PDF and Word), this deck, Power BI tables, annotated code."]];
   tb.forEach(([ic, h, t], i) => {
     const x = 0.6 + (i % 2) * 6.15, y = 1.85 + Math.floor(i / 2) * 2.4;
     card(s, x, y, 5.95, 2.15);
@@ -317,7 +354,7 @@ async function icon(Comp, color) {
     s.addText(h, { x: x + 1.2, y: y + 0.3, w: 4.5, h: 0.5, fontFace: BODY, fontSize: 17, bold: true, color: NAVY, margin: 0, isTextBox: true, valign: "middle" });
     s.addText(t, { x: x + 1.2, y: y + 0.85, w: 4.5, h: 1.15, fontFace: BODY, fontSize: 13, color: INK, margin: 0, isTextBox: true, valign: "top" });
   });
-  footer(s, 16);
+  footer(s, ++PAGE);
   s.addNotes("For the technical criteria: everything is code. One command rebuilds every figure, table and number, and the Power BI dashboard uses the same tables. I can show the dashboard live if the panel wishes.");
 
   // 17 --------------------------------------------------------------- close
@@ -329,7 +366,7 @@ async function icon(Comp, color) {
   s.addText("Approve a four-month ORBITWATCH proof of concept at the Defence Space Agency, using the open catalogue and the pipeline already built. Continue only if it flags at least one actionable conjunction or threat event.",
     { x: 0.95, y: 3.65, w: 11.4, h: 1.3, fontFace: BODY, fontSize: 18, color: WHITE, margin: 0, isTextBox: true, valign: "top" });
   s.addText("Questions", { x: 0.6, y: 5.6, w: 6, h: 0.7, fontFace: HEAD, fontSize: 28, italic: true, color: "D9DEE7", margin: 0, isTextBox: true });
-  footer(s, 17, true);
+  footer(s, ++PAGE, true);
   s.addNotes("To close: in twelve years orbit became crowded, concentrated and contested, and India's share shrank while its dependence grew. The remedy is numbers, resilience and awareness. The ask is small and time-bound, with a clear stop test. Thank you, sir.");
 
   await pres.writeFile({ fileName: "Datathon2026_Theme6.1_Satellites_Presentation.pptx" });

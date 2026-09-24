@@ -45,10 +45,12 @@ def closings(M):
             "Whose satellites are they?"),
         3: (f"One country operates {M['us_share_now']:.0f}% of working satellites and one company about {pct(M['starlink_share'])}. "
             f"India's share fell from {M['in_share_2014']:.1f}% to {M['in_share_now']:.1f}%.", "Where is orbit crowded, and how risky is it?"),
-        4: (f"Collision risk in low orbit is about {M['risk_ratio']:.0f} times the 2014 level. Weapon tests at high altitude leave debris "
-            "for decades; India's low-altitude test cleaned itself up within a year.", "Who is building military eyes in orbit?"),
+        4: (f"Collision risk in low orbit is about {M['risk_ratio']:.0f} times the 2014 level, and a one-day screening found "
+            f"{M['cj_cross_total']:,} close approaches under 5 km, {M['cj_B_india']} of them Indian satellites passing debris. High-altitude "
+            "weapon debris lasts decades; India's low-altitude test cleaned itself up within a year.", "Who is building military eyes in orbit?"),
         5: (f"China operates about {M['cn_isr_ops']} state and military imaging and intelligence satellites; India about {M['in_isr_ops']}. "
-            "The gap is not closing on its own.", "What threat does nature add?"),
+            f"The gap is not closing on its own. Physics alone flags military satellites (ROC-AUC {M['ml_ext_auc']:.2f} on unseen launches).",
+            "What threat does nature add?"),
         6: (f"At high solar activity the odds of an intense geomagnetic storm in any month rise about {M['storm_mult']:.0f}-fold. The "
             "solar cycle even shows in how fast debris falls.", "Why take these risks at all?"),
         7: (f"Two satellites together saw fires that either one alone would have missed {pct(M['prem_single'])} of the time. Numbers "
@@ -83,6 +85,10 @@ PLAIN = {
     "f7_2_fire_map": "Every fire and heat source the two satellites detected over ten years.",
     "f8_1_forecast": "Left: satellites in orbit and three scenarios for 2030. Right: how collision risk grows under each.",
     "f9_1_launch_capacity": "Rocket launches per year from US, Chinese and Indian soil.",
+    "f11_1_ml_military": "Left: how well the model separates military from civil satellites it has never seen (higher curve = better). Right: "
+                         "which physical features give a military satellite away.",
+    "f12_1_conjunctions": "Left: at what height satellites came within 5 km of each other or of debris in one day. Right: how fast they "
+                          "passed each other.",
 }
 
 GLOSSARY = [
@@ -107,6 +113,10 @@ GLOSSARY = [
     ("Back-test", "Hiding the last few years, forecasting them, and checking the error: a test of the forecast method."),
     ("ISR", "Intelligence, surveillance and reconnaissance: satellites that image, listen and watch."),
     ("ORBITWATCH", "The seven-indicator warning matrix proposed in this study, updated from open data."),
+    ("SGP4", "The standard mathematical model that turns published orbital elements into a satellite's position at any time."),
+    ("Close approach (conjunction)", "Two objects passing close to each other; screening flags passes under 5 km for closer study."),
+    ("Out-of-time test", "Training a model on older data and testing it on later data it has never seen: the honest test of a forecast."),
+    ("ROC-AUC", "A model's skill at ranking positives above negatives: 0.5 is a coin toss, 1.0 is perfect."),
     ("SBS-III", "India's Space-Based Surveillance phase III: 52 military surveillance satellites approved in 2023, due by 2029."),
 ]
 
@@ -128,6 +138,8 @@ satellite catalogue ({M['satcat_n']:,} objects), the UCS 2020 census and UN laun
 <li><b>Contested.</b> China has launched about {M['cn_isr_rate_2023_25']:.0f} state intelligence satellites a year since 2023; India under one.
 SBS-III's 52 satellites close only about {pct(M['sbs3_close'])} of today's gap.</li>
 <li><b>Exposed to nature.</b> At high solar activity the odds of an intense magnetic storm in a month rise from {pct(M['p_intense_lo'])} to {pct(M['p_intense_hi'])}.</li>
+<li><b>Close calls daily.</b> A one-day screening of current orbits found {M['cj_cross_total']:,} passes under 5 km; {M['cj_B_india']} Indian
+satellites, including EMISAT, passed within 5 km of weapon-test or collision debris.</li>
 <li><b>Worth it.</b> Two satellites saw {pct(M['prem_single'])} of fire-days that one alone would have missed: numbers buy coverage.</li></ol>
 <h2>Deduction</h2><p style="font-size:10.3pt">India's security now depends on space, while its share of space shrinks and the
 environment grows more dangerous. Capacity, resilience and awareness of the space picture, not single prestige satellites, decide who

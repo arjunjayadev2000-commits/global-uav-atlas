@@ -6,9 +6,10 @@
 
 | File | What it is |
 |---|---|
-| `report/Datathon2026_Theme6.1_Satellites_Booklet.pdf` | Commander's Edition booklet: the submission, 23 pages |
+| `report/Datathon2026_Theme6.1_Satellites_Booklet.pdf` | Commander's Edition booklet: the submission, 26 pages |
+| `report/Datathon2026_Theme6.1_Technical_Annex.pdf` (+ `.docx`) | Technical annex: methods, formulas, validation, limitations (8 pages) |
 | `report/Datathon2026_Theme6.1_Satellites_Booklet.docx` | The same booklet as an editable Word file |
-| `deck/Datathon2026_Theme6.1_Satellites_Presentation.pptx` | Phase II presentation: 17 slides, native charts, speaker notes |
+| `deck/Datathon2026_Theme6.1_Satellites_Presentation.pptx` | Phase II presentation: 19 slides, native charts, speaker notes |
 | `powerbi/powerbi_tables.zip`, `powerbi/POWERBI_BUILD_GUIDE.md` | Power BI tables and step-by-step build guide |
 | `submission/` | Email draft, Appendix A form and checklist per Gen Instr Para 8.2 |
 
@@ -23,12 +24,13 @@
 - CelesTrak SATCAT (70,793 objects, to 21 Sep 2026), via github.com/astrion-tech/celestrak-mirror.
 - UCS Satellite Database, April 2020.
 - UNOOSA objects launched per year (via Our World in Data).
+- CelesTrak current orbital elements (OMM) for active satellites and debris clouds, via github.com/satvisorcom/satvisor-data.
 
 ## Rebuild everything
 
 ```bash
-cd analysis && python run_all.py                  # 10 stages -> figures, tables, data/metrics.json, Power BI tables (deterministic)
-cd ../report && python make_screens.py && python build_booklet.py && python build_word.py
+cd analysis && python run_all.py                  # 12 stages -> figures, tables, data/metrics.json, Power BI tables (deterministic)
+cd ../report && python make_screens.py && python build_booklet.py && python build_annex.py && python build_word.py
 cd ../deck && python prep_deck_data.py && node build_deck.js   # needs pptxgenjs, react-icons, sharp
 ```
 
@@ -45,4 +47,6 @@ cd ../deck && python prep_deck_data.py && node build_deck.js   # needs pptxgenjs
 | 07 | Earth-observation value: constellation premium, surges, industrial heat sources |
 | 08 | Forecast: damped trend with back-test, 2030 scenarios, risk index |
 | 09 | India scorecard, robustness checks, ORBITWATCH warning matrix |
-| 10 | Power BI export |
+| 11 | Machine learning: military vs civil use from orbit, mass and power; out-of-time test on UCS 2020 launches |
+| 12 | Close-approach screening: SGP4 on current orbital elements, 24 h, all active satellites + debris clouds |
+| 10 | Power BI export (runs last) |

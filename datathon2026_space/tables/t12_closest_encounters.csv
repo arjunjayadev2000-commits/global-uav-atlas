@@ -1,0 +1,21 @@
+screen,name_a,name_b,kind,miss_km,rel_speed_kms,alt_km
+A: active vs active (31 Aug-1 Sep),YAOGAN-14,STARLINK-5061,"Different operators, crossing",0.047,14.344,482.291
+A: active vs active (31 Aug-1 Sep),STARLINK-5366,STARLINK-36147,"Same constellation, crossing",0.055,3.894,485.499
+A: active vs active (31 Aug-1 Sep),STARLINK-30385,STARLINK-32434,"Same constellation, crossing",0.106,7.911,484.747
+A: active vs active (31 Aug-1 Sep),STARLINK-31971,STARLINK-35986,"Same constellation, crossing",0.111,1.265,477.17
+A: active vs active (31 Aug-1 Sep),STARLINK-3122,STARLINK-4550,"Same constellation, crossing",0.113,12.157,464.908
+A: active vs active (31 Aug-1 Sep),KSLV-II DUMMY,GAOFEN-5 01A,"Different operators, crossing",0.116,14.571,693.419
+A: active vs active (31 Aug-1 Sep),JILIN-1 GAOFEN 03D48,STARLINK-37742,"Different operators, crossing",0.129,14.743,460.972
+A: active vs active (31 Aug-1 Sep),STARLINK-6327,STARLINK-36432,"Same constellation, crossing",0.129,1.278,485.136
+A: active vs active (31 Aug-1 Sep),AL MUNTHER,STARLINK-35382,"Different operators, crossing",0.13,13.706,467.449
+A: active vs active (31 Aug-1 Sep),YAOGAN-12,STARLINK-6173,"Different operators, crossing",0.143,6.976,483.17
+A: active vs active (31 Aug-1 Sep),STARLINK-5939,SITRO-AIS 5 (KATYS),"Different operators, crossing",0.16,14.34,482.512
+A: active vs active (31 Aug-1 Sep),ZORKIY-2M 1,CO3D 1,"Different operators, crossing",0.168,2.46,496.924
+A: active vs active (31 Aug-1 Sep),STARLINK-30508,BANDWAGON-4 OBJECT Q,"Different operators, crossing",0.17,1.714,486.204
+A: active vs active (31 Aug-1 Sep),PCSAT (NO-44),SAPPHIRE,"Different operators, crossing",0.179,4.372,787.982
+A: active vs active (31 Aug-1 Sep),2022-023C,STARLINK-35783,"Different operators, crossing",0.2,8.547,468.192
+A: active vs active (31 Aug-1 Sep),STARLINK-30438,STARLINK-31202,"Same constellation, crossing",0.205,10.187,467.179
+A: active vs active (31 Aug-1 Sep),STARLINK-30132,STARLINK-32694,"Same constellation, crossing",0.218,1.327,476.939
+A: active vs active (31 Aug-1 Sep),STARLINK-31504,STARLINK-36771,"Same constellation, crossing",0.22,1.302,485.078
+A: active vs active (31 Aug-1 Sep),2025-313P,STARLINK-36988,"Different operators, crossing",0.221,14.345,483.085
+A: active vs active (31 Aug-1 Sep),ZHIXING-2A,STARLINK-35378,"Different operators, crossing",0.223,14.727,506.124

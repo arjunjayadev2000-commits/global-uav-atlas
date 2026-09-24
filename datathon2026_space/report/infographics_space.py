@@ -30,7 +30,8 @@ def at_a_glance(M):
              ("satellite-dish", pct(M['prem_single']), "of fire-days only one of two satellites saw", False),
              ("chart-line", f"~{M['sc_base'] / 1000:.0f}k", "working satellites by 2030 (base case)", True)]
     meth = ["Change-points (PELT)", "Concentration index (HHI)", "Kinetic-gas collision index", "Survival of debris",
-            "Poisson regression", "Periodogram", "Exponential smoothing + back-test", "Scenario model", "Warning matrix"]
+            "Poisson regression", "Periodogram", "Exponential smoothing + back-test", "Scenario model",
+            "Classifier + out-of-time test", "SGP4 close-approach screening", "Warning matrix"]
     out = ['<div class="ig">']
     out.append('<div class="ig-band">PROJECT HIGH GROUND &middot; Contested and Congested: the Crowding of Orbit<small>CDM Datathon-2026 '
                '&middot; Theme 6.1: Growth of Satellites in Outer Space &middot; the study on one page</small></div>')

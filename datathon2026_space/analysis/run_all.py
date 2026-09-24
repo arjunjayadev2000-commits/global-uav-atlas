@@ -12,5 +12,5 @@ from common import METRICS
 HERE = Path(__file__).parent
 METRICS.unlink(missing_ok=True)
 for stage in ["01_preprocess", "02_growth", "03_actors", "04_congestion", "05_contest", "06_spaceweather", "07_eo_value",
-              "08_forecast", "09_india_iw", "10_powerbi_export"]:
+              "08_forecast", "11_ml_military", "12_conjunctions", "09_india_iw", "10_powerbi_export"]:
     runpy.run_path(str(HERE / f"{stage}.py"), run_name="__main__")

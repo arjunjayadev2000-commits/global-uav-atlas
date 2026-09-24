@@ -1,0 +1,52 @@
+screen,name_a,name_b,kind,miss_km,rel_speed_kms,alt_km
+A: active vs active (31 Aug-1 Sep),CARTOSAT-2C,STARLINK-4338,"Different operators, crossing",1.226,12.872,505.241
+A: active vs active (31 Aug-1 Sep),POEM,STARLINK-5255,"Different operators, crossing",1.321,5.928,473.195
+A: active vs active (31 Aug-1 Sep),POEM-2,IRIDE-MS2-HEO-4,"Different operators, crossing",1.384,11.123,592.699
+B: satellites vs debris clouds (23-24 Sep),SARAL,COSMOS 2251 DEB,Satellite vs debris,1.441,4.731,788.908
+A: active vs active (31 Aug-1 Sep),NUSAT-26 (M SOMERVILLE),AAGAMAN OBJECT A,"Different operators, crossing",1.572,14.914,433.489
+A: active vs active (31 Aug-1 Sep),STARLINK-4204,AAGAMAN OBJECT A,"Different operators, crossing",1.583,12.741,460.009
+A: active vs active (31 Aug-1 Sep),FLOCK 4G-23,AAGAMAN OBJECT A,"Different operators, crossing",1.704,14.797,458.026
+A: active vs active (31 Aug-1 Sep),HYSIS,GEESAT-1 08,"Different operators, crossing",1.989,11.806,627.602
+A: active vs active (31 Aug-1 Sep),STARLINK-3747,TSAT-1A,"Different operators, crossing",2.188,5.376,455.643
+A: active vs active (31 Aug-1 Sep),TSAT-1A,STARLINK-37722,"Different operators, crossing",2.542,6.789,467.113
+A: active vs active (31 Aug-1 Sep),TSAT-1A,STARLINK-34588,"Different operators, crossing",2.658,2.235,457.58
+A: active vs active (31 Aug-1 Sep),AFR-1,STARLINK-30523,"Different operators, crossing",2.686,13.542,486.281
+B: satellites vs debris clouds (23-24 Sep),SCATSAT 1,COSMOS 2251 DEB,Satellite vs debris,2.712,14.234,659.92
+A: active vs active (31 Aug-1 Sep),STARLINK-2046,POEM,"Different operators, crossing",2.853,6.572,472.505
+A: active vs active (31 Aug-1 Sep),STARLINK-4476,TSAT-1A,"Different operators, crossing",2.86,2.936,466.569
+A: active vs active (31 Aug-1 Sep),STARLINK-3863,AAGAMAN OBJECT A,"Different operators, crossing",2.985,12.399,461.619
+B: satellites vs debris clouds (23-24 Sep),HYSIS,FENGYUN 1C DEB,Satellite vs debris,3.021,4.072,626.628
+A: active vs active (31 Aug-1 Sep),CARTOSAT-2A,CBERS 4A,"Different operators, crossing",3.259,2.767,633.631
+A: active vs active (31 Aug-1 Sep),RISAT-2BR2,STARLINK-36167,"Different operators, crossing",3.393,10.829,574.659
+A: active vs active (31 Aug-1 Sep),STARLINK-3199,TSAT-1A,"Different operators, crossing",3.486,1.166,467.886
+A: active vs active (31 Aug-1 Sep),ADRAS-J,AAGAMAN OBJECT A,"Different operators, crossing",3.549,14.735,452.372
+A: active vs active (31 Aug-1 Sep),STARLINK-34741,AAGAMAN OBJECT A,"Different operators, crossing",3.589,12.471,458.495
+B: satellites vs debris clouds (23-24 Sep),EMISAT,COSMOS 2251 DEB,Satellite vs debris,3.72,14.529,743.337
+A: active vs active (31 Aug-1 Sep),POEM,STARLINK-31898,"Different operators, crossing",3.726,4.343,482.782
+A: active vs active (31 Aug-1 Sep),RISAT-2BR2,2026-134G,"Different operators, crossing",3.758,13.993,554.249
+A: active vs active (31 Aug-1 Sep),POEM,STARLINK-33755,"Different operators, crossing",3.872,6.759,480.839
+A: active vs active (31 Aug-1 Sep),RISAT-2BR2,2026-134H,"Different operators, crossing",3.934,13.993,554.542
+B: satellites vs debris clouds (23-24 Sep),ASTROSAT,COSMOS 2251 DEB,Satellite vs debris,3.934,9.346,618.148
+B: satellites vs debris clouds (23-24 Sep),EOS-6 (OCEANSAT-3),COSMOS 2251 DEB,Satellite vs debris,3.936,10.391,744.698
+A: active vs active (31 Aug-1 Sep),TSAT-1A,STARLINK-35016,"Different operators, crossing",3.95,4.44,465.801
+A: active vs active (31 Aug-1 Sep),AFR-1,STARLINK-30218,"Different operators, crossing",3.954,14.035,477.661
+A: active vs active (31 Aug-1 Sep),POEM,STARLINK-31590,"Different operators, crossing",4.006,4.572,485.061
+B: satellites vs debris clouds (23-24 Sep),SARAL,FENGYUN 1C DEB,Satellite vs debris,4.01,1.819,788.886
+A: active vs active (31 Aug-1 Sep),FIREFLY-2,CUBY-4,"Different operators, crossing",4.046,14.972,599.342
+A: active vs active (31 Aug-1 Sep),POEM,STARLINK-31244,"Different operators, crossing",4.068,6.364,481.811
+A: active vs active (31 Aug-1 Sep),POEM,STARLINK-35083,"Different operators, crossing",4.102,11.595,474.768
+A: active vs active (31 Aug-1 Sep),SEMI-1L,DRISHTI,"Different operators, crossing",4.107,9.696,496.86
+A: active vs active (31 Aug-1 Sep),POEM,STARLINK-36530,"Different operators, crossing",4.114,6.791,481.022
+A: active vs active (31 Aug-1 Sep),POEM,STARLINK-6179,"Different operators, crossing",4.143,4.954,481.474
+B: satellites vs debris clouds (23-24 Sep),SRMSAT,FENGYUN 1C DEB,Satellite vs debris,4.249,10.343,854.986
+A: active vs active (31 Aug-1 Sep),2025-108D,DRISHTI,"Different operators, crossing",4.266,15.093,507.053
+B: satellites vs debris clouds (23-24 Sep),ASTROSAT,FENGYUN 1C DEB,Satellite vs debris,4.394,11.702,621.156
+A: active vs active (31 Aug-1 Sep),POEM-2,PELICAN-11,"Different operators, crossing",4.501,11.184,588.851
+A: active vs active (31 Aug-1 Sep),POEM,STARLINK-34947,"Different operators, crossing",4.544,11.661,471.73
+A: active vs active (31 Aug-1 Sep),TSAT-1A,STARLINK-38014,"Different operators, crossing",4.648,13.975,462.669
+A: active vs active (31 Aug-1 Sep),POEM,STARLINK-34842,"Different operators, crossing",4.788,11.196,471.227
+A: active vs active (31 Aug-1 Sep),RISAT-2BR2,STARLINK-5868,"Different operators, crossing",4.835,9.277,574.402
+A: active vs active (31 Aug-1 Sep),CARTOSAT-2F,STARLINK-34030,"Different operators, crossing",4.888,10.863,517.864
+A: active vs active (31 Aug-1 Sep),POEM,STARLINK-30604,"Different operators, crossing",4.946,4.797,481.537
+A: active vs active (31 Aug-1 Sep),LEAP-1,MISR-D 2,"Different operators, crossing",4.969,14.952,598.53
+B: satellites vs debris clouds (23-24 Sep),EMISAT,COSMOS 2251 DEB,Satellite vs debris,4.977,14.895,751.799

@@ -1,0 +1,5 @@
+screen,kind,encounters_5km,under_1km,median_rel_speed
+A: active vs active (31 Aug-1 Sep),Co-orbiting (formation or docked),430,86,0.15
+A: active vs active (31 Aug-1 Sep),"Different operators, crossing",5043,193,11.18
+A: active vs active (31 Aug-1 Sep),"Same constellation, crossing",12844,192,9.78
+B: satellites vs debris clouds (23-24 Sep),Satellite vs debris,468,20,13.09

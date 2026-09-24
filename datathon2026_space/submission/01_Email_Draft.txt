@@ -9,11 +9,12 @@ Sir / Ma'am,
 
     (a) 03_Datathon2026_Theme6.1_Booklet_(Main_Submission).pdf - analysis with insights, and screenshots of the data
         analytics software used (Annex C).
-    (b) 04_Datathon2026_Theme6.1_Satellites.pbix - Power BI output file.
-    (c) 02_Appendix_A_Individual_Details.docx - personal details as per Appendix A.
+    (b) 04_Datathon2026_Theme6.1_Technical_Annex.pdf - methods, formulas, validation and limitations.
+    (c) 05_Datathon2026_Theme6.1_Satellites.pbix - Power BI output file.
+    (d) 02_Appendix_A_Individual_Details.docx - personal details as per Appendix A.
 
 2.  The analysis uses the CDM Theme 6.1 datasets (satellite census; space-weather records; MODIS fire detections)
-    together with cited open-source data (CelesTrak satellite catalogue, UCS Satellite Database, UNOOSA registry).
+    together with cited open-source data (CelesTrak satellite catalogue and current orbital elements, UCS Satellite Database, UNOOSA registry).
     All results can be regenerated from raw data; the source code can be provided if required.
 
 3.  Submitted for kind consideration, please.

@@ -205,6 +205,121 @@ Stage 8: forecast
 3  2030 Base                             16.8
 4  2030 High                             27.2 
 trend [23256.8586228  26944.42534788 31178.21365491 36033.16826464] [22081.1437412  24123.89969014 26001.15734762 28013.98619766] [24473.2043583  29939.5623411  37041.43106022 46105.44582333] backtest MAPE 8.564190641388107
+Stage 11: military-use classifier
+  tab -> t11_ml_results
+  tab -> t11_ml_importance
+  tab -> t11_dual_use_flags
+  fig -> f11_1_ml_military
+                     Features                   Model  CV ROC-AUC 2014 (mean)  CV SD  Out-of-time ROC-AUC (2020 launches)  Out-of-time PR-AUC  Balanced accuracy @0.5
+0                Physics only     Logistic regression                   0.835  0.001                                0.793               0.525                   0.697
+1                Physics only  Gradient-boosted trees                   0.941  0.004                                0.644               0.269                   0.625
+2  Physics + operator country     Logistic regression                   0.845  0.002                                0.759               0.553                   0.707
+3  Physics + operator country  Gradient-boosted trees                   0.942  0.004                                0.634               0.270                   0.615 
+ Launch mass             0.155692
+Apogee                  0.111525
+Sun-synchronous-like    0.051590
+Design life             0.038854
+MEO                     0.019081
+Inclination             0.012892
+Molniya-like            0.012640
+Period                  0.003651
+dtype: float64 
+dual 83 1613 
+ Users
+Commercial               54
+Government               27
+Government/Commercial     2
+Name: count, dtype: int64 
+ Purpose
+Communications                   30
+Navigation/Global Positioning    20
+Earth Observation                16
+Technology Development           12
+Space Science                     1
+Name: count, dtype: int64
+Stage 12: conjunction screening
+  A: 15,656 active LEO satellites
+    steps 0-359: 290,346 candidate pairs
+    steps 360-719: 425,190 candidate pairs
+    steps 720-1079: 552,110 candidate pairs
+    steps 1080-1439: 678,925 candidate pairs
+    steps 1440-1799: 805,866 candidate pairs
+    steps 1800-2159: 931,934 candidate pairs
+    steps 2160-2519: 1,058,263 candidate pairs
+    steps 2520-2879: 1,184,258 candidate pairs
+    steps 2880-3239: 1,310,398 candidate pairs
+    steps 3240-3599: 1,436,355 candidate pairs
+    steps 3600-3959: 1,562,981 candidate pairs
+    steps 3960-4319: 1,688,661 candidate pairs
+    steps 4320-4679: 1,814,932 candidate pairs
+    steps 4680-5039: 1,941,871 candidate pairs
+    steps 5040-5399: 2,067,733 candidate pairs
+    steps 5400-5759: 2,194,661 candidate pairs
+    steps 5760-6119: 2,321,879 candidate pairs
+    steps 6120-6479: 2,447,381 candidate pairs
+    steps 6480-6839: 2,573,250 candidate pairs
+    steps 6840-7199: 2,699,291 candidate pairs
+    steps 7200-7559: 2,825,986 candidate pairs
+    steps 7560-7919: 2,952,157 candidate pairs
+    steps 7920-8279: 3,078,403 candidate pairs
+    steps 8280-8639: 3,205,011 candidate pairs
+  B: 4,640 objects (fresh satellites + debris clouds)
+    steps 0-359: 13,895 candidate pairs
+    steps 360-719: 24,560 candidate pairs
+    steps 720-1079: 34,040 candidate pairs
+    steps 1080-1439: 43,633 candidate pairs
+    steps 1440-1799: 52,911 candidate pairs
+    steps 1800-2159: 62,267 candidate pairs
+    steps 2160-2519: 71,659 candidate pairs
+    steps 2520-2879: 81,183 candidate pairs
+    steps 2880-3239: 90,491 candidate pairs
+    steps 3240-3599: 99,932 candidate pairs
+    steps 3600-3959: 109,107 candidate pairs
+    steps 3960-4319: 118,355 candidate pairs
+    steps 4320-4679: 127,581 candidate pairs
+    steps 4680-5039: 136,881 candidate pairs
+    steps 5040-5399: 146,257 candidate pairs
+    steps 5400-5759: 155,327 candidate pairs
+    steps 5760-6119: 164,797 candidate pairs
+    steps 6120-6479: 174,129 candidate pairs
+    steps 6480-6839: 183,460 candidate pairs
+    steps 6840-7199: 192,685 candidate pairs
+    steps 7200-7559: 201,848 candidate pairs
+    steps 7560-7919: 211,086 candidate pairs
+    steps 7920-8279: 220,420 candidate pairs
+    steps 8280-8639: 229,689 candidate pairs
+  tab -> t12_conjunction_summary
+  tab -> t12_closest_encounters
+  tab -> t12_india_encounters
+  fig -> f12_1_conjunctions
+                                       screen                               kind  encounters_5km  under_1km  median_rel_speed
+0          A: active vs active (31 Aug-1 Sep)  Co-orbiting (formation or docked)             430         86              0.15
+1          A: active vs active (31 Aug-1 Sep)      Different operators, crossing            5043        193             11.18
+2          A: active vs active (31 Aug-1 Sep)       Same constellation, crossing           12844        192              9.78
+3  B: satellites vs debris clouds (23-24 Sep)                Satellite vs debris             468         20             13.09 
+                      name_a          name_b                           kind   miss_km  rel_speed_kms      alt_km
+6630              YAOGAN-14   STARLINK-5061  Different operators, crossing  0.046991      14.344067  482.290860
+4250          STARLINK-5366  STARLINK-36147   Same constellation, crossing  0.055056       3.893530  485.498996
+3408         STARLINK-30385  STARLINK-32434   Same constellation, crossing  0.106482       7.910576  484.746862
+1480         STARLINK-31971  STARLINK-35986   Same constellation, crossing  0.111298       1.264955  477.169552
+4790          STARLINK-3122   STARLINK-4550   Same constellation, crossing  0.113116      12.157278  464.907843
+1110          KSLV-II DUMMY    GAOFEN-5 01A  Different operators, crossing  0.116218      14.570574  693.418990
+8795   JILIN-1 GAOFEN 03D48  STARLINK-37742  Different operators, crossing  0.128914      14.743192  460.971906
+2070          STARLINK-6327  STARLINK-36432   Same constellation, crossing  0.129104       1.278223  485.136392
+4098             AL MUNTHER  STARLINK-35382  Different operators, crossing  0.129708      13.706293  467.448802
+16329             YAOGAN-12   STARLINK-6173  Different operators, crossing  0.142564       6.976137  483.169680 
+India
+        id_a    id_b         name_a            name_b   miss_km  rel_speed_kms      alt_km           t_s   type_a owner_a          con_a   type_b  owner_b          con_b                           kind  india                              screen
+1336  62704   69874      FIREFLY-2            CUBY-4  4.046073      14.972037  599.342112   9811.185114  Payload   India          Other  Payload  Germany          Other  Different operators, crossing   True  A: active vs active (31 Aug-1 Sep)
+1911  64090   69010      2025-108D           DRISHTI  4.266160      15.093297  507.052966  17270.701608  Payload   China          Other  Payload    India          Other  Different operators, crossing   True  A: active vs active (31 Aug-1 Sep)
+2014  53419   59442  STARLINK-4476           TSAT-1A  2.860429       2.936143  466.568753   7445.828730  Payload     USA  Starlink (US)  Payload    India          Other  Different operators, crossing   True  A: active vs active (31 Aug-1 Sep)
+2490  52939   56910           POEM     STARLINK-6179  4.142579       4.953548  481.474362  11469.300593  Payload   India          Other  Payload      USA  Starlink (US)  Different operators, crossing   True  A: active vs active (31 Aug-1 Sep)
+2522  59442   69721        TSAT-1A    STARLINK-38014  4.648335      13.975380  462.668599  43200.833912  Payload   India          Other  Payload      USA  Starlink (US)  Different operators, crossing   True  A: active vs active (31 Aug-1 Sep)
+2958  52306   59442  STARLINK-3747           TSAT-1A  2.188326       5.375751  455.642613   4337.856925  Payload     USA  Starlink (US)  Payload    India          Other  Different operators, crossing   True  A: active vs active (31 Aug-1 Sep)
+3270  52939   59198           POEM    STARLINK-31590  4.005520       4.572425  485.061350  11861.941808  Payload   India          Other  Payload      USA  Starlink (US)  Different operators, crossing   True  A: active vs active (31 Aug-1 Sep)
+4659  65321   69915         LEAP-1          MISR-D 2  4.968827      14.952386  598.529760  30440.053887  Payload   India          Other  Payload      USA          Other  Different operators, crossing   True  A: active vs active (31 Aug-1 Sep)
+5347  52854  100080  STARLINK-4204  AAGAMAN OBJECT A  1.583202      12.741352  460.009077   5230.717788  Payload     USA  Starlink (US)  Payload    India          Other  Different operators, crossing   True  A: active vs active (31 Aug-1 Sep)
+5418  56964   57604          AFR-1    STARLINK-30218  3.953919      14.035044  477.660893   8098.368621  Payload   India          Other  Payload      USA  Starlink (US)  Different operators, crossing   True  A: active vs active (31 Aug-1 Sep)
 Stage 9: India, robustness, ORBITWATCH
   tab -> t9_india_scorecard
   fig -> f9_1_launch_capacity
@@ -216,14 +331,14 @@ Stage 9: India, robustness, ORBITWATCH
 2  Military / state-ISR satellites operational     17    406    542.0
 3                     Orbital launches in 2025      4     89    172.0
 4    GEO satellites in the 40-110 E arc (2020)     24     32      NaN 
-                                                                               Indicator          Latest value Status
-0                                               O1 Collision-risk index, LEO (2014 = 1)                   x10    RED
-1                                                 O2 Payloads in orbit, growth per year                   24%    RED
-2                         O3 Chinese state-ISR satellites launched per year (3-yr mean)                    43    RED
-3                                                 O4 India's share of active satellites                  0.5%    RED
-4  O5 Intense geomagnetic storm odds per 30 days (sunspot number >= 100, as in 2023-25)                   39%    RED
-5                                           O6 Anti-satellite tests in the last 5 years  1 (Russia, Nov 2021)  AMBER
-6                                            O7 GEO arc over India: satellites 40-110 E                   162    RED 
+                                                                               Indicator Latest value Status
+0                                               O1 Collision-risk index, LEO (2014 = 1)          x10    RED
+1                                                 O2 Payloads in orbit, growth per year          24%    RED
+2                         O3 Chinese state-ISR satellites launched per year (3-yr mean)           43    RED
+3                                                 O4 India's share of active satellites         0.5%    RED
+4  O5 Intense geomagnetic storm odds per 30 days (sunspot number >= 100, as in 2023-25)          39%    RED
+5                                           O6 Anti-satellite tests in the last 5 years     1 (2021)  AMBER
+6                                            O7 GEO arc over India: satellites 40-110 E          162    RED 
 launch avg 4.2 66.4
 Stage 10: Power BI export
   FactCatalogue.csv: 70,366 rows

@@ -56,6 +56,11 @@ rob = pd.DataFrame([
      "Found blind by periodogram; matches the ~11-year solar cycle (SILSO maxima)", "Confirmed"),
     ("Forecast to 2030", f"~{M['fc_2030_mid'] / 1000:.0f}k payloads (statistical) vs {M['sc_base'] / 1000:.0f}k working (base scenario)",
      f"Back-test error {M['fc_bt_mape']:.1f}% over 2022-2026; two independent routes agree", "Moderate confidence"),
+    ("Military-use classifier", f"out-of-time ROC-AUC {M['ml_ext_auc']:.2f} (trained 2014, tested on 2014-2020 launches)",
+     f"Cross-validation alone would have picked gradient-boosted trees (CV {M['ml_cv_auc_gbt']:.2f}); out of time they fell to "
+     f"{M['ml_ext_auc_gbt']:.2f}, so the simpler model was chosen", "Confirmed (out of time)"),
+    ("Close-approach screening", f"{M['cj_cross_total']:,} crossing encounters < 5 km in two 24-hour screenings",
+     "Elements used only inside their fresh window (under ~3 days old); co-orbiting and docked pairs removed", "Screening grade (~1 km)"),
 ], columns=["Finding", "Result", "Independent check", "Verdict"])
 table(rob, "t9_robustness")
 

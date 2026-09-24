@@ -98,6 +98,22 @@ def build():
         f"<b>{M['fy1c_alive_pct']:.0f}% are still in orbit</b> nearly twenty years later. India's 2019 test (Mission Shakti) was done at "
         f"about 280 km: all {M['shakti_pieces']} pieces have re-entered, most within half a year. Russia's 2021 test "
         f"({M['ru1408_pieces']:,} pieces) has almost cleared. A responsible test is a low one; a high one poisons an orbit for a generation.")
+    d.section("4.1", "Close Calls: Screening Every Satellite for a Day")
+    d.fig("f12_1_conjunctions", "Close approaches under 5 km found by screening current orbits with the SGP4 propagator", width=90)
+    d.p(f"To see the congestion directly, every active satellite in low orbit ({M['cj_A_n']:,}) was propagated with SGP4, the standard "
+        "model for published orbital elements, every 10 seconds for 24 hours, and every pair was checked. A second screening pitted "
+        f"freshly tracked satellites against the four largest debris clouds. In <b>one day</b>: <b>{M['cj_A_cross_diff'] + M['cj_A_cross_same']:,} "
+        f"crossing encounters closer than 5 km</b> between satellites ({M['cj_A_under1']} under 1 km), {pct(M['cj_cross_starlink_share'])} of them "
+        f"involving Starlink, typically at {M['cj_median_speed']:.0f} km/s; and <b>{M['cj_B_total']} encounters between satellites and weapon-test "
+        f"or collision debris</b> ({M['cj_B_under1']} under 1 km). The closest pass found was {M['cj_min_miss'] * 1000:.0f} m.")
+    ib = T("t12_india_encounters")
+    ib = ib[ib.screen.str.startswith("B")].head(8)
+    d.table(ib[["name_a", "name_b", "miss_km", "rel_speed_kms", "alt_km"]].rename(columns={
+        "name_a": "Indian satellite", "name_b": "Debris object", "miss_km": "Miss distance (km)", "rel_speed_kms": "Relative speed (km/s)",
+        "alt_km": "Altitude (km)"}).round(2), "Indian satellites passing within 5 km of weapon-test and collision debris, 23-24 Sep 2026", small=True)
+    d.p(f"<b>{M['cj_B_india']} Indian satellites had such a pass in a single day</b>, including EMISAT (electronic intelligence), HySIS, SARAL "
+        "and Oceansat-3, mostly against debris from the 2009 Iridium-Cosmos collision and China's 2007 test. Public elements are accurate "
+        "to about a kilometre, so this is screening, not collision probability, but it is exactly the daily watch ORBITWATCH would run.")
 
     # 5 ---------------------------------------------------------------- the contest
     d.chapter("The Contest")
@@ -112,6 +128,19 @@ def build():
     d.p(f"India's answer is <b>SBS-III</b>: 52 surveillance satellites approved in 2023 (Rs 26,968 crore), 21 built by ISRO and 31 by "
         f"industry, due by 2029. Against today's gap, SBS-III closes only about <b>{pct(M['sbs3_close'])}</b>. During Operation Sindoor "
         "(May 2025) ten Indian satellites supported the forces round the clock: the need is proven, the capacity is thin.")
+    d.section("5.1", "Can Physics Reveal a Military Satellite?")
+    d.fig("f11_1_ml_military", "Machine learning on the CDM census: predicting military use from orbit, mass and power", width=90)
+    d.p(f"Names and registrations can hide a satellite's role; physics cannot. A model trained on the {M['ml_n_train']:,} satellites of the "
+        f"CDM census ({M['ml_pos_train']} military or dual-use) learns military use from orbit, mass, power and design life alone, never "
+        f"the name, purpose or owner. Tested on {M['ml_n_test']:,} satellites launched <b>after</b> the census (UCS 2020), it scores "
+        f"<b>ROC-AUC {M['ml_ext_auc']:.2f}</b> (0.5 = coin toss). Launch mass and apogee give a satellite away most.")
+    d.table(T("t11_ml_results"), "Model skill: cross-validation on 2014 against the out-of-time test on later launches", small=True)
+    d.p(f"<b>The honest test changed the answer.</b> Ordinary cross-validation favoured gradient-boosted trees (ROC-AUC "
+        f"{M['ml_cv_auc_gbt']:.2f}), but on later satellites they fell to {M['ml_ext_auc_gbt']:.2f}; the simpler logistic model held at "
+        f"{M['ml_ext_auc']:.2f} and was chosen. Adding the operator's country did not help ({M['ml_ext_auc_full']:.2f}): <i>what</i> a satellite "
+        f"is says more than <i>whose</i> it is. The model flags <b>{M['ml_dual_n']} ({pct(M['ml_dual_share'])})</b> of the later 'civil' or "
+        "'commercial' satellites as military-like, led by navigation satellites with encrypted government services: the dual-use blur "
+        "in numbers, and a triage tool for any new object in the catalogue.")
 
     # 6 ---------------------------------------------------------------- space weather
     d.chapter("The Natural Adversary")
@@ -162,6 +191,7 @@ def build():
         ("Likely", f"At least one intense geomagnetic storm per quarter while sunspots stay above 100 ({pct(Q_STORM)}).", "Moderate"),
         ("Realistic possibility", "Another debris-creating event (collision, break-up or weapon test) in a crowded shell by 2030.", "Moderate"),
         ("Almost certain", "More satellites buy coverage: one satellite misses much of what a constellation sees.", "High"),
+        ("Almost certain", f"Indian satellites pass within 5 km of weapon-test and collision debris every day ({M['cj_B_india']} in one day).", "Moderate"),
     ], columns=["How likely", "Judgement", "Confidence"])
     d.table(kj, "Key judgements (intelligence estimative language)", small=True)
     d.p("The judgements use the estimative language of intelligence assessments. Confidence reflects the data: counts from the "
@@ -186,7 +216,7 @@ def build():
     # 11 --------------------------------------------------------------- way forward
     d.chapter("Way Forward")
     R = pd.DataFrame([
-        ("Stand up ORBITWATCH: weekly space-situation picture and the 7-indicator warning matrix from open, ISRO NETRA and commercial data",
+        ("Stand up ORBITWATCH: daily close-approach screening (demonstrated in 4.1) and the 7-indicator warning matrix from open, ISRO NETRA and commercial data",
          "DSA with ISRO (NETRA)", "4 months", "An actionable conjunction or threat warning acted upon"),
         ("Accelerate SBS-III and buy commercial imagery and radar capacity for persistent revisit of the northern borders and IOR",
          "DSA, NSIL, IN-SPACe, industry", "2026-2029", "Revisit time over priority areas"),
@@ -242,13 +272,17 @@ def build():
          f"{pct(M['prem_single'])} of fire-days seen by one satellite only", "Ch 7"),
         ("Holt damped-trend smoothing with 2,000 simulations and back-test; bottom-up scenarios", "What comes by 2030?",
          f"{M['fc_2030_mid']:,} (trend); {M['sc_base']:,} (base); back-test {M['fc_bt_mape']}%", "Ch 8"),
+        ("Logistic regression and gradient-boosted trees; repeated stratified CV; out-of-time test on UCS 2020 launches; permutation importance",
+         "Can physics reveal a military satellite?", f"Out-of-time ROC-AUC {M['ml_ext_auc']} (trees {M['ml_ext_auc_gbt']}); {M['ml_dual_n']} dual-use flags", "Ch 5.1"),
+        ("SGP4 propagation every 10 s for 24 h; k-d tree pair screening (80 km); 1-s refinement and linearised closest approach",
+         "How often do satellites nearly collide?", f"{M['cj_cross_total']:,} encounters < 5 km in two screenings; {M['cj_B_india']} Indian vs debris", "Ch 4.1"),
         ("Indicators and warnings matrix (ORBITWATCH)", "What should be watched?", f"{M['ow_red']} Red, {M['ow_amber']} Amber", "Ch 11"),
     ], columns=["Technique", "Commander's question", "Key result", "Chapter"])
     d.table(TS, "Techniques, questions and results", small=True)
     d.table(T("t1_cleaning_log"), "Data cleaning log", small=True)
 
     d.chapter("Annex C - Software Used and Screenshots", letter="C")
-    d.p("<b>Stack:</b> Python 3.11 (pandas, NumPy, SciPy, statsmodels, ruptures, Matplotlib) for analysis; headless Chromium for the "
+    d.p("<b>Stack:</b> Python 3.11 (pandas, NumPy, SciPy, statsmodels, scikit-learn, ruptures, sgp4, Matplotlib) for analysis; headless Chromium for the "
         "booklet; Microsoft Power BI Desktop for the dashboard (.pbix) built on the exported tables (FactCatalogue, FactSatellites2014, "
         "FactStormDaily, FactFiresMonthly, DimDate and the analysis tables).")
     d.fig("screen_pipeline", "Screenshot: the complete pipeline run, raw data to every chart and table", width=100)
@@ -279,6 +313,8 @@ def build():
         "Killick, R., Fearnhead, P., Eckley, I.A. (2012). Optimal detection of changepoints with a linear computational cost. <i>JASA</i> 107, 1590-1598.",
         "Hyndman, R.J., Athanasopoulos, G. (2021). <i>Forecasting: Principles and Practice</i>, 3rd ed. (damped trend methods).",
         "U.S. Department of Justice and FTC (2023). Merger Guidelines (HHI concentration thresholds).",
+        "Vallado, D.A., Crawford, P., Hujsak, R., Kelso, T.S. (2006). Revisiting Spacetrack Report #3. AIAA 2006-6753 (SGP4); CelesTrak GP data in CCSDS OMM format via github.com/satvisorcom/satvisor-data.",
+        "Hoots, F.R., Crawford, P.S., Roehrich, R.L. (1984). An analytical method to determine future close approaches between satellites. <i>Celestial Mechanics</i> 33, 143-158.",
         "Open-source reporting: All India Radio News (ISRO Chairman on Operation Sindoor, 9 Sep 2025); Outlook Business (SBS-III, 52 satellites, Rs 26,968 crore); "
         "KeepTrack (Starlink count, Sep 2026); OrbitalRadar (Guowang and Qianfan, 2026); NOAA SWPC (solar cycle 25).",
         "Jayadev, A. (2021). <i>Predictive Maintenance in Armed Forces: A Machine Learning Based Decision Support System</i>. M.Tech report, IIT Kharagpur.",

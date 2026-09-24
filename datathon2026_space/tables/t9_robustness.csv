@@ -5,3 +5,5 @@ ISR race,China 406 vs India 17 state ISR/military satellites,Name-based lower bo
 Space weather,intense-storm odds x7 at high solar activity,Poisson rate ratio 1.88 per +50 sunspots (p < 0.001); Spearman rho -0.57,Confirmed
 Solar cycle in debris decay,re-entry cycle of 12 years,Found blind by periodogram; matches the ~11-year solar cycle (SILSO maxima),Confirmed
 Forecast to 2030,~36k payloads (statistical) vs 31k working (base scenario),Back-test error 8.6% over 2022-2026; two independent routes agree,Moderate confidence
+Military-use classifier,"out-of-time ROC-AUC 0.79 (trained 2014, tested on 2014-2020 launches)","Cross-validation alone would have picked gradient-boosted trees (CV 0.94); out of time they fell to 0.64, so the simpler model was chosen",Confirmed (out of time)
+Close-approach screening,"18,355 crossing encounters < 5 km in two 24-hour screenings",Elements used only inside their fresh window (under ~3 days old); co-orbiting and docked pairs removed,Screening grade (~1 km)

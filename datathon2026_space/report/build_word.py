@@ -596,3 +596,5 @@ def build(name, header, chapter_breaks, contents_levels, margins, out):
 if __name__ == "__main__":
     build("booklet", "CDM Datathon-2026  |  Theme 6.1  |  Contested and Congested: Growth of Satellites in Outer Space",
           chapter_breaks=False, contents_levels=1, margins=(20, 18, 20, 18), out="Datathon2026_Theme6.1_Satellites_Booklet.docx")
+    build("annex", "CDM Datathon-2026  |  Theme 6.1  |  Project High Ground  |  Technical Annex",
+          chapter_breaks=False, contents_levels=2, margins=(20, 18, 20, 18), out="Datathon2026_Theme6.1_Technical_Annex.docx")

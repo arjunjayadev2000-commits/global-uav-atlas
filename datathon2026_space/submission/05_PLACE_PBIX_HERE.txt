@@ -1,0 +1,1 @@
+Build the .pbix with Supporting/POWERBI_BUILD_GUIDE.md and save it here as 05_Datathon2026_Theme6.1_Satellites.pbix, then delete this note.

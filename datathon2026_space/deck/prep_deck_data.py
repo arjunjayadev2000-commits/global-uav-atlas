@@ -50,6 +50,9 @@ D = dict(M=M,
          pop_years=[str(y) for y in range(2000, 2031)], pop_actual=[int(pop.loc[y, "Payload"]) for y in range(2000, 2027)] + [None] * 4,
          pop_fc=[None] * 26 + [int(pop.loc[2026, "Payload"])] + tr["payloads in orbit (median)"].astype(int).tolist(),
          risk=rk.values.tolist(), scen=T("t8_scenarios_2030").values.tolist(), prem=T("t7_constellation_premium").values.tolist(),
+         ml=T("t11_ml_results").values.tolist(), ml_imp=T("t11_ml_importance").head(6).values.tolist(),
+         cj=T("t12_conjunction_summary").values.tolist(),
+         india_deb=T("t12_india_encounters").query("screen.str.startswith('B')", engine="python").head(6)[["name_a", "name_b", "miss_km", "rel_speed_kms"]].round(2).values.tolist(),
          rob=T("t9_robustness").values.tolist(), score=T("t9_india_scorecard").fillna("-").values.tolist(), ow=T("t9_orbitwatch").values.tolist())
 (ROOT / "deck/deck_data.json").write_text(json.dumps(D, default=lambda o: None))
 print("deck_data.json written")
