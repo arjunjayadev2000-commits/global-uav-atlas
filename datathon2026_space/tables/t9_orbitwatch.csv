@@ -1,0 +1,8 @@
+Indicator,Source / cadence,Latest value,Amber at,Red at,Status,Action on Red
+"O1 Collision-risk index, LEO (2014 = 1)","Catalogue, weekly",x10,x3,x5,RED,Red: conjunction screening for every Indian LEO satellite; manoeuvre fuel budgeted
+"O2 Payloads in orbit, growth per year","Catalogue, monthly",24%,10%,20%,RED,Red: file spectrum and orbital-slot claims early; shell planning for SBS-III
+O3 Chinese state-ISR satellites launched per year (3-yr mean),"Catalogue, monthly",43,15,30,RED,Red: assume persistent overhead ISR on the northern border; deception and concealment drills
+O4 India's share of active satellites,"Catalogue, quarterly",0.5%,< 3%,< 1%,RED,Red: fast-track SBS-III and commercial constellations; buy capacity
+"O5 Intense geomagnetic storm odds per 30 days (sunspot number >= 100, as in 2023-25)","NOAA / ISRO SSA, daily",39%,15%,30%,RED,Red: storm drill for LEO fleet; hold launch windows; GNSS-degraded mode
+O6 Anti-satellite tests in the last 5 years,Open source,1 (2021),>= 1,>= 2,AMBER,Red: debris-hazard review of Indian orbits; diplomatic push on a destructive-test moratorium
+O7 GEO arc over India: satellites 40-110 E,"UCS / ITU, yearly",162,120,150,RED,Red: protect Indian GEO slots and filings at ITU; interference monitoring

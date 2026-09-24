@@ -1,0 +1,52 @@
+PROJECT HIGH GROUND - Phase II presentation: speaker notes (about 15 minutes + questions)
+
+Slide 01  Project High Ground
+  Sir, my study takes the CDM satellite data and asks five questions: how crowded orbit has become, who owns it, how dangerous it is, who is building military eyes in it, and what India should do. About fifteen minutes, then questions.
+
+Slide 02  Orbit is crowded, concentrated and contested
+  Three numbers carry the study. Working satellites rose 15-fold in twelve years. Collision risk in low orbit is about ten times the 2014 level. And China operates about 406 state intelligence and military satellites to India's 17. India's share of working satellites has fallen to 0.5 percent. Everything that follows is the evidence, and at the end one decision.
+
+Slide 03  Five questions, seven sources of evidence
+  The theme asks for insights into satellite proliferation and a prediction of the trajectory. I turned that into five questions a commander would ask. The CDM data give the 2014 baseline, space weather and a real example of what satellites see. The open catalogue brings the picture to September 2026. Every number is regenerated from raw data by one command.
+
+Slide 04  15 times more working satellites in twelve years
+  Three independent counts: the CDM census of 2014, the UCS database of 2020, and today's catalogue. From 1,167 to 17,062. A change-point test puts the break around 2021, when the mega-constellations began. Satellites launched a year went from 199 in 2013 to 4,480 in 2025. UN registrations match the catalogue almost exactly, so the count is sound.
+
+Slide 05  One country and one company own most of orbit
+  Control of orbit is concentrating. The USA went from 43 to 76 percent of working satellites, mostly one company. China grew thirteen-fold in numbers but held its share near ten percent. India grew from 33 to 78 satellites, but its share fell from 2.8 to 0.5 percent. The concentration index is more than double the 'highly concentrated' threshold.
+
+Slide 06  A live crowd, a dead crowd, and collision risk ×10
+  Orbit is crowded in two places. The live crowd at 450 to 500 kilometres, almost all working satellites. The dead crowd at 750 to 900 kilometres, mostly debris from the 2007 Chinese test and the 2009 collision. Collisions grow with the square of the number of objects at each height, so the collision-risk index is about 10 times its 2014 level. Higher up, the geostationary arc India uses holds 162 satellites; China and the USA each have more there than India.
+
+Slide 07  Altitude decides how long weapon debris stays
+  Six events, one lesson. China's 2007 test at high altitude made over three and a half thousand tracked pieces, and two thirds are still up nearly twenty years later. India's 2019 test was done low; every piece re-entered, most within half a year. Russia's 2021 test has almost cleared. A responsible test is a low one, and India can say so with data.
+
+Slide 08  China and the USA build eyes by the hundred
+  Grouping satellites by official programme names gives a transparent lower bound. China operates about 406, including 164 Yaogan reconnaissance satellites, and adds about 43 a year. India operates about 17. SBS-III is the right answer but closes only about 13% of today's gap. During Operation Sindoor ten Indian satellites worked round the clock: the need is proven, the capacity is thin.
+
+Slide 09  Storm odds rise ~7-fold when the Sun is active
+  The Sun is the adversary nobody can deter. In the CDM records, when sunspots are high, the chance of an intense magnetic storm in a month is 39%; when quiet, 6%. A Poisson model gives 1.88 times the rate per 50 sunspots. A periodogram of debris re-entries finds a 12-year cycle on its own: the solar cycle heats the upper atmosphere and drags objects down.
+
+Slide 10  Two satellites saw what one would have missed
+  Why take all this risk? Because of what satellites see. Terra passes in the morning, Aqua in the afternoon. On a ten-kilometre grid, 84% of fire-days were seen by only one of them: a single satellite would have missed nearly half. For the Services the lesson is direct: persistence comes from numbers, and revisit decides whether a mobilisation or a launcher is caught in time.
+
+Slide 11  About 31,000 working satellites by 2030
+  Two routes agree. A damped-trend forecast reaches about 36,000 satellites in orbit by 2030; tested on held-back years it erred by 8.6 percent. A bottom-up build from the announced constellations gives 20,901, 30,875 or 43,606 working satellites. The collision-risk index rises to about 17 times the 2014 level in the base case. China's planned shells at 1,050 to 1,200 kilometres are the concern: debris there stays for centuries.
+
+Slide 12  Every finding survives an independent check
+  Before a commander acts, he asks how sure we are. Each headline was checked by a second source or a second method: UN registrations for growth, a second shell size for congestion, a sensitivity test for the intelligence count, two statistical tests for storms, and a back-test for the forecast. The intelligence count is a lower bound: covert satellites would only widen the gap.
+
+Slide 13  India depends on space, but holds less of it
+  For India the problem is structural: rising dependence on space for banking, navigation, communications and warning, a falling share of working satellites, and a launch rate far behind China's. For the Services: plan on being watched, and plan on losing some space services in war.
+
+Slide 14  Seven indicators: 6 Red, 1 Amber (Sep 2026)
+  The study becomes a standing monitor. Seven indicators, each with thresholds and an action on Red. Today six are Red: collision risk, growth rate, Chinese ISR build rate, India's share, storm odds, and crowding of our geostationary arc. The anti-satellite test indicator is Amber.
+
+Slide 15  Seven actions, each with a lead and a timeline
+  Seven actions from the booklet, each with a lead, a timeline and a measure of success. The first costs almost nothing: the open catalogue and the pipeline already exist. The others build capacity and resilience.
+
+Slide 16  Reproducible from raw data to decision
+  For the technical criteria: everything is code. One command rebuilds every figure, table and number, and the Power BI dashboard uses the same tables. I can show the dashboard live if the panel wishes.
+
+Slide 17  The high ground has become a crowd.
+  To close: in twelve years orbit became crowded, concentrated and contested, and India's share shrank while its dependence grew. The remedy is numbers, resilience and awareness. The ask is small and time-bound, with a clear stop test. Thank you, sir.

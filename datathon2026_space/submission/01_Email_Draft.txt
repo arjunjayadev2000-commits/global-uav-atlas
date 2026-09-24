@@ -1,0 +1,25 @@
+To:       datathon.ids@gov.in
+Subject:  Datathon-2026 submission - Theme 6.1 Contested and Congested: Growth of Satellites in Outer Space - [Rank] Arjun Jayadev, [Service No]
+
+Sir / Ma'am,
+
+1.  Please find attached my submission for CDM Datathon-2026 under Theme 6.1, Contested and Congested - Growth of
+    Satellites in Outer Space, titled "Project High Ground: Contested and Congested - the Crowding of Orbit, and What It
+    Means for India and the Indian Armed Forces", as per Para 8.2 of the General Instructions:
+
+    (a) 03_Datathon2026_Theme6.1_Booklet_(Main_Submission).pdf - analysis with insights, and screenshots of the data
+        analytics software used (Annex C).
+    (b) 04_Datathon2026_Theme6.1_Satellites.pbix - Power BI output file.
+    (c) 02_Appendix_A_Individual_Details.docx - personal details as per Appendix A.
+
+2.  The analysis uses the CDM Theme 6.1 datasets (satellite census; space-weather records; MODIS fire detections)
+    together with cited open-source data (CelesTrak satellite catalogue, UCS Satellite Database, UNOOSA registry).
+    All results can be regenerated from raw data; the source code can be provided if required.
+
+3.  Submitted for kind consideration, please.
+
+Regards,
+
+[Rank] Arjun Jayadev
+[Service No] | [Unit / Formation]
+[Mobile No]

@@ -1,0 +1,15 @@
+Dataset,Step,Count
+CDM satellites,Rows loaded,1167
+CDM satellites,Launch dates converted from Excel serial numbers (1 missing),1
+CDM satellites,Impossible orbital periods (< 80 min) set to missing,6
+CDM satellites,Impossible inclinations (> 180 deg) set to missing,1
+CDM satellites,Rows after cleaning,1167
+UCS 2020,Active satellites,2666
+SATCAT,Objects catalogued (1957 - Sep 2026),70793
+SATCAT,Earth-orbiting objects kept,70366
+SATCAT,Objects without orbital elements (kept; excluded from altitude work),1657
+Space weather,Hourly Dst values (3 periods),139872
+Space weather,Monthly smoothed sunspot values,192
+MODIS fires,Detections loaded (archive + near real time),1248606
+MODIS fires,Duplicate detections removed,1
+MODIS fires,Rows after cleaning,1248605

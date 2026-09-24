@@ -1,0 +1,7 @@
+Finding,Result,Independent check,Verdict
+Growth of orbit,15x active satellites 2014-2026,UNOOSA registrations track catalogue launches (r = 0.997); UCS 2020 census sits on the same curve,Confirmed
+Collision risk,index x10 since 2014,"Same result with 25 km shells and with objects' mean altitude; the densest shell holds mostly working satellites, the second band mostly debris",Confirmed (relative index)
+ISR race,China 406 vs India 17 state ISR/military satellites,Name-based lower bound; excluding commercial imagers the ratio stays above 20:1,Confirmed (lower bound)
+Space weather,intense-storm odds x7 at high solar activity,Poisson rate ratio 1.88 per +50 sunspots (p < 0.001); Spearman rho -0.57,Confirmed
+Solar cycle in debris decay,re-entry cycle of 12 years,Found blind by periodogram; matches the ~11-year solar cycle (SILSO maxima),Confirmed
+Forecast to 2030,~36k payloads (statistical) vs 31k working (base scenario),Back-test error 8.6% over 2022-2026; two independent routes agree,Moderate confidence

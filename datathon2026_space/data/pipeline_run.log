@@ -1,0 +1,233 @@
+Stage 1: preprocessing
+  tab -> t1_cleaning_log
+                 0                                                  1        2
+0   CDM satellites                                        Rows loaded     1167
+1   CDM satellites  Launch dates converted from Excel serial numbe...        1
+2   CDM satellites  Impossible orbital periods (< 80 min) set to m...        6
+3   CDM satellites  Impossible inclinations (> 180 deg) set to mis...        1
+4   CDM satellites                                Rows after cleaning     1167
+5         UCS 2020                                  Active satellites     2666
+6           SATCAT               Objects catalogued (1957 - Sep 2026)    70793
+7           SATCAT                        Earth-orbiting objects kept    70366
+8           SATCAT  Objects without orbital elements (kept; exclud...     1657
+9    Space weather                      Hourly Dst values (3 periods)   139872
+10   Space weather                    Monthly smoothed sunspot values      192
+11     MODIS fires       Detections loaded (archive + near real time)  1248606
+12     MODIS fires                       Duplicate detections removed        1
+13     MODIS fires                                Rows after cleaning  1248605
+Stage 2: growth
+  tab -> t2_population_by_year
+  fig -> f2_1_population
+  tab -> t2_active_censuses
+  fig -> f2_2_censuses
+  tab -> t2_launches_by_country
+  fig -> f2_3_launch_rate
+      Payload  Rocket body  Debris  Unknown  total
+year                                              
+2023    12338         2231   13593       93  28255
+2024    14042         2240   13341       71  29694
+2025    17414         2275   12701       53  32443
+2026    19971         2300   12540       57  34868 
+        Date  ... Active satellites
+0  Jan 2014  ...              1167
+1  Apr 2020  ...              2666
+2  Sep 2026  ...             17062
+
+[3 rows x 3 columns] 
+ site_country  USA  China  Russia  Europe  India  Japan  New Zealand  Others
+launch                                                                     
+2024          137     65      17       3      5      5           13       4
+2025          172     89      17       7      4      3           17       2
+2026          114     63      13       6      2      2           14       2 
+cps [2021] cagr 0.041020574770116 0.46670998997736146 corr 0.9973788655240781
+Stage 3: actors
+  tab -> t3_country_share
+  fig -> f3_1_actors
+  tab -> t3_users
+  tab -> t3_purpose
+  tab -> t3_military_share
+  fig -> f3_2_users_purpose
+               Jan 2014 (CDM)  ...  Sep 2026 (catalogue) %
+C                              ...                        
+USA                     502.0  ...                    76.0
+China                   117.0  ...                     9.0
+Russia                  118.0  ...                     2.2
+UK                       25.0  ...                     4.1
+Japan                    43.0  ...                     0.9
+India                    33.0  ...                     0.5
+Multinational           100.0  ...                     0.8
+All others              229.0  ...                     6.6
+
+[8 rows x 6 columns] 
+                            Jan 2014 (CDM)  Apr 2020 (UCS)
+Users                                                    
+Civil                                 6.4             5.1
+Commercial                           36.4            54.5
+Government                           28.5            22.2
+Military (incl. dual-use)            28.4            18.2
+Other                                 0.2             0.0 
+                           Jan 2014 (CDM)  Apr 2020 (UCS)
+purpose_group                                           
+Communications                      52.9            45.4
+Earth observation & ISR             22.5            33.8
+Technology demonstration            11.1            11.7
+Navigation                           8.1             5.6
+Science                              4.0             3.2
+Other                                1.3             0.5 
+         Military share 2014 %  ...  Satellites 2020
+C                              ...                 
+USA                      30.7  ...           1327.0
+China                    32.5  ...            363.0
+Russia                   68.6  ...            169.0
+India                    15.2  ...             61.0
+Japan                     0.0  ...             78.0
+UK                       32.0  ...            130.0
+France                   72.7  ...             12.0
+Israel                  100.0  ...             15.0
+
+[8 rows x 4 columns] 
+beyond 0.4715261958997722 0.30179028132992325
+Stage 4: congestion
+  tab -> t4_leo_shells
+  fig -> f4_1_leo_shells
+  tab -> t4_geo_arc_india
+  fig -> f4_2_geo_arc
+  tab -> t4_asat_debris
+  fig -> f4_3_asat_debris
+                                       Event      Date  Pieces catalogued  Still in orbit (Sep 2026)  Still in orbit %  Years since  Median years to re-entry (re-entered pieces)
+0                            China ASAT test  Jan 2007               3531                       2313              65.5         19.7                                           9.8
+1  Iridium-Cosmos collision (Russian debris)  Feb 2009               1714                        613              35.8         17.6                                           6.8
+2       Iridium-Cosmos collision (US debris)  Feb 2009                656                        117              17.8         17.6                                           6.9
+3                          US ASAT intercept  Feb 2008                174                          0               0.0         18.6                                           0.1
+4           India ASAT test (Mission Shakti)  Mar 2019                129                          0               0.0          7.5                                           0.4
+5                           Russia ASAT test  Nov 2021               1806                          4               0.2          4.8                                           0.5 
+risk 10.30661871319704 peak 450 arc 115 162 554 
+ Country
+USA              33
+China            32
+India            24
+Russia           20
+Japan             7
+Multinational     6
+Luxembourg        5
+UK                5
+Name: count, dtype: int64
+Stage 5: contest
+  tab -> t5_isr_families
+  fig -> f5_1_isr_race
+  tab -> t5_military_2014
+  Country                                                               Programme family  Operational Sep 2026  Launched since 2014
+0   China                                          China: Yaogan military reconnaissance                   164                  149
+1   China  China: other state ISR & tech (Gaofen, TJS, Shiyan, Shijian, Tianhui, Yunhai)                   183                  173
+2   China                                 China: commercial imagers (Jilin-1, Superview)                    59                   94
+3     USA                                      USA: national-security payloads (USA-nnn)                   417                  385
+4     USA                     USA: commercial imagers (Planet, Maxar, BlackSky, Capella)                   125                  581
+5  Russia                                                      Russia: military (Cosmos)                   146                  125
+6   India                   India: ISR & military (RISAT, Cartosat, EOS, EMISAT, GSAT-7)                    17                   15 
+ China                     406
+USA                       542
+Russia                    146
+India                      17
+India + SBS-III (2029)     69
+dtype: int64 
+ Purpose  Communications  Early Warning  ...  Surveillance  Technology Development
+Country                                 ...                                      
+China                 4              0  ...             0                       1
+France                2              0  ...             0                       2
+India                 1              0  ...             2                       0
+Israel                4              0  ...             0                       0
+Russia               32              4  ...             0                       0
+UK                    8              0  ...             0                       0
+USA                  39              6  ...             5                      29
+
+[7 rows x 15 columns]
+Stage 6: space weather
+  tab -> t6_storm_classes
+  tab -> t6_periods
+  fig -> f6_1_storms
+  tab -> t6_reentry_rate
+  fig -> f6_2_reentry_cycle
+                       Class  Events
+0  Moderate (-50 to -100 nT)     498
+1  Intense (-100 to -200 nT)      46
+2        Severe (<= -200 nT)      13 
+          hours  min_dst  mean_ssn  storm_events
+period                                         
+train_a  28824     -387     136.9           233
+train_b  52584     -223      51.8           191
+train_c  58464     -374      24.3           133 
+IRR 1.882753415708445 1.1129833982689023e-08 rho -0.5690795612693361 4.830954194592172e-18 p hi/lo 0.391304347826087 0.05747126436781609 
+period 12.2 3.927594230416041 2.288360768270088
+Stage 7: Earth-observation value
+  tab -> t7_constellation_premium
+  tab -> t7_monthly_surge
+  tab -> t7_industrial_heat
+  fig -> f7_1_eo_value
+  fig -> f7_2_fire_map
+satellite
+Aqua only     0.455098
+Terra only    0.385222
+Both          0.159680
+Name: proportion, dtype: float64 
+night 0.2080866246731352 
+ date
+2015-07-01    6.414689
+2020-09-01    5.356140
+2017-09-01    4.419002
+2017-12-01    4.183168
+2019-07-01    3.469578
+2016-02-01    3.141781
+dtype: float64 
+           detections  months_active                           likely source
+cell                                                                       
+33N 111W        4039            118  Arizona copper smelting (Phoenix area)
+43N 112W        3285            102     Pocatello, Idaho (phosphate plants)
+42N 87W         3114            116               Gary / Chicago steel belt
+42N 83W         2268            106                         Detroit (steel)
+41N 82W         2161            107                       Cleveland (steel)
+31N 88W         1912            117        Mobile, Alabama (industry, port)
+39N 90W         1672             98                         industrial site
+33N 80W         1599            117                         industrial site 
+kilauea last 2020-06-01 00:00:00
+Stage 8: forecast
+  tab -> t8_trend_forecast
+  tab -> t8_scenarios_2030
+  tab -> t8_risk_index
+  fig -> f8_1_forecast
+  Scenario  Starlink (US)  Kuiper (US)  Guowang (China)  Qianfan (China)  All other satellites  Total 2030
+0      Low          12000         1600              800              800                  5701       20901
+1     Base          15000         3236             3000             3000                  6639       30875
+2     High          19400         3236             6500             6500                  7970       43606 
+        Point  Collision-risk index (2014 = 1)
+0   Jan 2014                              1.0
+1   Sep 2026                             10.3
+2   2030 Low                             11.6
+3  2030 Base                             16.8
+4  2030 High                             27.2 
+trend [23256.8586228  26944.42534788 31178.21365491 36033.16826464] [22081.1437412  24123.89969014 26001.15734762 28013.98619766] [24473.2043583  29939.5623411  37041.43106022 46105.44582333] backtest MAPE 8.564190641388107
+Stage 9: India, robustness, ORBITWATCH
+  tab -> t9_india_scorecard
+  fig -> f9_1_launch_capacity
+  tab -> t9_robustness
+  tab -> t9_orbitwatch
+                                       Measure  India  China      USA
+0                  Active satellites, Sep 2026     78   1531  12959.0
+1            Active satellites, Jan 2014 (CDM)     33    117    502.0
+2  Military / state-ISR satellites operational     17    406    542.0
+3                     Orbital launches in 2025      4     89    172.0
+4    GEO satellites in the 40-110 E arc (2020)     24     32      NaN 
+                                                                               Indicator          Latest value Status
+0                                               O1 Collision-risk index, LEO (2014 = 1)                   x10    RED
+1                                                 O2 Payloads in orbit, growth per year                   24%    RED
+2                         O3 Chinese state-ISR satellites launched per year (3-yr mean)                    43    RED
+3                                                 O4 India's share of active satellites                  0.5%    RED
+4  O5 Intense geomagnetic storm odds per 30 days (sunspot number >= 100, as in 2023-25)                   39%    RED
+5                                           O6 Anti-satellite tests in the last 5 years  1 (Russia, Nov 2021)  AMBER
+6                                            O7 GEO arc over India: satellites 40-110 E                   162    RED 
+launch avg 4.2 66.4
+Stage 10: Power BI export
+  FactCatalogue.csv: 70,366 rows
+  FactSatellites2014.csv: 1,167 rows
+  FactStormDaily.csv: 5,828 rows
+  FactFiresMonthly.csv: 484 rows
+  DimDate.csv: 25,567 rows

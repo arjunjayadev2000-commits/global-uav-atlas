@@ -1,0 +1,4 @@
+period,hours,min_dst,mean_ssn,storm_events
+train_a,28824,-387,136.9,233
+train_b,52584,-223,51.8,191
+train_c,58464,-374,24.3,133

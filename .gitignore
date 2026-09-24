@@ -52,3 +52,13 @@ datathon2026/report/_html/
 datathon2026/submission/*.pdf
 datathon2026/submission/Supporting/
 datathon2026/Datathon2026_Submission_Folder.zip
+
+# Datathon 2026 Theme 6.1 - raw CDM data, regenerable intermediates
+datathon2026_space/data/raw/
+datathon2026_space/data/clean/
+datathon2026_space/powerbi/*.csv
+datathon2026_space/report/_html/
+datathon2026_space/submission/*.pdf
+datathon2026_space/submission/*.pptx
+datathon2026_space/submission/Supporting/
+datathon2026_space/Datathon2026_Theme6.1_Submission_Folder.zip
