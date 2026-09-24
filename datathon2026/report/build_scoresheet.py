@@ -105,7 +105,7 @@ tr.sec td {{ background: #e8edf3; }} .c {{ text-align: center; }} .ok {{ color: 
 <table class="info"><tr><td>1. Participant's Rank &amp; Name</td><td>: [Rank] Arjun Jayadev</td></tr>
 <tr><td>2. Theme</td><td>: 6.2 Global Conflicts - Impact on Supply Chains (Project DARKWATER)</td></tr>
 <tr><td>3. Date of Assessment</td><td>: 23 Sep 2026</td></tr>
-<tr><td>Documents assessed</td><td>: Commander's Edition (23 pp, main submission) with Full Technical Report (90 pp) as annex</td></tr></table>
+<tr><td>Documents assessed</td><td>: Commander's Edition (24 pp, main submission) with Full Technical Report (90 pp) as annex</td></tr></table>
 <h2>Scoring Criteria</h2>
 <table><tr><th style="width:4%">Para</th><th style="width:21%">Criterion</th><th style="width:5%">Max</th><th style="width:6%">Marks</th>
 <th style="width:38%">Evidence in the submission</th><th style="width:26%">What would lift the mark</th></tr>{rows}</table>

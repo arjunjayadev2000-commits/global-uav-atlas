@@ -1,6 +1,6 @@
 # PROJECT DARKWATER - CDM Datathon-2026, Global Conflicts: Impact on Supply Chains
 
-**Commander's Edition - THE SUBMISSION (23 pages):** `report/Datathon2026_Commanders_Edition.pdf`, built by `report/build_commander.py`:
+**Commander's Edition - THE SUBMISSION (24 pages):** `report/Datathon2026_Commanders_Edition.pdf`, built by `report/build_commander.py`:
 the whole story in ten short chapters for a commander or senior leader, plus Annex A (plain-words glossary), Annex B
 (technical summary for assessors), Annex C (software used and screenshots; two Power BI screenshot slots to fill) and
 Annex D (references).
@@ -74,7 +74,7 @@ analysis/     01..07 pipeline stages, common.py, run_all.py
 figures/      26 charts and maps (PNG, 200 dpi)
 tables/       23 result tables (CSV)
 data/         metrics.json (every number quoted in the report); raw/ and clean/ are git-ignored
-powerbi/      powerbi_tables.zip (star schema) + POWERBI_BUILD_GUIDE.md
+powerbi/      powerbi_tables.zip (star schema, rebuilt by stage 07) + DarkwaterTheme.json + POWERBI_BUILD_GUIDE.md (step-by-step)
 report/       build_report.py -> PDF
 ```
 

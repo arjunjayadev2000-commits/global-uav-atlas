@@ -278,10 +278,17 @@ def build():
     d.fig("screen_code", "Screenshot: code excerpt, scene-cluster bootstrap behind the robustness test", width=100)
     slot = ('<div style="border:1.5pt dashed #9aa5ae;border-radius:4pt;height:150pt;display:flex;align-items:center;justify-content:center;'
             'color:#6b6a66;font-family:Liberation Sans,sans-serif;font-size:10pt;text-align:center">{t}</div>')
-    d.html_fig(slot.format(t="[ Insert screenshot: Power BI page 1 - Conflict Pulse / page 2 - Chokepoint Watch ]"),
-               "Screenshot: Power BI dashboard, conflict and chokepoint pages")
-    d.html_fig(slot.format(t="[ Insert screenshot: Power BI page 3 - Dark Ships / page 4 - Decision ]"),
-               "Screenshot: Power BI dashboard, dark-ship and decision pages")
+    # Power BI screenshots: drop figures/pbi_page1.png ... pbi_page4.png in place and rebuild; a dashed slot shows until then
+    pbi = [("Conflict Pulse", "weekly violence, event mix and map of where it fell"),
+           ("Chokepoint Watch", "conflict index by sea lane, Hormuz transits and shipping disruptions"),
+           ("Dark Ships", "SAR detections coloured by AIS status, dark share by sea and dark-ship clusters"),
+           ("Decision", "stock-days what-if, effective cover and the forecast risk of darkness")]
+    for k, (name, what) in enumerate(pbi, 1):
+        cap = f"Screenshot: Power BI dashboard, page {k} - {name} ({what})"
+        if (FIG / f"pbi_page{k}.png").exists():
+            d.fig(f"pbi_page{k}", cap, width=100)
+        else:
+            d.html_fig(slot.format(t=f"[ Insert screenshot: Power BI page {k} - {name} ]"), cap)
 
     # references
     d.chapter("Annex D - Key References and Data Sources", letter="D")

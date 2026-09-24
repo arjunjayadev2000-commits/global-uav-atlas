@@ -1,0 +1,13 @@
+{
+  "name": "Project Darkwater",
+  "dataColors": ["#1F3B5C", "#C0392B", "#2A78D6", "#E67E22", "#5A9BE0", "#7B241C", "#9AA5AE", "#27AE60"],
+  "background": "#FFFFFF",
+  "foreground": "#1F3B5C",
+  "tableAccent": "#1F3B5C",
+  "good": "#27AE60",
+  "neutral": "#E67E22",
+  "bad": "#C0392B",
+  "maximum": "#C0392B",
+  "center": "#F5B041",
+  "minimum": "#EEF2F7"
+}

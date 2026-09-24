@@ -39,3 +39,15 @@ for name, df in out.items():
 for t in ["t6_ccii_weekly", "t6_2_episodes", "t7_1_dark_by_region", "t7_4_dark_clusters", "t8_3_poi_risk",
           "t9_1_stock_decision", "t8_2_model_cv", "t9_6_iw_matrix", "t9_7_scenarios", "t9_2_robustness", "t9o_1_event_study", "t9o_3_war_premium", "t11_6_signatures", "t11_7_defence_budget", "t12_1_chokepoint_change", "t12_2_shipping_disruptions", "t12_3_effective_cover"]:
     pd.read_csv(TAB / f"{t}.csv").to_csv(PBI / f"{t}.csv", index=False)
+
+# daily chokepoint transits (IMF PortWatch) for the Chokepoint Watch page
+pw = pd.read_csv(PBI.parent / "data" / "open" / "imf_portwatch_chokepoints_daily.csv", parse_dates=["date"])
+pw = pw[pw.date >= "2023-01-01"].rename(columns={"date": "DATE", "portname": "CHOKEPOINT", "n_total": "TRANSITS", "n_tanker": "TANKERS"})
+pw[["DATE", "CHOKEPOINT", "TRANSITS", "TANKERS"]].sort_values(["CHOKEPOINT", "DATE"]).to_csv(PBI / "FactChokepointTransits.csv", index=False)
+print(f"  FactChokepointTransits.csv: {len(pw):,} rows")
+
+# one zip holding every table, as referenced by POWERBI_BUILD_GUIDE.md
+import zipfile
+with zipfile.ZipFile(PBI / "powerbi_tables.zip", "w", zipfile.ZIP_DEFLATED) as z:
+    for f in sorted(PBI.glob("*.csv")):
+        z.write(f, f.name)
