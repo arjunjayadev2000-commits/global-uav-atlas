@@ -6,6 +6,23 @@ matches the analysis pipeline (analysis/run_all.py).
 Pipeline: render body (arabic page numbers) -> locate heading/figure markers -> render front matter
 with a paginated table of contents, list of figures and list of tables -> merge -> stamp page numbers.
 """
+
+# =====================================================================================================
+# ANNOTATED SOURCE - build_report.py: the full technical report (PDF, ~90 pages)
+# -----------------------------------------------------------------------------------------------------
+# Usage:  cd report && python build_report.py        (run the analysis pipeline first)
+# HOW IT WORKS
+#   1. build_body() writes the report as HTML, chapter by chapter, using the Doc helper class below.
+#      Numbers come from M (data/metrics.json) and T(<table name>) (tables/*.csv) - nothing is typed by hand.
+#   2. Headless Chromium prints the body to PDF. Invisible markers (@@S5_2@@ etc.) placed next to every heading,
+#      figure and table are then found in the PDF to learn their page numbers, and blanked out.
+#   3. The front matter (title page, declaration, abstract, executive summary, lists of figures and tables,
+#      contents) is printed with those page numbers, merged in front of the body, and page numbers are stamped.
+#   4. The final HTML is also saved to report/_html/ for build_word.py (the editable Word version).
+# TO EDIT  Your rank, service number and unit: the RANK / SERVICE_NO / UNIT lines below.
+#          Wording: find the chapter in build_body() (search for the '=====' chapter markers).
+# =====================================================================================================
+
 import base64
 import html
 import json
@@ -21,17 +38,21 @@ import story as ST
 
 ROOT = Path(__file__).resolve().parents[1]
 FIG, TAB, OUT = ROOT / "figures", ROOT / "tables", ROOT / "report"
+WORD = OUT / "_html"  # intermediate HTML consumed by build_word.py
 M = json.loads((ROOT / "data" / "metrics.json").read_text())
 
+# EDIT HERE: replace the three placeholders below with your rank, service number and unit / formation.
 AUTHOR = "Arjun Jayadev"
 RANK = "[Rank]"
 SERVICE_NO = "[Service No]"
 UNIT = "[Unit / Formation]"
+# Report title and subtitle (also used by the Commander's Edition).
 TITLE = "PROJECT DARKWATER"
 SUBTITLE = ("Global Conflicts and the Blinding of Supply Chains: Maritime Picture Assurance at Contested Chokepoints, "
             "with Implications for India and the Indian Armed Forces")
 
 
+# Number formatting helpers: pct(0.742) -> '74%'; n(12345) -> '12,345'.
 def pct(x, d=0):
     return f"{x * 100:.{d}f}%"
 
@@ -41,6 +62,8 @@ def n(x):
 
 
 # ------------------------------------------------------------------ numbering registries
+# Doc collects the report as HTML pieces and numbers chapters, sections, figures and tables automatically.
+# Each heading/figure/table gets a hidden marker so its page number can be found after printing.
 class Doc:
     def __init__(self):
         self.ch = 0
@@ -54,6 +77,8 @@ class Doc:
     def add(self, s):
         self.parts.append(s)
 
+    # New chapter: closes the previous one with its 'So what' box, restarts figure/table numbering,
+    # and adds the story kicker and 'The story so far' box (from story.py).
     def chapter(self, title, letter=None):
         close = getattr(self, "closes", {}).get(self.ch) if self.ch else None
         if close and not letter and self.ch not in getattr(self, "_closed", set()) or (close and letter and self.ch not in getattr(self, "_closed", set())):
@@ -80,6 +105,7 @@ class Doc:
         if op:
             self.add(f'<div class="story"><span class="lab">The story so far</span>{op}</div>')
 
+    # Numbered section heading (level 2 = x.y, level 3 = x.y.z).
     def section(self, num, title, level=2):
         mid = "S" + num.replace(".", "_")
         self.sec.append((mid, level, num, title))
@@ -93,6 +119,7 @@ class Doc:
     def bullets(self, items, cls=""):
         self.add(f'<ul class="{cls}">' + "".join(f"<li>{i}</li>" for i in items) + "</ul>")
 
+    # Insert figures/<name>.png with a numbered caption and, if story.py has one, a 'What this shows' line.
     def fig(self, name, caption, width=86, source=None):
         self.fig_no += 1
         label = f"{self.pfx}.{self.fig_no}"
@@ -105,6 +132,7 @@ class Doc:
                  f'<figcaption><span class="mk">@@{mid}@@ </span><b>Figure {label} :</b> {caption}</figcaption>{pl}{src}</figure>')
         return label
 
+    # Insert an HTML infographic (from infographics.py) as a numbered figure.
     def html_fig(self, inner, caption):
         self.fig_no += 1
         label = f"{self.pfx}.{self.fig_no}"
@@ -113,6 +141,7 @@ class Doc:
         self.add(f'<figure>{inner}<figcaption><span class="mk">@@{mid}@@ </span><b>Figure {label} :</b> {caption}</figcaption></figure>')
         return label
 
+    # Insert a pandas table as a numbered, styled HTML table (numbers formatted automatically).
     def table(self, df, caption, fmt=None, widths=None, small=False, note=None, breakable=False):
         self.tab_no += 1
         label = f"{self.pfx}.{self.tab_no}"
@@ -147,10 +176,12 @@ class Doc:
         self.add(f'<div class="callout">{t}</div>')
 
 
+# Read tables/<name>.csv (a result table written by the analysis stages).
 def T(name):
     return pd.read_csv(TAB / f"{name}.csv")
 
 
+# Print styling for the PDF: A4, Times-style body, navy headings, table and box styles.
 CSS = """
 @page { size: A4; margin: 24mm 22mm 22mm 26mm; }
 * { box-sizing: border-box; }
@@ -216,6 +247,9 @@ def st_null(M):
     return f"{r['Crowding null %']:.1f}"
 
 
+# THE REPORT TEXT. Chapters follow the thesis format: Introduction -> Literature -> Background -> Data ->
+# analysis chapters -> Inference -> Impact on the globe, India and the Armed Forces -> Way Forward ->
+# Conclusion.
 def build_body():
     d = Doc()
     d.opens, d.closes = ST.openings(M), ST.closings(M)
@@ -1277,6 +1311,8 @@ def build_body():
     return d
 
 
+# Front matter with real page numbers: title page, declaration, acknowledgement, abstract, executive summary,
+# study at a glance, glossary, abbreviations, list of figures, list of tables, table of contents.
 def front_html(body, pages, fp=None):
     fp = fp or {}
     toc = []
@@ -1364,6 +1400,7 @@ of armoured vehicles, shaped much of the method used here.</p></div>
 {''.join(toc)}</table></div>"""
 
 
+# Executive summary in decision-brief form (bottom line up front, key judgements, actions).
 def exec_summary():
     a_ = M["ach_inconsistent"]
     return f"""
@@ -1398,6 +1435,7 @@ def page(html_body):
     return f"<!doctype html><html><head><meta charset='utf-8'><style>{CSS}{IG.CSS}</style></head><body>{html_body}</body></html>"
 
 
+# Print HTML to an A4 PDF with headless Chromium.
 def render(browser, html_str, path):
     pg = browser.new_page()
     pg.set_content(html_str, wait_until="load")
@@ -1406,6 +1444,7 @@ def render(browser, html_str, path):
     pg.close()
 
 
+# Roman numerals for front-matter page numbers (i, ii, iii ...).
 def roman(k):
     vals = [(10, "x"), (9, "ix"), (5, "v"), (4, "iv"), (1, "i")]
     out = ""
@@ -1416,10 +1455,11 @@ def roman(k):
     return out
 
 
+# Build order: body -> find markers/pages -> front matter (twice, so its own page numbers settle) -> merge ->
+# stamp page numbers and running header -> save.
 def main():
     body = build_body()
     body_html = page("".join(body.parts))
-    (OUT / "report_body.html").write_text(body_html)
     with sync_playwright() as p:
         br = p.chromium.launch(executable_path="/opt/pw-browsers/chromium-1194/chrome-linux/chrome")
         render(br, body_html, OUT / "_body.pdf")
@@ -1443,6 +1483,9 @@ def main():
                 fp.setdefault(head, roman(i + 1))
         front = page(front_html(body, pages, fp))
         render(br, front, OUT / "_front.pdf")
+        WORD.mkdir(exist_ok=True)  # final HTML kept for the editable Word version (build_word.py)
+        (WORD / "report_front.html").write_text(front)
+        (WORD / "report_body.html").write_text(body_html)
         br.close()
     fr = fitz.open(OUT / "_front.pdf")
     doc = fitz.open()

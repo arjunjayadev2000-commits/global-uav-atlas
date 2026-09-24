@@ -1,5 +1,16 @@
 """Infographics and SmartArt-style graphics for the report, built as HTML + inline SVG icons (Font Awesome Free,
 CC BY 4.0) so they stay vector-sharp in print. Every number comes from data/metrics.json."""
+
+# =====================================================================================================
+# ANNOTATED SOURCE - infographics.py: SmartArt-style graphics as HTML + inline SVG icons
+# -----------------------------------------------------------------------------------------------------
+# Each function returns an HTML block that build_report.py / build_commander.py place as a figure:
+# at_a_glance (one-page summary), theatre_map (map with call-outs), blinding_vs_diversion, impact_cascade,
+# triservice (Navy / Air Force / Army), iw_dashboard (DARKWATCH lights), roadmap, methodology, takeaways,
+# signatures (four behaviours at sea) and cog (centre-of-gravity analysis).
+# Icons are Font Awesome Free (CC BY 4.0) embedded as SVG so they stay sharp in print. All numbers come from M.
+# =====================================================================================================
+
 import base64
 import os
 import re
@@ -11,6 +22,7 @@ ICON_DIR = Path(os.path.dirname(fontawesomefree.__file__)) / "static/fontawesome
 NAVY, ORANGE, RED, AMBER, GREEN, BLUE, GREY = "#1f3b5c", "#eb6834", "#c62828", "#e08a00", "#2e7d32", "#2a78d6", "#6b6a66"
 
 
+# Load a Font Awesome SVG icon by name and colour it.
 def icon(name, size=22, color=NAVY):
     svg = (ICON_DIR / f"{name}.svg").read_text()
     svg = re.sub(r"<!--.*?-->", "", svg)
@@ -105,6 +117,7 @@ def at_a_glance(M):
     return "".join(out)
 
 
+# Convert longitude/latitude into % positions on the margin-free base map (30-100 E, 5 S-32 N).
 def _pos(lon, lat):
     return f"left:{(lon - 30) / 70 * 100:.2f}%;top:{(32 - lat) / 37 * 100:.2f}%"
 

@@ -1,4 +1,23 @@
 """Stage 3 - Chokepoint Conflict Intensity Index (CCII), forecasting and survival of disruption episodes."""
+
+# =====================================================================================================
+# ANNOTATED SOURCE - Stage 3: chokepoint stress, forecast and crisis duration (report Chapter 6)
+# -----------------------------------------------------------------------------------------------------
+# QUESTIONS 1. How much violence threatens each sea lane, week by week?  -> Chokepoint Conflict Intensity Index
+# (CCII)
+#           2. Will Hormuz stay under stress over the next quarter?          -> ARIMA forecast + 4,000
+#           simulations
+#           3. Once a sea lane is in crisis, how long does the crisis last?  -> survival analysis (Kaplan-Meier,
+#           Cox)
+# INPUT     data/clean/acled_clean.parquet.
+# OUTPUT    Figures 6.1-6.5; tables t6_ccii_weekly, t6_1-t6_4; metrics (thresholds, forecast, survival numbers).
+# PLAIN WORDS The CCII is a 'thermometer' of violence per sea lane. A crisis ('episode') is a run of weeks above
+#           that lane's own danger line (its 2015-2022 average + 3 standard deviations). Survival analysis then
+#           asks
+#           what share of crises are still going after N weeks - the same maths used for equipment failure
+#           times.
+# =====================================================================================================
+
 import warnings
 
 import matplotlib.pyplot as plt
@@ -16,6 +35,8 @@ print("Stage 3: chokepoint index")
 a = pd.read_parquet(CLEAN / "acled_clean.parquet")
 pv = a[a.POLITICAL_VIOLENCE].copy()
 # Stand-off strikes are the mode that reaches shipping (missiles, drones, shore artillery) -> weight 1.5.
+# Weighting: stand-off strikes (missiles, drones, artillery) can reach ships, so they count 1.5; other violence
+# counts 1.
 pv["W"] = pv.EVENTS * np.where(pv.REMOTE_VIOLENCE, 1.5, 1.0)
 
 # Each theatre is measured where its threat to shipping actually shows up in the data:
@@ -23,23 +44,28 @@ pv["W"] = pv.EVENTS * np.where(pv.REMOTE_VIOLENCE, 1.5, 1.0)
 #  - Red Sea / Arabian Sea: ACLED's at-sea 'North Indian Ocean' events (Houthi anti-ship campaign) -
 #    Yemen's *land* war would swamp the signal and is falling while sea attacks rise (Figure 6.5);
 #  - East Med and Black Sea: ACLED's at-sea events for those waters.
+# Which events belong to which sea lane (theatre). Each is a rule applied to the data rows.
 CP = {
     "Hormuz (littoral)": lambda d: (d["D_Strait of Hormuz"] <= 500) & ~d.MARITIME,
     "Red Sea / Arabian Sea (at sea)": lambda d: d.ADMIN1.eq("North Indian Ocean"),
     "East Med (at sea)": lambda d: d.ADMIN1.eq("Eastern Mediterranean Sea"),
     "Black Sea (at sea)": lambda d: d.ADMIN1.eq("Wider Black Sea Region"),
 }
+# Weekly index per theatre (weeks with no events = 0).
 weeks = pd.date_range(pv.WEEK.min(), pv.WEEK.max(), freq="7D")
 ccii = pd.DataFrame(index=weeks)
 for name, sel in CP.items():
     ccii[name] = pv[sel(pv)].groupby("WEEK").W.sum().reindex(weeks, fill_value=0)
+# Baseline = 2015-2022, the 'normal' years before the Gaza war and the Red Sea campaign.
 base = ccii[(ccii.index >= "2015-01-01") & (ccii.index < "2023-01-01")]
 # Disruption threshold per theatre: baseline mean + 3 SD, never below 3 weighted events/week.
 THR = np.maximum(base.mean() + 3 * base.std(), 3.0)
+# z-score = how many standard deviations above normal. ccii_idx is a 0-100 version (not used for decisions).
 z = (ccii - base.mean()) / base.std()
 ccii_idx = (ccii / ccii.quantile(0.99) * 100).clip(upper=100)   # 0-100 scale, capped at the 99th pct
 table(ccii.assign(**{f"{c} z": z[c].round(2) for c in ccii}).reset_index(names="WEEK"), "t6_ccii_weekly")
 
+# Figure 6.1: the four theatre series with their danger lines; shaded = weeks above the line.
 fig, axes = plt.subplots(4, 1, figsize=(9, 7.4), sharex=True)
 for ax, (c, col) in zip(axes, zip(ccii.columns, SERIES)):
     ax.plot(ccii.index, ccii[c], color=col, lw=1)
@@ -54,6 +80,8 @@ fig.tight_layout()
 save(fig, "f6_1_ccii")
 
 # ---------------------------------------------------------------- 6.2 recent window, z-scores
+# Figure 6.2: each theatre divided by its own threshold (1.0 = at the danger line), smoothed over 4 weeks, on a
+# log-like scale.
 rz = (ccii / THR).rolling(4, min_periods=1).mean()
 rz = rz[rz.index >= "2023-06-01"]
 fig, ax = plt.subplots(figsize=(9, 3.2))
@@ -72,6 +100,11 @@ ax.set_title("Figure 6.2  Theatre stress relative to its own disruption threshol
 save(fig, "f6_2_ccii_z")
 
 # ---------------------------------------------------------------- 6.3 forecasting (Hormuz)
+# FORECASTING (Hormuz).
+# Work on log(1 + x) so large spikes do not dominate. Hold back the last 12 weeks (H) as a test set
+# and compare three models on how well they predict those unseen weeks (a 'back-test'):
+#   naive = repeat the last value; Holt ETS = exponential smoothing with a damped trend;
+#   ARIMA(1,0,1) = this week depends on last week and last week's surprise, plus a constant.
 HZ = "Hormuz (littoral)"
 y = np.log1p(ccii[HZ])
 H = 12
@@ -83,6 +116,8 @@ ets = ExponentialSmoothing(train, trend="add", damped_trend=True).fit()
 res["Holt damped-trend ETS"] = ets.forecast(H).values
 sar = SARIMAX(train, order=(1, 0, 1), trend="c").fit(disp=False)
 res["ARIMA(1,0,1)"] = sar.forecast(H).values
+# Back-test score: MAE (average absolute error) and RMSE (penalises big misses more), in weighted events per
+# week.
 bt = []
 for k, v in res.items():
     e = np.expm1(v) - np.expm1(test.values)
@@ -90,6 +125,7 @@ for k, v in res.items():
 bt = pd.DataFrame(bt, columns=["Model", "MAE (weighted events/wk)", "RMSE"])
 table(bt, "t6_1_backtest")
 best = bt.sort_values("MAE (weighted events/wk)").iloc[0].Model
+# Refit ARIMA on all data and forecast 13 weeks (to end-September 2026) with an 80% interval.
 final = SARIMAX(y, order=(1, 0, 1), trend="c").fit(disp=False)
 fc = final.get_forecast(13)
 mean, ci = np.expm1(fc.predicted_mean), np.expm1(fc.conf_int(alpha=0.2))
@@ -111,18 +147,25 @@ put_metrics(fc_best_model=best, fc_end_mean=round(float(mean.iloc[-1]), 1),
             fc_prob_above_thr=None)
 
 # probability that a forecast week exceeds the disruption threshold (simulation from the fitted model)
+# Monte Carlo: simulate 4,000 possible futures from the fitted model (seeded, so results repeat exactly)
+# and count the share in which Hormuz crosses its danger line at least once.
 sims = final.simulate(nsimulations=13, repetitions=4000, anchor="end", rng=np.random.default_rng(0))
 sims = np.expm1(np.asarray(sims).reshape(13, -1))
 p_any = float((sims > THR[HZ]).any(axis=0).mean())
 put_metrics(fc_prob_above_thr=round(p_any, 3))
 
 # ---------------------------------------------------------------- 6.4 survival of disruption episodes
+# EPISODES: turn each weekly series into a list of crises.
 rows = []
 for c in ccii.columns:
     s = ccii[c]
     above = (s > THR[c]).astype(int)
     # merge one-week dips (a lull inside a crisis is not an end of the crisis)
+    # A single quiet week inside a crisis is treated as part of it (a lull is not the end of a crisis).
     above = ((above + above.shift(1, fill_value=0) * above.shift(-1, fill_value=0)) > 0).astype(int)
+    # Number the consecutive runs of 'above' weeks; each run is one episode with a start, end, length and peak.
+    # censored = 1 when the episode was still going at the end of the data (its true length is unknown, only 'at
+    # least').
     run_id = (above.diff().fillna(above.iloc[0]) == 1).cumsum()
     for rid, grp in s[above == 1].groupby(run_id[above == 1]):
         rows.append(dict(chokepoint=c, start=grp.index[0], end=grp.index[-1], weeks=len(grp),
@@ -133,6 +176,9 @@ ep["event"] = 1 - ep.censored
 table(ep.assign(start=ep.start.dt.date, end=ep.end.dt.date).round(1), "t6_2_episodes")
 
 fig, ax = plt.subplots(figsize=(9, 3.4))
+# KAPLAN-MEIER survival curve: for each duration t, the estimated share of crises lasting longer than t.
+# It handles the censored (still ongoing) episodes correctly. Curves are drawn per theatre (if 5+ episodes)
+# and for all theatres together; red lines mark India's SPR (~9.5 days) and total oil cover (~74 days).
 km_all = SurvfuncRight(ep.weeks, ep.event)
 km_tab = []
 for i, (c, g) in enumerate(ep.groupby("chokepoint", sort=False)):
@@ -157,6 +203,7 @@ ax.set_title("Figure 6.4  Kaplan-Meier survival of chokepoint disruption episode
 save(fig, "f6_4_km")
 
 
+# Read the survival curve at time t (e.g. the share of crises that outlast the SPR).
 def surv_at(sf, t):
     idx = np.searchsorted(sf.surv_times, t, side="right") - 1
     return 1.0 if idx < 0 else float(sf.surv_prob[idx])
@@ -164,8 +211,12 @@ def surv_at(sf, t):
 
 km_tab = pd.DataFrame(km_tab, columns=["Chokepoint", "Episodes", "Censored (ongoing)", "Median weeks", "Longest weeks"])
 table(km_tab, "t6_3_km_summary")
+# Log-rank test: do the theatres have different crisis durations?
 lr_stat, lr_p = survdiff(ep.weeks, ep.event, ep.chokepoint)
 # Cox PH - does the post-Oct-2023 era lengthen episodes? does the chokepoint matter?
+# COX proportional-hazards model: which factors make a crisis end sooner or later?
+# HR (hazard ratio) < 1 means crises end more slowly, i.e. last longer. post2023 tests whether the era since
+# October 2023 produces longer crises.
 X = pd.get_dummies(ep[["chokepoint"]], drop_first=True).astype(float)
 X["post2023"] = ep.post2023.astype(float)
 cox = PHReg(ep.weeks.values, X.values, status=ep.event.values).fit()
@@ -173,6 +224,9 @@ cox_tab = pd.DataFrame({"Covariate": X.columns, "coef": cox.params.round(3), "HR
                         "p-value": cox.pvalues.round(3)})
 cox_tab["HR 95% CI"] = [f"{np.exp(l):.2f} - {np.exp(h):.2f}" for l, h in cox.conf_int()]
 table(cox_tab, "t6_4_cox")
+# Headline numbers: episode counts, median/longest duration, share outlasting the SPR and 74-day cover, test
+# results,
+# and the war-time multiplier for Hormuz and the Red Sea.
 put_metrics(
     ep_n=len(ep), ep_median_wk=float(ep.weeks.median()), ep_mean_wk=round(float(ep.weeks.mean()), 1),
     ep_max_wk=int(ep.weeks.max()), ep_censored=int(ep.censored.sum()),
@@ -186,6 +240,8 @@ put_metrics(
 print(bt, "\n", km_tab, "\n", cox_tab, "\nlogrank", lr_stat, lr_p)
 
 # ---------------------------------------------------------------- 6.5 Red Sea: violence moves offshore
+# Figure 6.5: the Red Sea threat moved offshore - stand-off strikes on Yemen's coast vs violence at sea, per
+# year.
 yem = pv[(pv["D_Bab-el-Mandeb"] <= 500) & ~pv.MARITIME & pv.REMOTE_VIOLENCE].groupby("YEAR").EVENTS.sum()
 sea = pv[pv.ADMIN1.eq("North Indian Ocean")].groupby("YEAR").EVENTS.sum().reindex(yem.index, fill_value=0)
 fig, ax = plt.subplots(1, 2, figsize=(9, 3))

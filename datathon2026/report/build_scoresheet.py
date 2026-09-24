@@ -1,5 +1,16 @@
 """Self-assessment on the CDM Datathon-2026 Assessment Sheet (Appendix B, Para 8.5 of the General Instructions),
 plus a compliance check against the General Instructions."""
+
+# =====================================================================================================
+# ANNOTATED SOURCE - build_scoresheet.py: self-assessment on the CDM Datathon-2026 Assessment Sheet
+# -----------------------------------------------------------------------------------------------------
+# S lists every criterion of Appendix B (Para 8.5, General Instructions): paragraph, criterion, maximum marks,
+# marks
+# awarded, evidence from the submission, and what would lift the mark. Section rows (awarded = None) are
+# totalled
+# automatically. IMPACT is the overall impact rating (1-10). Output: Datathon2026_Self_Assessment_Sheet.pdf.
+# =====================================================================================================
+
 import json
 from pathlib import Path
 
@@ -56,6 +67,7 @@ S = [  # (para, item, max, awarded, evidence, what would lift it)
     ("7.3", "Engaging and informative data storytelling", 5, 5,
      "Single narrative from the storm on land to the Armed Forces; each chapter links to the previous.", "-"),
 ]
+# Overall impact rating on the 1-10 scale of Para 8.1.
 IMPACT = 9
 subtot = {"4": 0, "5": 0, "6": 0, "7": 0}
 for p, *_r in S:
@@ -125,6 +137,8 @@ no-new-money first phase, a validated early warning and quantified implications 
 <div class="note">Note: a self-assessment by the author tends to run a few points generous; independent assessors may mark 3-5 points lower.</div>
 </body></html>"""
 out = ROOT / "report" / "Datathon2026_Self_Assessment_Sheet.pdf"
+(ROOT / "report" / "_html").mkdir(exist_ok=True)  # kept for the editable Word version (build_word.py)
+(ROOT / "report" / "_html" / "scoresheet.html").write_text(html)
 with sync_playwright() as p:
     br = p.chromium.launch(executable_path="/opt/pw-browsers/chromium-1194/chrome-linux/chrome")
     pg = br.new_page()

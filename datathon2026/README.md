@@ -5,6 +5,8 @@ the whole story in ten short chapters for a commander or senior leader, plus Ann
 (technical summary for assessors), Annex C (software used and screenshots; two Power BI screenshot slots to fill) and
 Annex D (references).
 
+**Editable Word versions:** `report/*.docx` (built by `report/build_word.py`). **Annotated code:** `Datathon2026_Annotated_Code.zip` and `CODE_GUIDE.md`.
+
 **Full technical report (90 pages):** `report/Datathon2026_Global_Conflicts_Supply_Chains_Report.pdf`, formatted in the
 style of an M.Tech thesis: declaration, abstract, lists, TOC, numbered chapters, references, appendices).
 

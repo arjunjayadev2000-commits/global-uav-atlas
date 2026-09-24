@@ -1,4 +1,19 @@
 """Stage 2 - descriptive & diagnostic analytics of the Middle-East conflict system (ACLED)."""
+
+# =====================================================================================================
+# ANNOTATED SOURCE - Stage 2: the conflict picture (report Chapter 5, 'The Storm Gathers')
+# -----------------------------------------------------------------------------------------------------
+# QUESTION  How did violence in the Middle East change, when did the 'battle rhythm' shift, and did the
+#           war reach the Gulf states and the sea?
+# INPUT     data/clean/acled_clean.parquet (from Stage 1).
+# OUTPUT    Figures 5.1-5.8, tables t5_1-t5_3, metrics (war ratio, change-points, drone share, GCC spill-over
+# ...).
+# METHODS   - Descriptive charts (annual totals, event mix, country-by-year heat map, war-period map).
+#           - Change-point detection (PELT): finds the weeks where average weekly violence jumped.
+#           - Linear trend (regression) of the stand-off-strike share.
+#           - Mann-Whitney U test: are war weeks more violent than the pre-war year? (no normality assumed)
+# =====================================================================================================
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -9,10 +24,13 @@ from common import C, CHOKEPOINTS, CLEAN, SERIES, basemap_ax, put_metrics, save,
 
 print("Stage 2: conflict analytics")
 a = pd.read_parquet(CLEAN / "acled_clean.parquet")
+# Most of the analysis uses political violence only (battles, explosions, violence against civilians), not
+# protests. WAR0 = start of the 2026 war.
 pv = a[a.POLITICAL_VIOLENCE]
 WAR0 = pd.Timestamp("2026-02-28")
 
 # ---------------------------------------------------------------- 5.1 annual trend (two panels)
+# Figure 5.1: events and fatalities per year; the 2026 bar (partial year) is shown in orange.
 yr = a[a.YEAR <= 2026].groupby("YEAR")[["EVENTS", "FATALITIES"]].sum()
 fig, ax = plt.subplots(1, 2, figsize=(9, 3.1))
 cols = [C["blue"]] * (len(yr) - 1) + [C["orange"]]
@@ -31,6 +49,7 @@ fig.tight_layout()
 save(fig, "f5_1_annual")
 
 # ---------------------------------------------------------------- 5.2 event-type composition
+# Figure 5.2 and Table 5.1: each year's mix of event types as percentages (stacked bars).
 comp = a[a.YEAR <= 2026].pivot_table(index="YEAR", columns="EVENT_TYPE", values="EVENTS", aggfunc="sum").fillna(0)
 share = comp.div(comp.sum(axis=1), axis=0) * 100
 order = ["Explosions/Remote violence", "Battles", "Violence against civilians", "Riots", "Protests", "Strategic developments"]
@@ -49,6 +68,8 @@ save(fig, "f5_2_eventmix")
 table(share.round(1).reset_index(), "t5_1_eventmix_share")
 
 # ---------------------------------------------------------------- 5.3 country x year heatmap
+# Figure 5.3: heat map of political violence, country x year, on a log scale so small and large countries both
+# show.
 hm = pv[pv.YEAR <= 2026].pivot_table(index="COUNTRY", columns="YEAR", values="EVENTS", aggfunc="sum").fillna(0)
 hm = hm.loc[hm.sum(axis=1).sort_values(ascending=False).index]
 fig, ax = plt.subplots(figsize=(9, 5))
@@ -68,6 +89,14 @@ ax.set_title("Figure 5.3  Political-violence events by country and year")
 save(fig, "f5_3_heatmap")
 
 # ---------------------------------------------------------------- 5.4 weekly series + change points
+# Figure 5.4: CHANGE-POINT DETECTION.
+# 1. Build the weekly series of political-violence events (missing weeks = 0).
+# 2. Scale it by its standard deviation so the penalty below is unit-free.
+# 3. PELT (Pruned Exact Linear Time, Killick et al. 2012) with an 'l2' cost searches every possible split and
+# keeps
+#    the splits that reduce the within-segment squared error by more than the penalty (pen=12).
+#    jump=1 lets a change-point fall on any week; min_size=3 stops one-week 'regimes'.
+# The result: the weeks when the average level shifted (7 Oct 2023, 28 Feb 2026, 11 Apr 2026).
 wk = pv.groupby("WEEK").EVENTS.sum().asfreq("7D", fill_value=0)
 sig = wk.values.astype(float) / wk.values.std()
 algo = rpt.Pelt(model="l2", min_size=3, jump=1).fit(sig.reshape(-1, 1))
@@ -86,6 +115,7 @@ ax.set_ylabel("Political-violence events / week")
 ax.set_title("Figure 5.4  Weekly political violence with detected regime shifts (PELT change-points)")
 ax.text(0.01, 0.92, "orange = regime mean between change-points", transform=ax.transAxes, fontsize=7.5, color=C["ink2"])
 save(fig, "f5_4_changepoints")
+# Table 5.2: the mean and spread of weekly violence inside each regime.
 seg_tab = []
 edges = [0] + bk
 for i in range(len(bk)):
@@ -95,6 +125,8 @@ seg_tab = pd.DataFrame(seg_tab, columns=["From", "To", "Weeks", "Mean events/wk"
 table(seg_tab, "t5_2_regimes")
 
 # ---------------------------------------------------------------- 5.5 drone / missile share
+# Figure 5.5: share of political violence delivered by stand-off weapons (air/drone strikes, shelling/missiles),
+# per quarter. A straight-line regression (linregress) measures the trend.
 q = pv.groupby([pd.Grouper(key="WEEK", freq="QS"), "DRONE_MISSILE"]).EVENTS.sum().unstack().fillna(0)
 q = q[q.index <= "2026-04-01"]
 dshare = q[True] / q.sum(axis=1) * 100
@@ -108,6 +140,7 @@ lr = stats.linregress(np.arange(len(dshare)), dshare.values)
 save(fig, "f5_5_drone_share")
 
 # ---------------------------------------------------------------- 5.6 GCC spill-over
+# Figure 5.6: violence inside the six GCC states, week by week, to show the war reaching the energy coast.
 g = a[a.GCC & a.POLITICAL_VIOLENCE & (a.WEEK >= "2025-06-01")]
 gw = g.pivot_table(index="WEEK", columns="COUNTRY", values="EVENTS", aggfunc="sum").fillna(0)
 gw = gw[gw.sum().sort_values(ascending=False).index]
@@ -123,11 +156,15 @@ ax.set_ylabel("Events / week")
 ax.grid(axis="x", visible=False)
 ax.set_title("Figure 5.6  Political violence inside GCC states - the war reaches the energy coast")
 save(fig, "f5_6_gcc")
+# GCC multiplier = average weekly events in the 6 war weeks / average weekly events in the pre-war year (52
+# weeks).
 pre = a[a.GCC & a.POLITICAL_VIOLENCE & (a.WEEK >= "2025-02-28") & (a.WEEK < WAR0)].EVENTS.sum() / 52
 dur = a[a.GCC & a.POLITICAL_VIOLENCE & (a.WEEK >= WAR0) & (a.WEEK < "2026-04-11")].EVENTS.sum() / 6
 put_metrics(gcc_pre_wk=round(pre, 1), gcc_war_wk=round(dur, 1), gcc_multiplier=round(dur / max(pre, 0.1), 1))
 
 # ---------------------------------------------------------------- 5.7 war-period map
+# Figure 5.7 and Table 5.3: map of where violence fell during the war (bubble size = events, colour =
+# fatalities).
 wp = pv[(pv.WEEK >= WAR0) & (pv.WEEK < "2026-04-11")]
 mp = wp.groupby(["ADMIN1", "COUNTRY", "CENTROID_LATITUDE", "CENTROID_LONGITUDE"]).agg(
     EVENTS=("EVENTS", "sum"), FAT=("FATALITIES", "sum")).reset_index()
@@ -154,6 +191,7 @@ table(mp.sort_values("EVENTS", ascending=False).head(15)[["COUNTRY", "ADMIN1", "
       .rename(columns={"FAT": "FATALITIES"}), "t5_3_top_admin1_war")
 
 # ---------------------------------------------------------------- 5.8 maritime conflict
+# Figure 5.8: conflict at sea - events per year by sea area and by type (the Red Sea / Indian Ocean campaign).
 m = a[a.MARITIME]
 mt = m.pivot_table(index="YEAR", columns="ADMIN1", values="EVENTS", aggfunc="sum").fillna(0)
 ms = m.groupby("SUB_EVENT_TYPE").EVENTS.sum().sort_values()
@@ -174,11 +212,16 @@ fig.tight_layout()
 save(fig, "f5_8_maritime")
 
 # ---------------------------------------------------------------- statistics: pre-war vs war
+# STATISTICAL TEST: war weeks vs the pre-war year.
+# Mann-Whitney U compares two groups without assuming a bell curve. 'greater' tests whether war weeks are
+# higher.
+# The ratio of the two weekly means gives the headline '2.9 times'.
 base = pv[(pv.WEEK >= "2025-02-28") & (pv.WEEK < WAR0)].groupby("WEEK").EVENTS.sum()
 war = pv[(pv.WEEK >= WAR0) & (pv.WEEK < "2026-04-11")].groupby("WEEK").EVENTS.sum()
 post = pv[(pv.WEEK >= "2026-04-11")].groupby("WEEK").EVENTS.sum()
 mw = stats.mannwhitneyu(war, base, alternative="greater")
 iran = pv[pv.COUNTRY == "Iran"].groupby("WEEK").EVENTS.sum()
+# Store the headline numbers used in the report text.
 put_metrics(
     pv_base_wk=round(base.mean(), 0), pv_war_wk=round(war.mean(), 0), pv_post_wk=round(post.mean(), 0),
     pv_war_ratio=round(war.mean() / base.mean(), 2), mw_p=float(mw.pvalue), mw_U=float(mw.statistic),

@@ -1,4 +1,19 @@
 """Stage 4 - maritime traffic and AIS-dark analytics from Sentinel-1 SAR vessel detections."""
+
+# =====================================================================================================
+# ANNOTATED SOURCE - Stage 4: the ships go dark (report Chapter 7, sections 7.1-7.7)
+# -----------------------------------------------------------------------------------------------------
+# QUESTION  Where, and for which ships, did the AIS identity signal disappear during the first fortnight of the
+# war?
+# INPUT     data/clean/sar_clean.parquet (106,533 radar detections, 1-14 March 2026).
+# OUTPUT    Figures 7.1-7.10; tables t7_1-t7_7; metrics (dark shares, risk ratios, hot spots, clusters, flags).
+# METHODS   - Dark share per sea region with 95% Wilson confidence intervals (reliable for small samples).
+#           - Chi-square test, relative risk (RR) and odds ratio (OR): war-zone large ships vs the rest.
+#           - Getis-Ord Gi* hot-spot statistic on a grid: where do dark ships cluster more than chance?
+#           - DBSCAN density clustering: where do dark large ships gather (anchorages, queues)?
+#           - Spearman trend of daily darkness; MMSI flag decoding; identity-integrity checks (cloned/fake IDs).
+# =====================================================================================================
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -11,12 +26,16 @@ from common import (C, CHOKEPOINTS, CLEAN, GULF_CONFLICT, INDIA_SEAS, RED_SEA_CO
 
 print("Stage 4: SAR / AIS-dark analytics")
 s = pd.read_parquet(CLEAN / "sar_clean.parquet")
+# Group sea regions into five zones: Gulf war zone, Black Sea war zone, Red Sea zone, India's seas, Rest of
+# world.
 ZONE = {**{r: "Gulf war zone" for r in GULF_CONFLICT}, **{r: "Red Sea zone" for r in RED_SEA_CONFLICT},
         "Black Sea": "Black Sea war zone", **{r: "India's seas" for r in INDIA_SEAS}}
 s["zone"] = s.region.map(ZONE).fillna("Rest of world")
 ZONES = ["Gulf war zone", "Black Sea war zone", "Red Sea zone", "India's seas", "Rest of world"]
 
 # ---------------------------------------------------------------- 7.1 global map
+# Figure 7.1: world map of all detections (35% random sample for readability; seeded so it is the same every
+# run).
 fig, ax = plt.subplots(figsize=(9, 4.6))
 basemap_ax(ax, -60, 75, -180, 180, res="c", grid=30)
 lit = s[~s.dark].sample(frac=0.35, random_state=1)
@@ -30,6 +49,7 @@ ax.set_title("Figure 7.1  Sentinel-1 vessel detections, 1-14 March 2026 (35% sam
 save(fig, "f7_1_global_map")
 
 # ---------------------------------------------------------------- 7.2 dark share by region with CIs
+# Dark share per group plus its 95% Wilson confidence interval (the range the true share very likely lies in).
 def rate_table(df, by):
     g = df.groupby(by).dark.agg(["sum", "count"])
     lo, hi = proportion_confint(g["sum"], g["count"], method="wilson")
@@ -37,6 +57,8 @@ def rate_table(df, by):
     return g
 
 
+# Figure 7.2 / Table 7.1: dark share by sea region, all ships and large ships only (orange = war zones, violet =
+# India's seas).
 allv = rate_table(s, "region")
 large = rate_table(s[s.large], "region")
 order = large.sort_values("share").index
@@ -64,6 +86,10 @@ rt = rt.sort_values("Dark share (large)", ascending=False)
 table(rt.round(3).reset_index(names="Region"), "t7_1_dark_by_region")
 
 # chi-square: large-vessel darkness, conflict regions vs rest
+# THE MAIN TEST (large ships only). 2x2 table: in a conflict region yes/no x dark yes/no.
+#   chi-square p-value: could this difference be chance?
+#   RR (relative risk) = dark share in conflict regions / dark share elsewhere (the '4.7 times').
+#   OR (odds ratio) = the same comparison on the odds scale, used in epidemiology.
 L = s[s.large]
 ct = pd.crosstab(L.region.isin(conflict_regions), L.dark)
 chi2, pchi, _, _ = stats.chi2_contingency(ct)
@@ -75,6 +101,8 @@ gulf_large = L[L.region.isin(GULF_CONFLICT)].dark.mean()
 rest_large = L[L.region.isin(set(L.region) - conflict_regions - INDIA_SEAS)].dark.mean()
 
 # ---------------------------------------------------------------- 7.3 size class x zone
+# Figure 7.3: darkness by size class and zone. Small craft are dark everywhere (no AIS duty); big ships are dark
+# only in war zones.
 sz = s.groupby(["zone", "size_class"], observed=True).dark.mean().unstack()[["<25 m", "25-40 m", "40-100 m", "100-200 m", ">200 m"]]
 sz = sz.reindex(ZONES)
 fig, ax = plt.subplots(figsize=(9, 3.3))
@@ -93,6 +121,9 @@ table((sz * 100).round(1).reset_index(), "t7_2_size_zone")
 
 
 # ---------------------------------------------------------------- Getis-Ord Gi* helper
+# GETIS-ORD Gi* HOT-SPOT STATISTIC.
+# For each grid cell, compare the dark share of the cell and its 8 neighbours with the overall average.
+# The result is a z-score: above 1.96 means a statistically significant hot spot (95% confidence).
 def gi_star(cells, value, res):
     """Gi* z-scores on a lat/lon grid; neighbours = cells within 1.5 grid steps (queen + self)."""
     xy = cells[["gy", "gx"]].values
@@ -108,6 +139,8 @@ def gi_star(cells, value, res):
     return out
 
 
+# Put detections into square cells of 'res' degrees, keep cells with at least min_n ships, and compute each
+# cell's dark share and Gi* score.
 def grid(df, res, min_n):
     d = df.assign(gy=np.floor(df.lat / res).astype(int), gx=np.floor(df.lon / res).astype(int))
     g = d.groupby(["gy", "gx"]).agg(n=("dark", "size"), dark=("dark", "sum")).reset_index()
@@ -119,6 +152,7 @@ def grid(df, res, min_n):
 
 
 # ---------------------------------------------------------------- 7.4 Gulf / Arabian Sea hot spots (large vessels)
+# Figure 7.4: hot spots in India's western approaches (ships >= 60 m, 0.5-degree cells).
 box = s[s.lat.between(10, 31) & s.lon.between(40, 78) & (s.length_m >= 60)]
 gg = grid(box, 0.5, 4)
 fig, ax = plt.subplots(1, 2, figsize=(9, 4))
@@ -136,6 +170,7 @@ save(fig, "f7_4_gulf_hotspots")
 hot = gg[gg.gi > 1.96]
 
 # ---------------------------------------------------------------- 7.5 global hot spot map (1 deg, large vessels)
+# Figure 7.5 / Table 7.3: global hot spots (1-degree cells) and the number of hot cells per region.
 gl = grid(s[s.length_m >= 60], 1.0, 5)
 fig, ax = plt.subplots(figsize=(9, 4.6))
 basemap_ax(ax, -60, 75, -180, 180, res="c", grid=30)
@@ -154,6 +189,7 @@ hot_by_region = gl[gl.gi > 1.96].groupby("region").size().sort_values(ascending=
 table(hot_by_region.rename("Hot-spot cells").reset_index(), "t7_3_hotspot_cells")
 
 # ---------------------------------------------------------------- 7.6 DBSCAN clusters of dark large vessels
+# Reference list of ports and anchorages, used only to give each cluster a readable name.
 GAZ = {  # reference anchorages / ports for naming clusters
     "Fujairah / Khor Fakkan anchorage": (25.2, 56.45), "Strait of Hormuz (Bandar Abbas-Qeshm)": (26.9, 56.2),
     "Dubai / Jebel Ali": (25.1, 55.0), "Ras Tanura / Dammam": (26.6, 50.2), "Kuwait / Iraq (Basra)": (29.5, 48.5),
@@ -173,6 +209,12 @@ GAZ = {  # reference anchorages / ports for naming clusters
 gnames = list(GAZ)
 glat = np.array([GAZ[k][0] for k in gnames])
 glon = np.array([GAZ[k][1] for k in gnames])
+# DBSCAN CLUSTERING of dark large ships.
+# DBSCAN groups points that are densely packed: a cluster needs at least 15 dark ships within 25 km of each
+# other
+# (eps = 25 km in radians, haversine distance). Scattered ships are labelled noise (-1).
+# For each cluster: size, centre, median length, days seen, and the share of ALL large ships within 30 km that
+# are dark.
 D = s[s.dark & s.large].copy()
 db = DBSCAN(eps=25 / 6371, min_samples=15, metric="haversine").fit(np.radians(D[["lat", "lon"]].values))
 D["cl"] = db.labels_
@@ -185,6 +227,7 @@ for _, r in cl.iterrows():
     near = haversine_km(L_all.lat.values, L_all.lon.values, r.lat, r.lon) <= 30
     shares.append(L_all[near].dark.mean())
 cl["dark_share_local"] = shares
+# Name each cluster after the nearest reference port if within 250 km, otherwise by its coordinates.
 dist = np.array([haversine_km(glat, glon, r.lat, r.lon) for _, r in cl.iterrows()])
 cl["nearest_ref"] = [gnames[i] if dist[j, i] < 250 else f"{r.lat:.1f}N {r.lon:.1f}E"
                      for j, (i, (_, r)) in enumerate(zip(dist.argmin(1), cl.iterrows()))]
@@ -196,6 +239,7 @@ table(cl.head(15)[["rank", "nearest_ref", "region", "n", "dark_share_local", "me
                        "dark_share_local": "Dark share of large ships within 30 km", "med_len": "Median length (m)",
                        "days": "Days observed", "rank": "#"}).round(2), "t7_4_dark_clusters")
 fig, ax = plt.subplots(figsize=(9, 4.6))
+# Figure 7.6: cluster map.
 basemap_ax(ax, -40, 60, -20, 140, res="c", grid=20)
 noise = D[D.cl < 0]
 ax.scatter(noise.lon, noise.lat, s=1, color="#b5b4ae", lw=0, rasterized=True, label="dark large vessel (unclustered)")
@@ -212,6 +256,8 @@ ax.set_title("Figure 7.6  DBSCAN clusters of AIS-dark ships >= 100 m (eps 25 km,
 save(fig, "f7_6_dbscan")
 
 # ---------------------------------------------------------------- 7.7 Gulf daily traffic & darkness
+# Figure 7.7: day-by-day picture in the Gulf - detections per satellite scene and the share dark.
+# Spearman's rho tests whether darkness trended up or down over the fortnight.
 gz = s[s.region.isin(GULF_CONFLICT)]
 day = gz.groupby("date").agg(det=("dark", "size"), dark=("dark", "mean"), scenes=("scene_id", "nunique"),
                              large=("large", "sum"))
@@ -231,6 +277,7 @@ save(fig, "f7_7_gulf_daily")
 tr = stats.spearmanr(np.arange(len(day)), day.dark)
 
 # ---------------------------------------------------------------- 7.8 flag states of AIS-visible ships
+# Figure 7.8 / Tables 7.5-7.6: registry (flag) mix of the large ships that DID transmit AIS, by zone.
 fz = s[s.flag_class.notna() & s.large]
 fc = pd.crosstab(fz.zone, fz.flag_class, normalize="index").reindex(ZONES) * 100
 fcols = ["National flag", "Flag of convenience", "Shadow-fleet-associated", "Other/undecoded"]
@@ -257,6 +304,10 @@ tf = pd.DataFrame({"Gulf war zone %": top_flags_gulf.round(1),
 table(tf.reset_index(names="Flag"), "t7_6_top_flags_gulf")
 
 # ---------------------------------------------------------------- 7.9 identity integrity
+# IDENTITY INTEGRITY (Table 7.7). For each MMSI seen twice, compute the speed needed between the two sightings.
+# More than 50 knots over more than 20 km is physically impossible for a merchant ship: a sign of a cloned or
+# shared identity.
+# Also counted: malformed MMSIs, placeholder MMSIs (xxx000000) and 'noisy' AIS tracks.
 m = s[s.mmsi_valid & ~s.dark].sort_values(["mmsi", "ts"]).copy()
 g = m.groupby("mmsi")
 m["plat"], m["plon"], m["pts"] = g.lat.shift(), g.lon.shift(), g.ts.shift()
@@ -279,6 +330,7 @@ table(ident, "t7_7_identity")
 noisy = s.groupby("zone").apply(lambda d: (d.matched_category == "noisy_vessel").mean() * 100, include_groups=False)
 
 # ---------------------------------------------------------------- 7.10 India's seas close-up
+# Figure 7.10: India's own seas - AIS-matched vs dark small craft vs dark ships of 60 m and more.
 ind = s[s.lat.between(0, 26) & s.lon.between(60, 100)]
 fig, ax = plt.subplots(figsize=(9, 5))
 basemap_ax(ax, 0, 26, 60, 100, res="l", grid=5)
@@ -291,6 +343,8 @@ ax.set_title("Figure 7.10  India's maritime neighbourhood - who is visible and w
 save(fig, "f7_10_india_seas")
 ind_seas = s[s.region.isin(INDIA_SEAS)]
 
+# Headline numbers for the report (dark shares, RR/OR, chi-square, hot spots, clusters, daily trend, flags,
+# identity checks).
 put_metrics(
     large_conflict_dark=round(float(p_conf), 3), large_rest_dark=round(float(p_rest), 3),
     large_rr=round(float(rr), 2), large_or=round(float(odds), 2), chi2=round(float(chi2), 1), chi2_p=float(pchi),

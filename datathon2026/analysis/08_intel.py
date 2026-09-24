@@ -4,6 +4,23 @@ indicators & warnings (I&W) and scenario matrix.
 These are the questions a commander asks of any analytic judgement: how sure are you, what else could explain
 it, what should I watch, and what happens to my assets in each scenario.
 """
+
+# =====================================================================================================
+# ANNOTATED SOURCE - Stage 8: 'how sure are we, and what do we watch?' (report Chapter 10 and sections 12-14)
+# -----------------------------------------------------------------------------------------------------
+# The questions a commander asks of any judgement, each answered with data:
+#   1. ROBUSTNESS      Does the war-zone effect survive other reasonable definitions? -> 8 specifications, each
+#                      with a SCENE-CLUSTER BOOTSTRAP confidence interval (Figure 10.x, Table t9_2).
+#   2. DOSE-RESPONSE   Is it stronger closer to the fighting? -> dark share by distance band + logistic trend.
+#   3. ACH             Analysis of Competing Hypotheses (Heuer, CIA tradecraft): which explanation - deliberate
+#                      switch-off, GPS jamming, reception gap, algorithm error - is least contradicted by the
+#                      evidence?
+#   4. OWN ASSETS      How many Indian-flagged ships were inside the war zones?
+#   5. I&W MATRIX      Six indicators with Amber/Red thresholds and the action to take on Red (DARKWATCH).
+#   6. SCENARIOS       Likelihood of 2-, 6-, 12- and 26-week disruptions and the days each leaves uncovered.
+# INPUT  clean SAR and ACLED data, earlier tables and metrics.   OUTPUT tables t9_2-t9_7, figures, metrics.
+# =====================================================================================================
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -17,11 +34,16 @@ print("Stage 8: intelligence layer")
 s = pd.read_parquet(CLEAN / "sar_clean.parquet")
 a = pd.read_parquet(CLEAN / "acled_clean.parquet")
 M = get_metrics()
+# 'War zones' for these tests: the Gulf war zone plus the Black Sea. RNG is seeded (42) so bootstraps repeat
+# exactly.
 WAR = GULF_CONFLICT | {"Black Sea"}
 RNG = np.random.default_rng(42)
 
 
 # ---------------------------------------------------------------- 1. robustness with scene-cluster bootstrap
+# SCENE-CLUSTER BOOTSTRAP. Ships in the same satellite image are not independent (same weather, same pass),
+# so instead of resampling ships we resample whole images 2,000 times, recompute the relative risk each time,
+# and take the middle 95% as the confidence interval. This is the honest (wider) interval.
 def rr_boot(df, war_mask, dark_col="dark", reps=2000):
     """Relative risk of darkness (war vs rest) with a bootstrap that resamples whole SAR scenes,
     because detections in one image are not independent."""
@@ -39,6 +61,10 @@ def rr_boot(df, war_mask, dark_col="dark", reps=2000):
     return point, lo, hi, G[:, 0].sum() / G[:, 1].sum(), G[:, 2].sum() / G[:, 3].sum()
 
 
+# The 8 alternative specifications: other size thresholds, a stricter 'dark' definition, high-confidence
+# detections
+# only, fishing excluded, Black Sea excluded. If the effect were an artefact of one choice, it would vanish in
+# some.
 variants = [
     ("Baseline: >=100 m, 'unmatched' = dark", s[s.large], "dark"),
     ("Size threshold >=60 m", s[s.length_m >= 60], "dark"),
@@ -56,6 +82,7 @@ for name, df, col in variants:
     rows.append((name, len(df), round(pw * 100, 1), round(pr * 100, 1), round(p, 2), round(lo, 2), round(hi, 2)))
 rob = pd.DataFrame(rows, columns=["Specification", "Ships", "Dark % war zones", "Dark % elsewhere", "RR", "RR 95% CI low", "RR 95% CI high"])
 table(rob, "t9_2_robustness")
+# Robustness chart: each specification's RR with its 95% CI; the dotted line RR = 1 means 'no war effect'.
 fig, ax = plt.subplots(figsize=(9, 3.4))
 yy = np.arange(len(rob))[::-1]
 ax.errorbar(rob.RR, yy, xerr=[rob.RR - rob["RR 95% CI low"], rob["RR 95% CI high"] - rob.RR], fmt="o", color=C["blue"],
@@ -70,6 +97,10 @@ ax.set_title("Robustness: the war-zone effect survives every alternative specifi
 save(fig, "f9_2_robustness")
 
 # ---------------------------------------------------------------- 2. dose-response inside the Gulf
+# DOSE-RESPONSE inside the Gulf: dark share in distance bands from the nearest violent province, with Wilson
+# CIs,
+# plus a logistic regression on log-distance (odds ratio per log-km). A graded response is classic evidence of
+# cause.
 g = s[s.region.isin(GULF_CONFLICT) & s.large].copy()
 bins = [0, 50, 100, 150, 200, 400]
 g["band"] = pd.cut(g.dist_conflict_km, bins, labels=["0-50", "50-100", "100-150", "150-200", "200-400"])
@@ -96,6 +127,9 @@ table(dr.assign(share=(dr.share * 100).round(1), lo=(dr.lo * 100).round(1), hi=(
                                      "share": "Dark %", "lo": "CI low %", "hi": "CI high %"}), "t9_3_dose_response")
 
 # ---------------------------------------------------------------- 3. analysis of competing hypotheses (evidence computed)
+# ANALYSIS OF COMPETING HYPOTHESES (Table t9_4).
+# Rows = evidence from this study; columns = hypotheses. C = consistent, I = inconsistent, N = neutral.
+# The hypothesis with the FEWEST inconsistencies survives (not the one with most support) - Heuer's rule.
 sz = pd.read_csv(TAB / "t7_2_size_zone.csv").set_index("zone")
 flat_gulf = sz.loc["Gulf war zone", ">200 m"] / sz.loc["Gulf war zone", "40-100 m"]
 flat_rest = sz.loc["Rest of world", ">200 m"] / sz.loc["Rest of world", "40-100 m"]
@@ -115,6 +149,7 @@ score = {c: int((ach[c] == "I").sum()) for c in ach.columns[1:]}
 table(ach, "t9_4_ach")
 
 # ---------------------------------------------------------------- 4. own-asset exposure: Indian-flag ships
+# OWN-ASSET EXPOSURE: Indian-flagged ships (MMSI prefix 419) seen by radar, by zone (Table t9_5).
 ind = s[s.flag == "India"]
 zone = {**{r: "Gulf war zone" for r in GULF_CONFLICT}, **{r: "Red Sea zone" for r in RED_SEA_CONFLICT},
         "Black Sea": "Black Sea war zone", "Arabian Sea": "Arabian Sea", "Bay of Bengal": "Bay of Bengal"}
@@ -128,6 +163,8 @@ table(ex.reset_index().rename(columns={"zone": "Zone", "detections": "Detections
 gulf_ind = ind[ind.zone == "Gulf war zone"]
 
 # ---------------------------------------------------------------- 5. indicators & warnings matrix (status at end of data)
+# INDICATORS & WARNINGS inputs: last 4 weeks of the chokepoint index, the stand-off-strike share now vs the
+# pre-war year, and GCC violence per week.
 cc = pd.read_csv(TAB / "t6_ccii_weekly.csv", parse_dates=["WEEK"]).set_index("WEEK")
 thr = M["thr"]
 last4 = cc.iloc[-4:]
@@ -139,12 +176,15 @@ standoff_base = base[base.DRONE_MISSILE].EVENTS.sum() / base.EVENTS.sum()
 gcc_now = l4w[l4w.GCC].EVENTS.sum() / 4
 
 
+# Traffic-light rule: RED at or above the red threshold, AMBER at or above amber, otherwise GREEN.
 def rag(v, amber, red):
     return "RED" if v >= red else ("AMBER" if v >= amber else "GREEN")
 
 
 hz = last4["Hormuz (littoral)"].mean() / thr["Hormuz (littoral)"]
 rs = last4["Red Sea / Arabian Sea (at sea)"].mean() / thr["Red Sea / Arabian Sea (at sea)"]
+# The I&W (DARKWATCH) matrix, Table t9_6: indicator, source, latest value, thresholds, status and the action on
+# Red.
 iw = pd.DataFrame([
     ("I1 Hormuz littoral CCII / threshold (4-wk mean)", "ACLED weekly", f"{hz:.1f}", ">= 0.5", ">= 1.0", rag(hz, 0.5, 1.0),
      "Red: activate POL stock drawdown plan; raise Gulf escort posture"),
@@ -163,6 +203,8 @@ iw = pd.DataFrame([
 table(iw, "t9_6_iw_matrix")
 
 # ---------------------------------------------------------------- 6. scenario matrix: Hormuz disruption durations
+# SCENARIO MATRIX (Table t9_7): from the Hormuz/Red Sea survival curve, the chance a disruption lasts at least
+# 2, 6, 12 or 26 weeks, and the days left uncovered by the SPR, national cover and 30/45-day Service holdings.
 ep = pd.read_csv(TAB / "t6_2_episodes.csv")
 ep = ep[ep.chokepoint.isin(["Hormuz (littoral)", "Red Sea / Arabian Sea (at sea)"])]
 sf = SurvfuncRight(ep.weeks * 7, 1 - ep.censored)
@@ -183,6 +225,7 @@ sc = pd.DataFrame(sc, columns=["Scenario", "Duration", "P(disruption lasts at le
                                "Days beyond national cover (74 d)", "Days beyond 30 d / 45 d Service holdings"])
 table(sc, "t9_7_scenarios")
 
+# Headline numbers for the report.
 put_metrics(
     rob_min_rr=float(rob.RR.min()), rob_max_rr=float(rob.RR.max()), rob_min_lo=float(rob["RR 95% CI low"].min()),
     rr_boot_lo=float(rob.iloc[0]["RR 95% CI low"]), rr_boot_hi=float(rob.iloc[0]["RR 95% CI high"]),

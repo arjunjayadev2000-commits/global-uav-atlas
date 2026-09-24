@@ -6,6 +6,21 @@ mirror (github.com/ebiisharifi/hormuz-chokepoint-analytics, data/raw). Only the 
 Adds the third layer to the study: presence (SAR radar), identity (AIS match) and now movement (transits); measures how long
 shipping disruptions last at chokepoints (as opposed to conflict flare-ups), and how import diversification stretches stock cover.
 """
+
+# =====================================================================================================
+# ANNOTATED SOURCE - Stage 12: movement layer, IMF PortWatch (report sections 9.9-9.13 and 13.5)
+# -----------------------------------------------------------------------------------------------------
+# Adds MOVEMENT to presence (radar) and identity (AIS): how many ships actually crossed each chokepoint per day.
+#   1. Hormuz daily transits: pre-war baseline vs after 1 March; the zero on 4 March; the late-June partial
+#   reopening.
+#   2. Is it only Hormuz? Change in transits at 28 world chokepoints, Mar-Aug 2026 vs the same months of 2025.
+#   3. Evacuation signature: Bab-el-Mandeb and Suez down, Cape of Good Hope up since the Red Sea campaign.
+#   4. How long do SHIPPING disruptions last? Episodes defined from the transit counts, then a Kaplan-Meier
+#   curve
+#      compared with the conflict flare-ups of Stage 3 ('two clocks').
+#   5. Effective cover = stock days / share of supply exposed: why diversification stretches stock.
+# =====================================================================================================
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -18,15 +33,19 @@ M = get_metrics()
 pw = pd.read_csv(ROOT / "data/open/imf_portwatch_chokepoints_daily.csv", parse_dates=["date"])
 END = pw.date.max()
 WAR0 = pd.Timestamp("2026-02-28")
+# Hormuz only, one row per day. n_total = all vessels crossing; n_tanker = tankers.
 H = pw[pw.portname == "Strait of Hormuz"].set_index("date").sort_index()
 
 # ---------------------------------------------------------------- 1. Hormuz daily transits and the SAR window
+# Averages: pre-war (2025 to 27 Feb 2026), post-war (from 1 Mar), the SAR window (1-14 Mar) and the last 30
+# days.
 base = H.loc["2025-01-01":"2026-02-27", "n_total"].mean()
 base_t = H.loc["2025-01-01":"2026-02-27", "n_tanker"].mean()
 post = H.loc["2026-03-01":, "n_total"].mean()
 post_t = H.loc["2026-03-01":, "n_tanker"].mean()
 sar_win = H.loc["2026-03-01":"2026-03-14", "n_total"].mean()
 last30 = H.loc[END - pd.Timedelta(days=29):, "n_total"].mean()
+# Figure: daily transits with 7-day mean, baseline line, SAR window shading and dated annotations.
 fig, ax = plt.subplots(figsize=(9, 3.3))
 h = H.loc["2025-09-01":]
 ax.bar(h.index, h.n_total, color=C["blue"], width=1.0, alpha=0.35, label="Daily transits (AIS)")
@@ -45,6 +64,9 @@ ax.set_title("Strait of Hormuz: daily transits (IMF PortWatch), Sep 2025 - Aug 2
 save(fig, "f12_1_hormuz_transits")
 
 # ---------------------------------------------------------------- 2. is it Hormuz? all chokepoints, change since the war
+# Change in average daily transits at every chokepoint with at least 5 transits/day, same calendar window a year
+# apart.
+# CONTROLS = major chokepoints far from the war; their average change shows the rest of the world carried on.
 ch = []
 for p, g in pw.groupby("portname"):
     g = g.set_index("date").n_total
@@ -70,6 +92,7 @@ ax.set_title("Only Hormuz stopped: change in transits at 28 world chokepoints si
 save(fig, "f12_2_chokepoints")
 
 # ---------------------------------------------------------------- 3. the evacuation signature: Red Sea vs Cape
+# Figure: weekly transits (4-week mean) at Bab-el-Mandeb, Suez and the Cape of Good Hope since 2023.
 q = pw[pw.portname.isin(["Bab el-Mandeb Strait", "Suez Canal", "Cape of Good Hope"])].pivot_table(
     index=pd.Grouper(key="date", freq="W"), columns="portname", values="n_total", aggfunc="mean")
 q = q["2023-01-01":]
@@ -82,6 +105,7 @@ ax.set_ylabel("vessels / day (4-wk mean)")
 ax.legend(loc="center right", ncol=1)
 ax.set_title("Evacuation in data: the Red Sea emptied and the Cape filled, and it has not reversed")
 save(fig, "f12_3_evacuation")
+# Evacuation numbers: Jan-Oct 2023 average vs the average since January 2024.
 bm_pre = pw[(pw.portname == "Bab el-Mandeb Strait")].set_index("date").n_total["2023-01-01":"2023-10-31"].mean()
 bm_post = pw[(pw.portname == "Bab el-Mandeb Strait")].set_index("date").n_total["2024-01-01":].mean()
 cg_pre = pw[(pw.portname == "Cape of Good Hope")].set_index("date").n_total["2023-01-01":"2023-10-31"].mean()
@@ -91,6 +115,11 @@ cg_post = pw[(pw.portname == "Cape of Good Hope")].set_index("date").n_total["20
 # A disruption starts when the 7-day mean falls below 50% of the chokepoint's median over the prior year. That reference is
 # FROZEN for the life of the episode (a rolling baseline would quietly re-define a long disruption as 'normal'), and the episode
 # ends only after 14 consecutive days back above the 50% line, so a brief partial reopening does not end the crisis.
+# EPISODE DETECTION, per chokepoint (see the rule in the comment block above):
+#   m7 = 7-day mean of transits; ref_roll = median over the previous year, lagged 7 days.
+#   Start: m7 falls below half the reference -> freeze that reference for the whole episode.
+#   End: 14 consecutive days back above half the reference. Episodes shorter than 7 days are ignored.
+#   An episode still running at the end of the data is kept as 'ongoing' (censored).
 eps = []
 for p, g in pw.groupby("portname"):
     s = g.set_index("date").n_total.asfreq("D").fillna(0)
@@ -118,8 +147,12 @@ for p, g in pw.groupby("portname"):
     if in_ep and last_low - start + 1 >= 7:
         eps.append((p, idx[start].date(), idx[-1].date(), len(s) - start, 1, round(ref, 1)))
 eps = pd.DataFrame(eps, columns=["Chokepoint", "Start", "End", "Days", "Ongoing at 16 Aug 2026", "Pre-disruption transits/day"])
+# Ignore chokepoints with thin traffic (fewer than 10 transits/day before the disruption).
 eps = eps[eps["Pre-disruption transits/day"] >= 10]          # ignore disruptions of very thin traffic
 table(eps.sort_values("Days", ascending=False), "t12_2_shipping_disruptions")
+# Two Kaplan-Meier curves on one chart (log time axis): shipping disruptions (PortWatch) vs conflict flare-ups
+# near
+# Hormuz and the Red Sea (Stage 3). Result: fighting flares for weeks; shipping disruption lasts months.
 sf_ship = SurvfuncRight(eps.Days, 1 - eps["Ongoing at 16 Aug 2026"])
 ep_c = pd.read_csv(TAB / "t6_2_episodes.csv")
 ep_c = ep_c[ep_c.chokepoint.isin(["Hormuz (littoral)", "Red Sea / Arabian Sea (at sea)"])]
@@ -143,10 +176,14 @@ ax.set_title("Fighting flares for weeks; the shipping disruption it causes lasts
 save(fig, "f12_4_duration")
 
 # ---------------------------------------------------------------- 5. diversification stretches stock cover
+# EFFECTIVE COVER. If only a share x of crude comes through the closed chokepoint, a stock of S days replaces
+# the lost
+# supply for S / x days. Example: 74 days at 45% exposure lasts 74 / 0.45 = 164 days; at 30% it lasts 246 days.
 exp = np.array([0.20, 0.30, 0.45, 0.60])
 stocks = {"SPR only (9.5 d)": 9.5, "National cover (74 d)": 74, "Parliamentary target (90 d)": 90}
 cov = pd.DataFrame({k: (v / exp).round(0) for k, v in stocks.items()}, index=[f"{int(e * 100)}% of crude via the chokepoint" for e in exp])
 table(cov.reset_index(names="Exposure"), "t12_3_effective_cover")
+# Days Hormuz had been disrupted by the end of the record (1 March to the last date).
 closure_days = (END - pd.Timestamp("2026-03-01")).days + 1
 fig, ax = plt.subplots(figsize=(9, 3))
 xx = np.linspace(0.15, 0.7, 50)
@@ -164,6 +201,7 @@ ax.legend(loc="upper right", fontsize=7)
 ax.set_title("Diversification multiplies stock cover: effective cover = stock days / share exposed")
 save(fig, "f12_5_effective_cover")
 
+# Headline numbers for the report.
 put_metrics(
     pw_end=f"{END:%d %b %Y}", pw_base=round(float(base), 1), pw_post=round(float(post), 1), pw_drop=round(float((1 - post / base) * 100), 1),
     pw_tank_base=round(float(base_t), 1), pw_tank_post=round(float(post_t), 1), pw_tank_drop=round(float((1 - post_t / base_t) * 100), 1),

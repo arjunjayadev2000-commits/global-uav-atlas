@@ -4,6 +4,19 @@ Each chapter opens with 'The story so far' (linking back) and closes with 'So wh
 next chapter. Every chart carries a one-line 'What this shows'. Numbers come from data/metrics.json.
 """
 
+# =====================================================================================================
+# ANNOTATED SOURCE - story.py: the plain-language layer
+# -----------------------------------------------------------------------------------------------------
+# KICKER      the 'Part I - ...' line under each chapter title.
+# openings    'The story so far' box at the start of each chapter (links back to the previous one).
+# closings    'So what' box at the end of each chapter, with the question that leads into the next.
+# PLAIN       one-line 'What this shows' under each chart, keyed by the chart's file name.
+# GLOSSARY    each analytics technique explained in plain words with a military analogy.
+# exec_summary_story / storyline   the executive summary and the seven-step storyboard on the at-a-glance page.
+# To change wording, edit the text here and rebuild; numbers stay live because they come from M (metrics.json).
+# =====================================================================================================
+
+
 
 def pct(x):
     return f"{x * 100:.0f}%"

@@ -3,6 +3,21 @@
 Same evidence, same numbers (data/metrics.json), same charts; told as one story in ten short chapters, each opening with
 'The story so far' and closing with 'So what'. The full report remains the technical annex.
 """
+
+# =====================================================================================================
+# ANNOTATED SOURCE - build_commander.py: the Commander's Edition (the submission, ~24 pages)
+# -----------------------------------------------------------------------------------------------------
+# Usage:  cd report && python build_commander.py
+# Re-uses the Doc class, styles, numbers and charts of build_report.py, but tells the study as ten short
+# chapters for a
+# commander. Each chapter opens with 'The story so far' and closes with 'So what' (text in story.py and the
+# KICK/OPEN/CLOSE
+# dictionaries below). Annexes: A glossary, B technical summary for assessors, C software and screenshots, D
+# references.
+# POWER BI SCREENSHOTS  Save them as figures/pbi_page1.png ... pbi_page4.png and re-run: Annex C picks them up
+# automatically.
+# =====================================================================================================
+
 import base64
 import re
 
@@ -56,6 +71,7 @@ CLOSE = {
 PL = ST.PLAIN
 
 
+# The ten chapters and four annexes, in reading order. Search for '# 1 ----', '# 2 ----' ... to find a chapter.
 def build():
     d = BR.Doc()
     d.kickers, d.opens, d.closes = KICK, OPEN, CLOSE
@@ -312,6 +328,9 @@ def build():
     return d
 
 
+# Print body -> find page numbers -> build and print the front (title, at a glance, executive summary, contents)
+# ->
+# merge -> stamp page numbers -> save. Also saves the final HTML for the Word version.
 def main():
     body = build()
     css_extra = """
@@ -360,8 +379,11 @@ what it cost, how long such crises last, and what India and its Armed Forces sho
 <div class="front pb"><h1>CONTENTS</h1><table class="toc">{toc}</table>
 <p style="font-size:10pt;margin-top:14pt">Each chapter opens with <b>The story so far</b> and closes with <b>So what</b>; every chart carries
 <b>What this shows</b>. A commander can read the Executive Summary and the coloured boxes alone in about ten minutes.</p></div>"""
-        render(f"<!doctype html><html><head><meta charset='utf-8'><style>{BR.CSS}{IG.CSS}{css_extra}</style></head><body>{front}</body></html>",
-               OUT / "_cfront.pdf")
+        front_doc = f"<!doctype html><html><head><meta charset='utf-8'><style>{BR.CSS}{IG.CSS}{css_extra}</style></head><body>{front}</body></html>"
+        render(front_doc, OUT / "_cfront.pdf")
+        BR.WORD.mkdir(exist_ok=True)  # final HTML kept for the editable Word version (build_word.py)
+        (BR.WORD / "commander_front.html").write_text(front_doc)
+        (BR.WORD / "commander_body.html").write_text(html_body)
         br.close()
     fr = fitz.open(OUT / "_cfront.pdf")
     doc = fitz.open()

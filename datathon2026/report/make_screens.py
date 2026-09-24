@@ -1,5 +1,14 @@
 """Capture 'software used' screenshots for the submission: the real pipeline run log and a real code excerpt,
 rendered as terminal / editor windows with headless Chromium."""
+
+# =====================================================================================================
+# ANNOTATED SOURCE - make_screens.py: 'software used' screenshots for Annex C
+# -----------------------------------------------------------------------------------------------------
+# Renders the real pipeline log (data/pipeline_run.log) as a terminal window and a real code excerpt as an
+# editor window,
+# using headless Chromium, and saves them as figures/screen_pipeline.png and figures/screen_code.png.
+# =====================================================================================================
+
 import html
 from pathlib import Path
 
@@ -19,6 +28,7 @@ pre {{ margin:0; padding:12px 14px; background:{bg}; color:{fg}; font-size:12.5p
 <i style="background:#28c840"></i>&nbsp; {title}</div><pre>{body}</pre></div></body></html>"""
 
 
+# Render one HTML window and save a cropped PNG screenshot.
 def shot(page, html_str, out):
     page.set_content(html_str)
     page.locator(".w").screenshot(path=str(out))
@@ -36,6 +46,7 @@ start = next(i for i, l in enumerate(src) if l.startswith("def rr_boot"))
 code = src[start - 1: start + 15]
 
 
+# Very small Python syntax highlighter for the code screenshot (keywords, strings, comments).
 def hl(line):
     s = html.escape(line)
     if s.strip().startswith("#") or s.strip().startswith('"""') or s.strip().startswith("because"):

@@ -3,6 +3,29 @@ flag-retention shift, the four signatures and the defence-budget framing.
 
 The Strategic Dark Ratio (SDR) is the share of SOLAS-class hulls (>= 100 m) seen by radar that are not matched to AIS.
 """
+
+# =====================================================================================================
+# ANNOTATED SOURCE - Stage 11: Project DARKWATER evidence (report sections 7.8-7.10, 10.4, 11-12)
+# -----------------------------------------------------------------------------------------------------
+# Strategic Dark Ratio (SDR) = share of big hulls (>= 100 m) seen by radar that are NOT matched to AIS.
+# Seven tests that turn 'ships went dark' into a judgement a commander can act on:
+#   1. PRESENCE vs IDENTITY  Same sea area at Hormuz imaged on 4 and 12 March: did ships leave (radar count
+#   falls)
+#                            or go silent (AIS count falls faster than radar count)?
+#   2. STASIS INDEX          Were dark hulls held in place? Share of hulls with another detection within 100 m
+#   on a
+#                            different day, compared with a 'crowding null' (days shuffled) to rule out mere
+#                            crowding.
+#   3. PASS CHECKS           Remove satellite passes that were 100% dark (possible AIS-feed outage); day vs
+#   night.
+#   4. DIFFERENCE-IN-DIFFERENCES  Did the Gulf darken faster than 11 control seas over the fortnight?
+#                            Significance by 5,000 random label shuffles (permutation test).
+#   5. FLAG SHIFT            Which registries kept transmitting in week 2 vs week 1 (chi-square)?
+#   6. FOUR SIGNATURES       Rule-based label per sea: concealment, attrition/frozen, evacuation,
+#   deterrence/compliance.
+#   7. DEFENCE BUDGET        The extra oil bill expressed as a share of India's monthly defence budget.
+# =====================================================================================================
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -15,14 +38,19 @@ print("Stage 11: DARKWATER evidence")
 s = pd.read_parquet(CLEAN / "sar_clean.parquet")
 a = pd.read_parquet(CLEAN / "acled_clean.parquet")
 M = get_metrics()
+# Seeded random numbers, so the shuffles and nulls give identical results every run.
 RNG = np.random.default_rng(11)
+# A satellite 'pass' = acquisition date + orbit number, cut out of the Sentinel-1 scene name.
 s["pass"] = s.scene_id.str[17:25] + "_" + s.scene_id.str[49:55]        # acquisition date + absolute orbit
 s["day"] = (s.date - s.date.min()).dt.days
 L = s[s.large].copy()
 GULF = GULF_CONFLICT
+# Defence allocation, Union Budget 2026-27 (Rs 7.85 lakh crore; PIB).
 DEFENCE_BUDGET_LAKH_CR = 7.85   # Union Budget 2026-27, Ministry of Defence allocation (as cited in the DARKWATER staff paper)
 
 # ---------------------------------------------------------------- 1. presence vs identity on a common footprint
+# TEST 1 - PRESENCE vs IDENTITY. Take the Hormuz box on the 4 Mar and 12 Mar passes and keep only the
+# OVERLAP of the two footprints, so both days cover exactly the same sea (a like-for-like count).
 H = s[s.lat.between(24.5, 27.6) & s.lon.between(54.0, 57.6)]           # Strait of Hormuz and approaches
 pa, pb = H[H["pass"].str.startswith("20260304")], H[H["pass"].str.startswith("20260312")]
 lo, hi = max(pa.lon.min(), pb.lon.min()), min(pa.lon.max(), pb.lon.max())
@@ -34,6 +62,7 @@ for lab, d in [("4 Mar 2026", pa), ("12 Mar 2026", pb)]:
     rows.append((lab, len(big), int((~big.dark).sum()), int(big.dark.sum()), int((~w.large).sum())))
 pv = pd.DataFrame(rows, columns=["Pass", "Big hulls seen by radar", "Transmitting AIS", "Dark", "Small craft"])
 table(pv, "t11_1_presence_identity")
+# Percentage change from the first to the second pass.
 chg = lambda c: (pv[c].iloc[1] / pv[c].iloc[0] - 1) * 100
 fig, ax = plt.subplots(figsize=(9, 3.2))
 x = np.arange(2)
@@ -53,6 +82,9 @@ ax.set_title("Presence vs identity: Strait of Hormuz, same sea area imaged on tw
 save(fig, "f11_1_presence_identity")
 
 # ---------------------------------------------------------------- 2. stasis index: did the dark ships stop?
+# TEST 2 - STASIS: for each hull, is there another radar detection within 100 m on a DIFFERENT day?
+# (BallTree with haversine distance; radius in radians = metres / Earth radius.) A high share = ships held at
+# anchor.
 def stasis(df, radius_m=100):
     """Share of hulls with another radar detection within radius_m on a *different* day."""
     if len(df) < 5:
@@ -64,6 +96,8 @@ def stasis(df, radius_m=100):
     return float(np.mean([np.any(days[j] != days[i]) for i, j in enumerate(ind)]))
 
 
+# Crowding null: shuffle the day labels among the same positions. Crowded anchorages still score high by chance;
+# the z-score says how far the real value is above that chance level (z = 5.3 for Gulf dark hulls).
 def stasis_null(df, reps=200, radius_m=100):
     """Crowding null: shuffle day labels across hulls (keeps positions and density, destroys identity over time)."""
     out = []
@@ -74,6 +108,7 @@ def stasis_null(df, reps=200, radius_m=100):
     return float(np.mean(out)), float(np.std(out))
 
 
+# Run the stasis test for dark and transmitting big hulls in five seas (Table t11_2).
 st_rows = []
 for lab, sel in [("Hormuz + Persian Gulf", L.region.isin({"Strait of Hormuz", "Persian Gulf"})),
                  ("Strait of Malacca", L.region.eq("Strait of Malacca")), ("NW Europe & North Sea", L.region.eq("NW Europe & North Sea")),
@@ -88,12 +123,16 @@ st = pd.DataFrame(st_rows, columns=["Sea", "Population", "Hulls", "Stasis index 
 table(st, "t11_2_stasis")
 g_dark = st[(st.Sea == "Hormuz + Persian Gulf") & (st.Population == "dark")].iloc[0]
 g_lit = st[(st.Sea == "Hormuz + Persian Gulf") & (st.Population == "transmitting")].iloc[0]
+# Count dark big hulls in the Gulf re-seen within 400 m on another day (a looser 'held' count).
 held = L[L.region.isin({"Strait of Hormuz", "Persian Gulf"}) & L.dark]
 Xh = np.radians(held[["lat", "lon"]].values)
 indh = BallTree(Xh, metric="haversine").query_radius(Xh, r=400 / 6_371_000)
 held_n = int(sum(np.any(held.day.values[j] != held.day.values[i]) for i, j in enumerate(indh)))
 
 # ---------------------------------------------------------------- 3. pass-level robustness: all-dark passes, day/night
+# TEST 3 - PASS CHECKS. A pass where every one of 20+ detections is dark may be an AIS-feed outage, not
+# behaviour:
+# remove those passes and re-test. Local solar time splits day from night passes (radar sees both equally).
 sc = s.groupby("scene_id").agg(n=("dark", "size"), d=("dark", "mean"))
 alldark = sc[(sc.n >= 20) & (sc.d == 1)].index
 s["lst"] = (s.ts.dt.hour + s.ts.dt.minute / 60 + s.lon / 15) % 24
@@ -114,6 +153,9 @@ rb = pd.DataFrame([
 table(rb, "t11_3_pass_robustness")
 
 # ---------------------------------------------------------------- 4. difference-in-differences (scene level, permutation)
+# TEST 4 - DIFFERENCE-IN-DIFFERENCES. Unit = one satellite pass over one sea (at least 5 big hulls).
+# Regression: SDR = a + b*day + c*Gulf + d*(day x Gulf), weighted by sqrt(hulls).
+# d = how much faster the Gulf darkened per day than the control seas (the 'excess trend').
 CONTROLS = ["NW Europe & North Sea", "Mediterranean", "Atlantic (other)", "East Asia Seas", "South China Sea", "Strait of Malacca",
             "Southern Indian Ocean", "Arabian Sea", "Bay of Bengal", "Red Sea", "Pacific & Americas (other)"]
 u = L[L.region.isin(GULF | set(CONTROLS))].groupby(["scene_id", "region"]).agg(
@@ -130,6 +172,8 @@ def did(df):
 
 
 b = did(u)
+# Permutation test: shuffle which units are 'Gulf' 5,000 times; p = share of shuffles with an excess trend at
+# least as big.
 perm = []
 for _ in range(5000):
     uu = u.copy()
@@ -143,6 +187,8 @@ did_tab = pd.DataFrame([("Control seas trend", round(b[1] * 100, 2)), ("Gulf exc
 table(did_tab, "t11_4_did")
 
 # ---------------------------------------------------------------- 5. who kept transmitting? flag shift week 1 -> week 2
+# TEST 5 - FLAG SHIFT among transmitting big hulls in the Gulf: Gulf-littoral flags, shadow-fleet-associated,
+# major open registries, other. Week 1 vs week 2, tested with chi-square.
 LIT = ["Iran", "UAE", "Saudi Arabia", "Qatar", "Bahrain", "Kuwait", "Iraq", "Oman"]
 OPEN = ["Liberia", "Marshall Islands", "Panama"]
 lit = L[L.region.isin(GULF) & ~L.dark & L.flag.notna()].copy()
@@ -167,12 +213,15 @@ ax.set_title(f"Who kept transmitting in the Gulf? Flag mix of the lit fleet (chi
 save(fig, "f11_2_flag_shift")
 
 # ---------------------------------------------------------------- 6. four signatures
+# TEST 6 - FOUR SIGNATURES. For each sea: number of big hulls, SDR, SDR trend per day and violent events within
+# 300 km.
 BOX = {"East Med / Suez approaches": (30.0, 37.0, 28.0, 36.5), "Turkish Straits": (40.0, 41.6, 26.0, 29.6)}
 def sdr_region(mask):
     d = L[mask]
     return len(d), d.dark.mean() * 100
 
 
+# Daily trend of SDR in a sea (weighted straight line through pass-level values).
 def trend(mask):
     d = L[mask].groupby("scene_id").agg(sdr=("dark", "mean"), w=("dark", "size"), day=("day", "first"))
     d = d[d.w >= 5]
@@ -186,6 +235,7 @@ cent = war.groupby(["CENTROID_LATITUDE", "CENTROID_LONGITUDE"]).EVENTS.sum().res
 ctree = BallTree(np.radians(cent[["CENTROID_LATITUDE", "CENTROID_LONGITUDE"]].values), metric="haversine")
 
 
+# Violent events (war weeks 1-2) within 300 km of the sea's median position.
 def conflict_near(mask, r_km=300):
     d = L[mask]
     if len(d) == 0:
@@ -201,6 +251,8 @@ seas = {"Strait of Hormuz": L.region.eq("Strait of Hormuz"), "Persian Gulf": L.r
         "Strait of Malacca": L.region.eq("Strait of Malacca"), "NW Europe & North Sea": L.region.eq("NW Europe & North Sea")}
 base = L[~L.region.isin(WAR)].dark.mean() * 100
 sig = []
+# Signature rules: SDR > 40% = CONCEALMENT; > 25% = ATTRITION/FROZEN; an at-sea threat with a detour available =
+# EVACUATION; heavy fighting nearby but SDR at or below baseline = DETERRENCE/COMPLIANCE; otherwise BASELINE.
 for k, m in seas.items():
     n_, sdr_ = sdr_region(m)
     tr, cf = trend(m), conflict_near(m)
@@ -220,6 +272,9 @@ sig = pd.DataFrame(sig, columns=["Sea", "Big hulls", "SDR %", "Trend pp/day", "V
 table(sig, "t11_6_signatures")
 
 # ---------------------------------------------------------------- 7. the oil premium in defence-budget terms
+# TEST 7 - DEFENCE-BUDGET FRAMING: monthly oil premium over February = (month price - Feb price) x barrels/day x
+# 30.5,
+# for two import-volume bases, divided by one month of the defence budget converted to US$.
 brent = pd.read_csv(ROOT / "data/open/brent_daily.csv", parse_dates=["Date"]).set_index("Date").Price
 fx = pd.read_csv(ROOT / "data/open/inr_usd_daily.csv", parse_dates=["Date"]).set_index("Date")["Exchange rate"]
 feb, mar, apr = brent["2026-02"].mean(), brent["2026-03"].mean(), brent["2026-04"].mean()
@@ -234,6 +289,7 @@ db = pd.DataFrame(db, columns=["Import volume basis", "Month", "Premium over Feb
                                "Share of monthly defence budget"])
 table(db, "t11_7_defence_budget")
 
+# Headline numbers for the report.
 put_metrics(
     pi_radar_1=int(pv.iloc[0, 1]), pi_radar_2=int(pv.iloc[1, 1]), pi_lit_1=int(pv.iloc[0, 2]), pi_lit_2=int(pv.iloc[1, 2]),
     pi_dark_1=int(pv.iloc[0, 3]), pi_dark_2=int(pv.iloc[1, 3]), pi_radar_chg=round(chg("Big hulls seen by radar")),

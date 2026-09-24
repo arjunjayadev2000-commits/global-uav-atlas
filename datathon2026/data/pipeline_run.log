@@ -403,3 +403,4 @@ Stage 7: Power BI export
   FactConflictWeekly.csv: 149,814 rows
   FactVesselDetections.csv: 106,533 rows
   DimDate.csv: 4,383 rows
+  FactChokepointTransits.csv: 37,072 rows

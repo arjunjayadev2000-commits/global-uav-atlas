@@ -7,6 +7,26 @@ Sources (data/open/):
 Questions: did the conflict move the oil price and the rupee, does conflict intensity lead the oil price, what did
 the 2026 war cost India, and did the June 2026 I&W call hold up out-of-sample?
 """
+
+# =====================================================================================================
+# ANNOTATED SOURCE - Stage 9: the economic bill (report Chapter 9, sections 9.1-9.8)
+# -----------------------------------------------------------------------------------------------------
+# Uses OPEN-SOURCE data to follow the war from the sea lanes to India's economy.
+#   1. Timeline of Brent crude against the chokepoint conflict index.
+#   2. EVENT STUDY: Brent's path in the 40 trading days after four Middle-East shocks (day 0 = last close
+#   before).
+#   3. GRANGER CAUSALITY: does conflict intensity help predict next week's oil price move? (answer: no - prices
+#   react,
+#      they do not warn; so a data-driven warning adds value). The reverse direction is run as a placebo.
+#   4. Oil-price volatility before vs during the war.
+#   5. RUPEE PASS-THROUGH: regression of the weekly rupee change on the weekly oil change (beta).
+#   6. India's import dependence from Energy Institute data (via Our World in Data).
+#   7. WAR PREMIUM: extra import bill = (war price - pre-war price) x India's net import volume x days.
+#   8. OUT-OF-SAMPLE CHECK: the conflict data end on 27 Jun 2026; what the oil price did afterwards tests the
+#   June
+#      I&W call on data the analysis never saw.
+# =====================================================================================================
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -23,10 +43,12 @@ brent = brent[brent > 0]
 fx = pd.read_csv(OPEN / "inr_usd_daily.csv", parse_dates=["Date"]).set_index("Date")["Exchange rate"].dropna()
 owid = pd.read_csv(OPEN / "owid_energy_selected.csv")
 cc = pd.read_csv(TAB / "t6_ccii_weekly.csv", parse_dates=["WEEK"]).set_index("WEEK")
+# Anything after DATA_END is 'the future' for the analysis: used only to check the warning, never to build it.
 DATA_END = pd.Timestamp("2026-06-27")      # last ACLED week; everything after is out-of-sample
 WAR0 = pd.Timestamp("2026-02-28")
 
 # ---------------------------------------------------------------- 1. timeline: oil price with conflict markers
+# Timeline figure: Brent (top) and the Hormuz / Red Sea conflict index (bottom), campaigns shaded.
 fig, ax = plt.subplots(2, 1, figsize=(9, 5.2), sharex=True, gridspec_kw={"height_ratios": [1.6, 1]})
 b = brent["2022-01-01":]
 ax[0].plot(b.index, b.values, color=C["ink"], lw=1)
@@ -51,6 +73,7 @@ fig.tight_layout()
 save(fig, "f9o_1_brent_timeline")
 
 # ---------------------------------------------------------------- 2. event study
+# EVENT STUDY: for each shock, index Brent to 0% on day 0 and follow it from 5 days before to 40 days after.
 EVENTS = [("7 Oct 2023 (Gaza war)", "2023-10-06"), ("19 Nov 2023 (Red Sea campaign)", "2023-11-17"),
           ("13 Jun 2025 (Israel-Iran strikes)", "2025-06-12"), ("28 Feb 2026 (regional war)", "2026-02-27")]
 fig, ax = plt.subplots(figsize=(9, 3.4))
@@ -74,6 +97,9 @@ ev = pd.DataFrame(ev_rows, columns=["Event", "Day 0", "Brent day 0 ($)", "+5 day
 table(ev, "t9o_1_event_study")
 
 # ---------------------------------------------------------------- 3. does conflict lead the oil price? (Granger)
+# GRANGER TEST. Build weekly Brent returns (% change) and weekly log conflict index, up to DATA_END only.
+# H0: past conflict does NOT help predict the oil return. A small p-value would reject H0.
+# Lags of 1, 2 and 4 weeks are tested for Hormuz and the Red Sea; the reverse direction is a placebo check.
 wk_b = brent.groupby(brent.index - pd.to_timedelta((brent.index.dayofweek + 2) % 7, "D")).mean()
 df = pd.DataFrame({"ret": np.log(wk_b).diff() * 100}).join(np.log1p(cc[["Hormuz (littoral)", "Red Sea / Arabian Sea (at sea)"]]), how="inner").dropna()
 df = df[df.index <= DATA_END]
@@ -90,14 +116,18 @@ for col, lab in [("Hormuz (littoral)", "Hormuz littoral CCII"), ("Red Sea / Arab
 gr = pd.DataFrame(gr, columns=["Direction", "Lags (weeks)", "F", "p-value"])
 gr["p-value"] = gr["p-value"].map(lambda p: f"{p:.4f}" if p >= 1e-4 else f"{p:.1e}")
 table(gr, "t9o_2_granger")
+# Cross-correlation of the oil return with the conflict index 0-4 weeks earlier (supporting check).
 xc = [(k, df["ret"].corr(df["Hormuz (littoral)"].shift(k))) for k in range(0, 5)]
 
 # ---------------------------------------------------------------- 4. volatility regimes
+# Annualised 20-day volatility of Brent: pre-war year vs the war months.
 rv = np.log(brent).diff().rolling(20).std() * np.sqrt(252) * 100
 vol_pre = rv["2025-03-01":"2026-02-27"].mean()
 vol_war = rv["2026-03-01":"2026-04-30"].mean()
 
 # ---------------------------------------------------------------- 5. rupee pass-through
+# RUPEE PASS-THROUGH: weekly % change of INR/US$ regressed on weekly % change of Brent since 2015.
+# beta = how much the rupee weakens for a 1% oil rise.
 wk_fx = fx.groupby(fx.index - pd.to_timedelta((fx.index.dayofweek + 2) % 7, "D")).mean()
 pt = pd.DataFrame({"b": np.log(wk_b).diff() * 100, "fx": np.log(wk_fx).diff() * 100}).dropna()
 pt = pt["2015-01-01":]
@@ -120,6 +150,7 @@ fig.tight_layout()
 save(fig, "f9o_3_rupee")
 
 # ---------------------------------------------------------------- 6. India's import dependence (OWID / Energy Institute)
+# India's oil consumption vs production since 1990 and the resulting import dependence (%).
 ind = owid[(owid.country == "India") & owid.oil_consumption.notna()].set_index("year")
 ind = ind[ind.index >= 1990]
 dep = (1 - ind.oil_production / ind.oil_consumption) * 100
@@ -141,6 +172,10 @@ cmp_ = owid[(owid.year == ind.index.max()) & owid.country.isin(["India", "China"
 cmp_dep = (1 - cmp_.oil_production.fillna(0) / cmp_.oil_consumption) * 100
 
 # ---------------------------------------------------------------- 7. the war premium on India's import bill
+# WAR PREMIUM on India's import bill.
+#   net import volume (barrels/day) = (consumption - production) in TWh / energy per barrel / 365
+#   extra bill = (war-period Brent - pre-war Brent) x barrels/day x days since 1 March
+#   rupee version also applies the weaker exchange rate; per10 = the cost of every US$10/bbl for a year.
 TWH_PER_BBL = 1.7e-6          # 1 barrel of crude ~ 5.8 MMBtu ~ 1.70 MWh
 net_twh = float(ind.oil_consumption.iloc[-1] - ind.oil_production.iloc[-1])
 bpd = net_twh / TWH_PER_BBL / 365
@@ -167,9 +202,11 @@ wp = pd.DataFrame([
 table(wp, "t9o_3_war_premium")
 
 # ---------------------------------------------------------------- 8. out-of-sample check of the June I&W call
+# OUT-OF-SAMPLE: Brent on the last day of conflict data vs the latest price and the highest price since.
 b_cut = brent[:DATA_END].iloc[-1]
 b_last = brent.iloc[-1]
 b_max_after = brent[DATA_END:].max()
+# Headline numbers for the report.
 put_metrics(
     brent_prewar=round(float(brent[:WAR0].iloc[-1]), 1), brent_peak_mar=round(float(brent["2026-03-01":"2026-03-31"].max()), 1),
     brent_war_peak=round(float(brent["2026-03-01":].max()), 1), brent_war_peak_date=f"{brent['2026-03-01':].idxmax():%d %b %Y}",
