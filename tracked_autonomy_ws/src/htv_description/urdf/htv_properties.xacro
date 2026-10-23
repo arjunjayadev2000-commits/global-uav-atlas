@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!-- Generic ~42 t heavy tracked vehicle envelope. Approximate research values only. -->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:property name="vehicle_mass" value="42000.0"/>
+  <xacro:property name="hull_length" value="7.50"/>
+  <xacro:property name="hull_width" value="2.20"/>
+  <xacro:property name="hull_height" value="1.60"/>
+  <xacro:property name="ground_clearance" value="0.45"/>
+  <!-- Height of base_link above ground (track axle height). -->
+  <xacro:property name="base_height" value="0.50"/>
+  <xacro:property name="track_separation" value="2.82"/>
+  <xacro:property name="track_width" value="0.58"/>
+  <xacro:property name="track_length" value="6.80"/>
+  <xacro:property name="track_height" value="1.00"/>
+  <xacro:property name="track_contact_length" value="4.60"/>
+  <!-- Non-functional superstructure block (occlusion / visual envelope only). -->
+  <xacro:property name="superstructure_length" value="2.6"/>
+  <xacro:property name="superstructure_width" value="2.0"/>
+  <xacro:property name="superstructure_height" value="0.8"/>
+</robot>

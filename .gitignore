@@ -42,3 +42,9 @@ logs/*.jsonl.*
 output/seed_snapshot.sqlite
 
 .DS_Store
+
+# ROS 2 workspace build products (tracked_autonomy_ws)
+tracked_autonomy_ws/build/
+tracked_autonomy_ws/install/
+tracked_autonomy_ws/log/
+tracked_autonomy_ws/bags/

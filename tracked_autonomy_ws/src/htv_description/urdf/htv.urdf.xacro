@@ -1,0 +1,120 @@
+<?xml version="1.0"?>
+<!--
+  Generic WZT-3-class heavy tracked recovery vehicle, modelled as a DEMILITARISED,
+  UNARMED research platform for simulation only. Hull, tracks and a non-functional
+  superstructure envelope are represented; recovery equipment (crane, winch, dozer)
+  is out of scope and not modelled. No weapon or mission systems exist in this model.
+-->
+<robot name="htv" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:arg name="sensor_config" default="$(find htv_description)/config/sensor_mounts.yaml"/>
+  <xacro:arg name="use_gazebo" default="false"/>
+  <xacro:arg name="enable_secondary_lidar" default="false"/>
+  <xacro:arg name="enable_side_cameras" default="true"/>
+  <xacro:arg name="enable_front_aux_camera" default="true"/>
+
+  <xacro:include filename="$(find htv_description)/urdf/htv_properties.xacro"/>
+  <xacro:include filename="$(find htv_description)/urdf/sensors.xacro"/>
+
+  <xacro:property name="mounts" value="${xacro.load_yaml('$(arg sensor_config)')}"/>
+  <xacro:property name="gz" value="$(arg use_gazebo)"/>
+
+  <material name="Hull"><color rgba="0.45 0.47 0.42 1.0"/></material>
+  <material name="Track"><color rgba="0.12 0.12 0.12 1.0"/></material>
+  <material name="Sensor"><color rgba="0.10 0.30 0.70 1.0"/></material>
+
+  <!-- base_footprint: ground projection of base_link -->
+  <link name="base_footprint"/>
+
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 ${ground_clearance + hull_height/2 - base_height}"/>
+      <geometry><box size="${hull_length} ${hull_width} ${hull_height}"/></geometry>
+      <material name="Hull"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 ${ground_clearance + hull_height/2 - base_height}"/>
+      <geometry><box size="${hull_length} ${hull_width} ${hull_height}"/></geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0 0 0.35"/>
+      <mass value="${vehicle_mass}"/>
+      <inertia ixx="${vehicle_mass*(3.4**2 + 2.1**2)/12}"
+               iyy="${vehicle_mass*(hull_length**2 + 2.1**2)/12}"
+               izz="${vehicle_mass*(hull_length**2 + 3.4**2)/12}"
+               ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 ${base_height}"/>
+  </joint>
+
+  <link name="superstructure_link">
+    <visual>
+      <geometry><box size="${superstructure_length} ${superstructure_width} ${superstructure_height}"/></geometry>
+      <material name="Hull"/>
+    </visual>
+    <collision>
+      <geometry><box size="${superstructure_length} ${superstructure_width} ${superstructure_height}"/></geometry>
+    </collision>
+    <inertial>
+      <mass value="1.0"/>
+      <inertia ixx="1" iyy="1" izz="1" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+  </link>
+  <joint name="superstructure_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="superstructure_link"/>
+    <origin xyz="-0.9 0 ${ground_clearance + hull_height + superstructure_height/2 - base_height}"/>
+  </joint>
+
+  <xacro:macro name="track" params="side y">
+    <link name="${side}_track_link">
+      <visual>
+        <geometry><box size="${track_length} ${track_width} ${track_height}"/></geometry>
+        <material name="Track"/>
+      </visual>
+      <!-- Collision uses the ground-contact length so the support polygon is realistic. -->
+      <collision>
+        <origin xyz="0 0 0"/>
+        <geometry><box size="${track_contact_length} ${track_width} ${track_height}"/></geometry>
+        <surface>
+          <friction><ode><mu>0.05</mu><mu2>0.05</mu2></ode></friction>
+        </surface>
+      </collision>
+      <inertial>
+        <mass value="1.0"/>
+        <inertia ixx="1" iyy="1" izz="1" ixy="0" ixz="0" iyz="0"/>
+      </inertial>
+    </link>
+    <joint name="${side}_track_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="${side}_track_link"/>
+      <origin xyz="0 ${y} 0"/>
+    </joint>
+  </xacro:macro>
+  <xacro:track side="left" y="${track_separation/2}"/>
+  <xacro:track side="right" y="${-track_separation/2}"/>
+
+  <!-- Sensors -->
+  <xacro:lidar name="lidar" parent="base_link" cfg="${mounts['lidar']}" gazebo="${gz}"/>
+  <xacro:if value="$(arg enable_secondary_lidar)">
+    <xacro:lidar name="lidar_secondary" parent="base_link" cfg="${mounts['secondary_lidar']}" gazebo="${gz}"/>
+  </xacro:if>
+  <xacro:camera name="front_camera" parent="base_link" cfg="${mounts['front_camera']}" gazebo="${gz}"/>
+  <xacro:if value="$(arg enable_front_aux_camera)">
+    <xacro:camera name="front_aux_camera" parent="base_link" cfg="${mounts['front_aux_camera']}" gazebo="${gz}"/>
+  </xacro:if>
+  <xacro:if value="$(arg enable_side_cameras)">
+    <xacro:camera name="left_camera" parent="base_link" cfg="${mounts['left_camera']}" gazebo="${gz}"/>
+    <xacro:camera name="right_camera" parent="base_link" cfg="${mounts['right_camera']}" gazebo="${gz}"/>
+  </xacro:if>
+  <xacro:camera name="rear_camera" parent="base_link" cfg="${mounts['rear_camera']}" gazebo="${gz}"/>
+  <xacro:imu parent="base_link" cfg="${mounts['imu']}" gazebo="${gz}"/>
+  <xacro:gnss parent="base_link" cfg="${mounts['gnss']}" gazebo="${gz}"/>
+
+  <xacro:if value="${gz}">
+    <xacro:include filename="$(find htv_description)/urdf/htv.gazebo.xacro"/>
+  </xacro:if>
+</robot>

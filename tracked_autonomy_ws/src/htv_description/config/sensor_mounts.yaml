@@ -1,0 +1,75 @@
+# Sensor mounting poses relative to base_link: xyz [m], rpy [rad].
+# base_link sits on the vehicle centreline at track-axle height (0.5 m above ground)
+# midway along the track contact patch. Override by passing another file through
+#   xacro htv.urdf.xacro sensor_config:=/path/to/my_mounts.yaml
+# Values are generic research-platform placements, not any real vehicle layout.
+
+lidar:                      # roof-mounted primary 3D LiDAR on a short mast
+  xyz: [0.80, 0.0, 2.45]
+  rpy: [0.0, 0.0, 0.0]
+  channels: 32
+  horizontal_samples: 1024
+  vertical_fov_deg: 45.0
+  min_range: 1.0
+  max_range: 100.0
+  rate: 10.0
+
+secondary_lidar:            # optional low front LiDAR for near-field negative obstacles
+  xyz: [3.85, 0.0, 0.95]
+  rpy: [0.0, 0.35, 0.0]
+  channels: 16
+  horizontal_samples: 512
+  vertical_fov_deg: 30.0
+  min_range: 0.5
+  max_range: 40.0
+  rate: 10.0
+
+front_camera:
+  xyz: [3.70, 0.0, 1.70]
+  rpy: [0.0, 0.10, 0.0]
+  width: 1280
+  height: 720
+  hfov_deg: 90.0
+  rate: 15.0
+
+front_aux_camera:           # second front camera (e.g. narrow FOV / stereo partner)
+  xyz: [3.70, -0.40, 1.70]
+  rpy: [0.0, 0.10, 0.0]
+  width: 1280
+  height: 720
+  hfov_deg: 60.0
+  rate: 15.0
+
+left_camera:
+  xyz: [0.0, 1.72, 1.80]
+  rpy: [0.0, 0.15, 1.5708]
+  width: 960
+  height: 600
+  hfov_deg: 100.0
+  rate: 10.0
+
+right_camera:
+  xyz: [0.0, -1.72, 1.80]
+  rpy: [0.0, 0.15, -1.5708]
+  width: 960
+  height: 600
+  hfov_deg: 100.0
+  rate: 10.0
+
+rear_camera:
+  xyz: [-3.75, 0.0, 1.70]
+  rpy: [0.0, 0.15, 3.14159]
+  width: 960
+  height: 600
+  hfov_deg: 100.0
+  rate: 10.0
+
+imu:                        # industrial IMU near the centre of mass
+  xyz: [0.0, 0.0, 0.40]
+  rpy: [0.0, 0.0, 0.0]
+  rate: 100.0
+
+gnss:                       # GNSS/RTK antenna on the roof
+  xyz: [-0.60, 0.0, 2.20]
+  rpy: [0.0, 0.0, 0.0]
+  rate: 10.0

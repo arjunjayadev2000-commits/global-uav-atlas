@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>htv_dynamics</name>
+  <version>0.1.0</version>
+  <description>
+    Approximate heavy tracked vehicle (skid-steer) dynamics: track lag, command and
+    braking latency, traction and slope limits, track slip and steering inefficiency.
+    Pure Python, no ROS dependency, so it can be unit tested and reused by any simulator.
+  </description>
+  <maintainer email="arjunjayadev2000@gmail.com">HTV research team</maintainer>
+  <license>Apache-2.0</license>
+
+  <exec_depend>python3-yaml</exec_depend>
+
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

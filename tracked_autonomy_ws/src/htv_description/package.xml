@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>htv_description</name>
+  <version>0.1.0</version>
+  <description>
+    Xacro/URDF description of a generic WZT-3-class heavy tracked vehicle modelled as an
+    unarmed research platform: hull, tracks, non-functional superstructure envelope and a
+    research sensor suite with YAML-configurable mounting poses. Simulation only.
+  </description>
+  <maintainer email="arjunjayadev2000@gmail.com">HTV research team</maintainer>
+  <license>Apache-2.0</license>
+
+  <exec_depend>xacro</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+
+  <test_depend>python3-pytest</test_depend>
+  <test_depend>xacro</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

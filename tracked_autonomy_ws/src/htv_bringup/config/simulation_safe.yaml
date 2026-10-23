@@ -1,0 +1,163 @@
+# =============================================================================
+# simulation_safe.yaml - deliberately conservative SIMULATION configuration.
+#
+# Every speed limit in the stack is read from here; changing limits never
+# requires a source change. All numbers must be written as floats (1.0, not 1)
+# because ROS 2 parameters are strongly typed.
+#
+# The research limits below are far below the generic platform's physical
+# limits (max_vehicle_speed). The safety supervisor refuses to start (FAULT)
+# if research_speed_limit exceeds research_speed_hard_cap.
+# =============================================================================
+
+/**:
+  ros__parameters:
+    vehicle:
+      # --- generic ~42 t heavy tracked vehicle (approximate research values) ---
+      vehicle_mass: 42000.0              # kg
+      track_separation: 2.82             # m, centreline to centreline
+      track_contact_length: 4.60         # m
+      track_width: 0.58                  # m
+      vehicle_length: 7.50               # m
+      vehicle_width: 3.40                # m
+      max_vehicle_speed: 15.0            # m/s, physical plant limit (never used as a command limit)
+      # --- research limits (what autonomy may actually command) ---
+      research_speed_limit: 1.0          # m/s (3.6 km/h)
+      research_reverse_speed_limit: 0.3  # m/s
+      research_yaw_rate_limit: 0.10      # rad/s
+      # --- plant dynamics ---
+      max_acceleration: 0.5              # m/s^2
+      max_deceleration: 1.5              # m/s^2, service braking
+      emergency_deceleration: 2.5        # m/s^2
+      max_yaw_rate: 0.30                 # rad/s, physical
+      max_yaw_acceleration: 0.25         # rad/s^2
+      command_latency: 0.25              # s
+      braking_latency: 0.40              # s
+      track_time_constant: 0.80          # s
+      yaw_time_constant: 1.20            # s
+      slip_coefficient: 0.08
+      terrain_friction: 0.70
+      lateral_resistance_coefficient: 0.50
+      steering_inefficiency: 0.0         # <= 0: derived from geometry
+      lateral_slip_gain: 0.05
+      rolling_resistance: 0.04
+      terrain_slope: 0.0                 # rad, headless backend only
+      standstill_threshold: 0.02         # m/s
+      excessive_slip_threshold: 0.35
+
+    footprint:
+      # Polygons as flat [x0, y0, x1, y1, ...] lists in base_link, metres.
+      nominal: [3.75, 1.70, -3.75, 1.70, -3.75, -1.70, 3.75, -1.70]
+      low_speed_safety: [4.75, 2.40, -4.25, 2.40, -4.25, -2.40, 4.75, -2.40]
+      safety_inflation: 0.50
+      navigation_inflation_radius: 2.50
+
+safety_supervisor:
+  ros__parameters:
+    rate: 20.0
+    command_timeout: 0.5
+    health_timeout: 1.0
+    vehicle_status_timeout: 0.5   # stale => latched EMERGENCY_STOP (vehicle interface timeout)
+    min_initialization_time: 2.0
+    initialization_timeout: 30.0
+    degraded_speed_scale: 0.5
+    gnss_required: false
+    research_speed_hard_cap: 2.0
+    slip_monitoring_required: false
+    slip_high_threshold: 0.25
+    slip_excessive_threshold: 0.45
+
+command_limiter:
+  ros__parameters:
+    safety_status_timeout: 0.3
+    vehicle_status_timeout: 0.3
+    limiter:
+      max_acceleration: 0.2
+      max_deceleration: 1.0
+      max_yaw_acceleration: 0.10
+      allow_pivot_turns: false
+      min_turning_radius: 5.0
+      allow_reverse: true
+    stopping:
+      reaction_time: 0.2
+      margin_fixed: 1.5
+      margin_ratio: 0.25
+      available_distance: 12.0
+      unknown_traction: 0.35
+      unknown_slope_deg: -8.0
+      min_terrain_confidence: 0.3
+      unknown_terrain_speed: 0.3
+      min_confidence_scale: 0.4
+    terrain:
+      # No terrain perception before Phase 9: terrain is UNKNOWN (confidence 0.0),
+      # which caps speed at stopping.unknown_terrain_speed.
+      default_traction: 0.6
+      default_slope_deg: 0.0
+      default_confidence: 0.0
+
+motion_arbitration:
+  ros__parameters:
+    rate: 20.0
+    command_timeout: 0.3
+    safety_status_timeout: 0.3
+    source_topics: ["/control/limited_cmd"]
+
+operator_mode:
+  ros__parameters:
+    rate: 10.0
+    arm_timeout: 10.0
+
+watchdog:
+  ros__parameters:
+    rate: 10.0
+    heartbeat_timeout: 0.6
+    startup_grace: 5.0
+    monitored_nodes:
+      - safety_supervisor
+      - vehicle_interface
+      - command_limiter
+      - motion_arbitration
+      - operator_mode
+      - geofence_monitor
+    monitored_severities:
+      - critical
+      - critical
+      - critical
+      - critical
+      - major
+      - major
+
+geofence_monitor:
+  ros__parameters:
+    rate: 10.0
+    pose_topic: /ground_truth/odom   # Phase 6+: /odometry/filtered
+    geofence:
+      name: sim_test_area
+      polygon: [-50.0, -50.0, 150.0, -50.0, 150.0, 50.0, -50.0, 50.0]
+      soft_margin: 5.0
+
+vehicle_interface:
+  ros__parameters:
+    backend: simulated
+    allow_non_simulated_backends: false
+    update_rate: 50.0
+    command_timeout: 0.30
+    feedback_timeout: 0.50
+    safety_status_timeout: 0.6      # stale supervisor => latched emergency stop
+    limit_tolerance: 0.05
+    steering_compensation: 1.0
+    follow_operator_enable: true
+
+tracked_vehicle_sim:
+  ros__parameters:
+    physics_rate: 100.0
+    feedback_rate: 50.0
+    demand_timeout: 0.3
+    odom_frame: odom
+    base_frame: base_footprint
+    publish_ground_truth_tf: true    # Phase 1-5 only; EKF owns odom->base_footprint from Phase 6
+
+sim_health_stub:
+  ros__parameters:
+    rate: 10.0
+    stubbed: ["lidar", "imu", "gnss", "perception", "localization"]

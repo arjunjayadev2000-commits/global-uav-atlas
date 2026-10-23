@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!--
+  Gazebo (Harmonic) coupling. Track dynamics are NOT simulated by Gazebo contacts:
+  htv_sim's TrackedVehicleModel computes the realised body velocity (latency, lag,
+  slip, skid-steer inefficiency) and commands it through VelocityControl. Gazebo
+  supplies pose, terrain contact, collisions and sensor data.
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <gazebo>
+    <plugin filename="gz-sim-velocity-control-system" name="gz::sim::systems::VelocityControl">
+      <topic>/model/htv/cmd_vel</topic>
+      <initial_linear>0 0 0</initial_linear>
+      <initial_angular>0 0 0</initial_angular>
+    </plugin>
+    <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+      <odom_frame>odom</odom_frame>
+      <robot_base_frame>base_footprint</robot_base_frame>
+      <odom_topic>/model/htv/odometry</odom_topic>
+      <odom_publish_frequency>50</odom_publish_frequency>
+      <dimensions>3</dimensions>
+    </plugin>
+  </gazebo>
+  <gazebo reference="base_link">
+    <mu1>0.05</mu1>
+    <mu2>0.05</mu2>
+  </gazebo>
+</robot>

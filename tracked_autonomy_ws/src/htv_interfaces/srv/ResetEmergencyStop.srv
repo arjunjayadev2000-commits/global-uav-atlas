@@ -1,0 +1,10 @@
+# Explicit operator reset of a latched EMERGENCY_STOP or FAULT.
+# The reset is refused unless the vehicle is at standstill and the cause has cleared.
+
+# Identifier of the operator performing the reset (logged).
+string operator_id
+# Must equal "RESET" exactly; guards against accidental calls.
+string confirmation
+---
+bool success
+string message

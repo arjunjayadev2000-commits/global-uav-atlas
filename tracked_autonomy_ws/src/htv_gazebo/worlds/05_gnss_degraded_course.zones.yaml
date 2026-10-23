@@ -1,0 +1,25 @@
+# GNSS degradation zones (odom/world frame, metres) used by failure injection.
+zones:
+- name: urban_canyon
+  polygon:
+  - 8
+  - -8
+  - 92
+  - -8
+  - 92
+  - 8
+  - 8
+  - 8
+  effect: degraded
+  position_stddev: 2.5
+- name: overpass
+  polygon:
+  - 50
+  - -8
+  - 70
+  - -8
+  - 70
+  - 8
+  - 50
+  - 8
+  effect: denied

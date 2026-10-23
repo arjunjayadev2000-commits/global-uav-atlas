@@ -1,0 +1,59 @@
+name: tracked-autonomy
+
+on:
+  push:
+    branches: ["**"]
+    paths:
+      - "tracked_autonomy_ws/**"
+      - ".github/workflows/tracked-autonomy.yml"
+  pull_request:
+    paths:
+      - "tracked_autonomy_ws/**"
+      - ".github/workflows/tracked-autonomy.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: tracked-autonomy-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    container:
+      image: ros:jazzy
+    defaults:
+      run:
+        shell: bash
+        working-directory: tracked_autonomy_ws
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          set -euo pipefail
+          apt-get update
+          rosdep update --rosdistro jazzy
+          rosdep install --from-paths src --ignore-src -y --rosdistro jazzy
+
+      - name: Build
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          colcon build --event-handlers console_cohesion+
+
+      - name: Test
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          source install/setup.bash
+          colcon test --event-handlers console_cohesion+
+          colcon test-result --verbose
+
+      - name: Upload test logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: colcon-test-logs
+          path: tracked_autonomy_ws/log/latest_test

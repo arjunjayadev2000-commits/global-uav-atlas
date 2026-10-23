@@ -1,0 +1,9 @@
+# SIMULATION ONLY failure injection.
+
+# One of: gnss_loss, imu_loss, lidar_loss, localization_divergence, planner_failure,
+# stale_command, vehicle_interface_timeout, excessive_slip, geofence_violation, clear_all
+string failure
+bool active
+---
+bool success
+string message

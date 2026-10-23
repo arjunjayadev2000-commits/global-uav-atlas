@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="sensor_link" params="name parent cfg size:=0.1 mass:=1.0 color:=Sensor">
+    <link name="${name}_link">
+      <visual>
+        <geometry><box size="${size} ${size} ${size}"/></geometry>
+        <material name="${color}"/>
+      </visual>
+      <inertial>
+        <mass value="${mass}"/>
+        <inertia ixx="${mass*size*size/6}" iyy="${mass*size*size/6}" izz="${mass*size*size/6}" ixy="0" ixz="0" iyz="0"/>
+      </inertial>
+    </link>
+    <joint name="${name}_joint" type="fixed">
+      <parent link="${parent}"/>
+      <child link="${name}_link"/>
+      <origin xyz="${cfg['xyz'][0]} ${cfg['xyz'][1]} ${cfg['xyz'][2]}"
+              rpy="${cfg['rpy'][0]} ${cfg['rpy'][1]} ${cfg['rpy'][2]}"/>
+    </joint>
+  </xacro:macro>
+
+  <!-- 3D LiDAR -->
+  <xacro:macro name="lidar" params="name parent cfg gazebo">
+    <xacro:sensor_link name="${name}" parent="${parent}" cfg="${cfg}" size="0.15" mass="1.0"/>
+    <xacro:if value="${gazebo}">
+      <gazebo reference="${name}_link">
+        <sensor name="${name}" type="gpu_lidar">
+          <gz_frame_id>${name}_link</gz_frame_id>
+          <topic>${name}</topic>
+          <update_rate>${cfg['rate']}</update_rate>
+          <always_on>true</always_on>
+          <visualize>false</visualize>
+          <lidar>
+            <scan>
+              <horizontal>
+                <samples>${cfg['horizontal_samples']}</samples>
+                <resolution>1</resolution>
+                <min_angle>${-pi}</min_angle>
+                <max_angle>${pi}</max_angle>
+              </horizontal>
+              <vertical>
+                <samples>${cfg['channels']}</samples>
+                <resolution>1</resolution>
+                <min_angle>${-radians(cfg['vertical_fov_deg'])/2}</min_angle>
+                <max_angle>${radians(cfg['vertical_fov_deg'])/2}</max_angle>
+              </vertical>
+            </scan>
+            <range>
+              <min>${cfg['min_range']}</min>
+              <max>${cfg['max_range']}</max>
+              <resolution>0.01</resolution>
+            </range>
+            <noise>
+              <type>gaussian</type>
+              <mean>0.0</mean>
+              <stddev>0.02</stddev>
+            </noise>
+          </lidar>
+        </sensor>
+      </gazebo>
+    </xacro:if>
+  </xacro:macro>
+
+  <!-- RGB camera with ROS optical frame -->
+  <xacro:macro name="camera" params="name parent cfg gazebo">
+    <xacro:sensor_link name="${name}" parent="${parent}" cfg="${cfg}" size="0.08" mass="0.3"/>
+    <link name="${name}_optical_frame"/>
+    <joint name="${name}_optical_joint" type="fixed">
+      <parent link="${name}_link"/>
+      <child link="${name}_optical_frame"/>
+      <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}"/>
+    </joint>
+    <xacro:if value="${gazebo}">
+      <gazebo reference="${name}_link">
+        <sensor name="${name}" type="camera">
+          <gz_frame_id>${name}_optical_frame</gz_frame_id>
+          <topic>${name}/image_raw</topic>
+          <update_rate>${cfg['rate']}</update_rate>
+          <always_on>true</always_on>
+          <camera>
+            <camera_info_topic>${name}/camera_info</camera_info_topic>
+            <horizontal_fov>${radians(cfg['hfov_deg'])}</horizontal_fov>
+            <image>
+              <width>${cfg['width']}</width>
+              <height>${cfg['height']}</height>
+              <format>R8G8B8</format>
+            </image>
+            <clip><near>0.1</near><far>200.0</far></clip>
+            <noise><type>gaussian</type><mean>0.0</mean><stddev>0.005</stddev></noise>
+          </camera>
+        </sensor>
+      </gazebo>
+    </xacro:if>
+  </xacro:macro>
+
+  <!-- Industrial IMU -->
+  <xacro:macro name="imu" params="parent cfg gazebo">
+    <xacro:sensor_link name="imu" parent="${parent}" cfg="${cfg}" size="0.06" mass="0.5"/>
+    <xacro:if value="${gazebo}">
+      <gazebo reference="imu_link">
+        <sensor name="imu" type="imu">
+          <gz_frame_id>imu_link</gz_frame_id>
+          <topic>imu/data</topic>
+          <update_rate>${cfg['rate']}</update_rate>
+          <always_on>true</always_on>
+          <imu>
+            <angular_velocity>
+              <x><noise type="gaussian"><mean>0</mean><stddev>0.0005</stddev><bias_mean>0.00001</bias_mean></noise></x>
+              <y><noise type="gaussian"><mean>0</mean><stddev>0.0005</stddev><bias_mean>0.00001</bias_mean></noise></y>
+              <z><noise type="gaussian"><mean>0</mean><stddev>0.0005</stddev><bias_mean>0.00001</bias_mean></noise></z>
+            </angular_velocity>
+            <linear_acceleration>
+              <x><noise type="gaussian"><mean>0</mean><stddev>0.01</stddev><bias_mean>0.001</bias_mean></noise></x>
+              <y><noise type="gaussian"><mean>0</mean><stddev>0.01</stddev><bias_mean>0.001</bias_mean></noise></y>
+              <z><noise type="gaussian"><mean>0</mean><stddev>0.01</stddev><bias_mean>0.001</bias_mean></noise></z>
+            </linear_acceleration>
+          </imu>
+        </sensor>
+      </gazebo>
+    </xacro:if>
+  </xacro:macro>
+
+  <!-- GNSS / RTK antenna -->
+  <xacro:macro name="gnss" params="parent cfg gazebo">
+    <xacro:sensor_link name="gnss" parent="${parent}" cfg="${cfg}" size="0.12" mass="0.4"/>
+    <xacro:if value="${gazebo}">
+      <gazebo reference="gnss_link">
+        <sensor name="gnss" type="navsat">
+          <gz_frame_id>gnss_link</gz_frame_id>
+          <topic>gnss/fix</topic>
+          <update_rate>${cfg['rate']}</update_rate>
+          <always_on>true</always_on>
+          <navsat>
+            <position_sensing>
+              <horizontal><noise type="gaussian"><mean>0</mean><stddev>0.02</stddev></noise></horizontal>
+              <vertical><noise type="gaussian"><mean>0</mean><stddev>0.04</stddev></noise></vertical>
+            </position_sensing>
+            <velocity_sensing>
+              <horizontal><noise type="gaussian"><mean>0</mean><stddev>0.05</stddev></noise></horizontal>
+              <vertical><noise type="gaussian"><mean>0</mean><stddev>0.05</stddev></noise></vertical>
+            </velocity_sensing>
+          </navsat>
+        </sensor>
+      </gazebo>
+    </xacro:if>
+  </xacro:macro>
+</robot>
